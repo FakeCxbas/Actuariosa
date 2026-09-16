@@ -1,0 +1,36 @@
+{
+  "campana_id": "cambiar-identificador-campana",
+  "es_ejemplo": true,
+  "remitente": {
+    "correo": "envios@example.com",
+    "nombre": "Empresa (ejemplo)",
+    "responder_a": ""
+  },
+  "mensaje": {
+    "asunto": "BORRADOR - Cambiar antes de enviar",
+    "archivo_texto": "mensaje.ejemplo.txt",
+    "archivo_html": "",
+    "adjuntos": []
+  },
+  "smtp": {
+    "host": "",
+    "puerto": 587,
+    "seguridad": "starttls",
+    "autenticacion": "password",
+    "usuario": "",
+    "secreto_env": "CORREO_SMTP_SECRET"
+  },
+  "limites": {
+    "max_por_ejecucion": 50,
+    "intervalo_segundos": 2,
+    "max_errores_consecutivos": 3,
+    "max_mensaje_mb": 10
+  },
+  "autorizacion": {
+    "remitente_autorizado": false,
+    "envio_aprobado": false,
+    "lista_revisada": false,
+    "exclusiones_revisadas": false,
+    "limites_confirmados": false
+  }
+}

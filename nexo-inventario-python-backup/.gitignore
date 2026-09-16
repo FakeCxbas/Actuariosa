@@ -1,0 +1,9 @@
+data/
+datos-importados-windows/
+*.sqlite3*
+entrega-linux/
+__pycache__/
+dist/
+build/
+*.spec
+*.log

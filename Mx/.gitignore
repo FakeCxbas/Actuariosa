@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+resultados/
+correos.txt
+campana.json
+mensaje.txt
+mensaje.html
+exclusiones.txt
+entradas/
+adjuntos/
+*.sqlite3*
+datos/
+build/
+entrega/
+output/listas/
+*.spec

@@ -1,0 +1,88 @@
+MXCORREO - VERSION PORTABLE PARA WINDOWS 10/11 DE 64 BITS
+
+No necesitas instalar Python ni escribir comandos.
+
+1. Copia el ZIP a una USB o a la otra computadora.
+2. Haz clic derecho sobre el ZIP y elige "Extraer todo".
+3. Entra en la carpeta extraída y abre MxCorreo.exe con doble clic.
+   Conserva también la carpeta _internal: es parte del programa.
+4. Pulsa "Cargar archivos..." o "Cargar carpeta...". Se admiten varios
+   Excel, CSV y TXT a la vez. No necesitas una cuenta para filtrar.
+5. Confirma las columnas detectadas en la vista previa.
+6. Pulsa "Revisar dominios" y después "Exportar listas CSV...".
+   "Ver un ejemplo" permite probar la revisión sin enviar mensajes.
+
+IMPORTAR CONTACTOS
+
+La detección automática busca columnas en todas las hojas, incluso sin
+encabezado. Admite varias columnas y varias direcciones por celda. Detecta
+encabezados comunes de Nombre y Empresa para conservar esos datos.
+Se incluyen filas ocultas y filtradas. Las fórmulas usan el último valor
+guardado: recalcula y guarda el Excel si necesitas actualizarlo.
+Si una columna no se reconoce, usa "Selección manual de Excel...".
+Los archivos sin columnas detectadas o con errores se muestran en un aviso.
+Revisa la selección: una dirección en una nota no siempre es un destinatario.
+El archivo original no se modifica. Un archivo que falla no se importa parcialmente.
+Límites: 50 MB por archivo y 1.000.000 de entradas por importación.
+La lectura se realiza en segundo plano y se puede detener.
+
+CSV: se admiten archivos con o sin encabezado, separados por coma,
+punto y coma o tabulación, en UTF-8, UTF-16 con BOM o Windows-1252.
+Si una estructura es ambigua, comprueba la vista previa antes de importar.
+
+Pegar correos: acepta una dirección por línea, o separadas por coma, punto y
+coma o tabulación. También acepta el formato Nombre <correo@dominio.com>.
+La lista importada se guarda localmente en datos/importaciones para que la
+aplicación la pueda revisar y reutilizar. Importar nunca envía mensajes.
+Para abrirla otro día, pulsa Opciones y "Abrir una lista guardada...".
+
+RESULTADOS Y EXPORTACIÓN
+
+Busca por correo, motivo o archivo. Filtra por estado o por duplicados.
+La tabla muestra páginas de 200 entradas para mantenerse ágil.
+Exportar toma la lista completa, no solo el filtro o página visible.
+Se genera una carpeta nueva con cuatro CSV de una columna, sin encabezado:
+todos los correos, dominio apto, con problemas y por revisar.
+Los CSV no repiten direcciones normalizadas exactamente iguales. No se
+eliminan duplicados de los originales ni del informe de revisión.
+Entradas sin revisar y consultas inconclusas van a "Por revisar".
+Los valores con prefijos de fórmula llevan apóstrofo de protección para
+evitar su ejecución al abrirlos en Excel. Se explica en la carpeta exportada.
+
+La pestaña 1 muestra los resultados y permite abrir el informe.
+La pestaña 2 permite escribir el mensaje y añadir adjuntos.
+La pestaña 3 contiene los datos SMTP que debe confirmar la empresa.
+La pestaña 4 permite preparar un envío real, con aprobaciones y confirmación.
+
+El programa NO envía al abrirse. Revisar o simular nunca envía mensajes.
+No se incluyen cuentas reales, contraseñas, listas de clientes ni adjuntos privados.
+La contraseña/token se pide solo después de confirmar un envío y no se guarda.
+El envío real aún debe probarse con la cuenta autorizada de la empresa.
+
+DATOS Y USB
+
+Al usarlo se crea "datos" junto a MxCorreo.exe. Ahí están informes,
+configuración y registro de envíos. Conserva esta carpeta al trasladar
+el programa para no perder el historial y repetir mensajes.
+No ejecutes dos copias en diferentes PC para la misma campaña.
+No retires la USB ni cierres a la fuerza mientras esté trabajando.
+Mejor copia la carpeta a Documentos y úsala desde el disco de la PC.
+
+Los archivos originales, HTML y adjuntos que elijas NO se copian automáticamente.
+La importación de contactos sí guarda una copia de los datos seleccionados.
+Si cambias de PC o de letra de USB, lleva esos archivos y vuelve a elegirlos.
+El mensaje de texto que guardes sí permanece en la carpeta datos.
+
+LIMITACIONES
+
+Se necesita Internet para consultar DNS y para enviar.
+APTO_DNS no significa que el buzón exista ni garantiza entrega.
+Un correo aceptado por SMTP todavía puede rebotar más tarde.
+No configura el dominio, autenticación, límites, bajas o permisos por ti.
+
+El ejecutable no está firmado con un certificado comercial. Una PC de
+empresa puede bloquearlo. Si sucede, consulta a su personal de TI;
+no desactives antivirus, SmartScreen ni las políticas de seguridad.
+Esta versión se compiló para Windows x64; no es una versión de 32 bits.
+
+La guía completa GUIA_CAMPANA.md explica el funcionamiento y los límites.

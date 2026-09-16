@@ -1,0 +1,86 @@
+MXCORREO — CONTACTOS Y CAMPAÑAS
+
+Un solo programa para importar bases, revisar dominios, preparar ofertas,
+exportar CSV y enviar mensajes individuales por lotes con Google Workspace.
+No necesitas Python. Extrae todo el ZIP y abre MxCorreo.exe.
+
+1. CONTACTOS
+Carga Excel, CSV, TXT, una carpeta o texto pegado. Confirma las columnas que
+quieres usar. Los originales no se modifican.
+Para las listas ya revisadas, pulsa «Importar revisión anterior» y selecciona
+Detalle.json de la carpeta de resultados. También admite informe.json.
+Se muestran los estados históricos; al preparar un lote se consulta DNS otra
+vez. La última lista se recuerda, pero al reabrir se muestra sin validar.
+Dominio apto NO confirma existencia del buzón, entrega ni permiso para escribir.
+Puedes exportar todos, aptos, problemas y pendientes en CSV para Excel.
+
+2. OFERTA
+En Mensaje, pulsa «Plantilla de servicios» y completa todos los corchetes.
+Revisa asunto, firma, teléfono y dirección de la empresa. La plantilla pide
+confirmación para reemplazar el texto y crea otra campaña. Revisa por separado
+el HTML y los adjuntos: no se eliminan al cambiar de plantilla.
+${nombre}, ${empresa} y ${correo} se sustituyen por datos del contacto.
+Nombre y empresa quedan vacíos si no venían en la base.
+Completa el correo que atenderá las bajas: la instrucción se añade al texto
+y al HTML. Guarda la configuración. No se guardan contraseñas ni aprobaciones.
+
+3. GOOGLE WORKSPACE / GMAIL
+Completa remitente, empresa y usuario SMTP (tu correo completo).
+«Configurar Gmail» usa smtp.gmail.com, 587, STARTTLS y password.
+Usa una contraseña de aplicación si la cuenta y el administrador lo permiten;
+requiere verificación en dos pasos. No uses tu contraseña habitual ni la
+compartas por chat. La aplicación la pide en una ventana al confirmar el envío.
+Si no se permite, el administrador debe configurar OAuth2 o un relay autorizado.
+OAuth2 acepta un access token existente: no hay inicio de sesión Google ni
+renovación automática. El administrador debe revisar SPF, DKIM, DMARC,
+las políticas del servicio y los límites de la cuenta antes de comenzar.
+
+4. AUTORIZADOS Y BAJAS
+Por defecto: «Solo autorizados». Pega un correo por línea en «Editar autorizados».
+Solo se selecciona su intersección con la base apta. «Toda la lista autorizada»
+corresponde únicamente si todos aceptaron recibir las ofertas. Una base
+recopilada no acredita ese permiso.
+Registra las solicitudes de baja y exclusiones en «Bajas / no contactar».
+Las bajas siempre prevalecen. Los editores guardan copias en datos sin alterar
+el archivo original elegido. Revisa las bajas antes de confirmar cada lote.
+NO se leen automáticamente respuestas ni rebotes. Si llega una baja durante
+un lote, pulsa Detener, espera la operación actual y actualiza las exclusiones.
+El mensaje incluye una baja por correo (mailto), NO una baja web automática
+de un clic (RFC 8058). Si las políticas aplicables al volumen requieren esa
+función, hace falta integrar un servicio con endpoint de bajas; no está incluido.
+
+5. PRUEBA Y ENVÍO
+Primero simula y revisa contenido y destinatarios: no conecta a SMTP.
+Después envía una prueba solo a tu dirección autorizada y verifica su recepción.
+Para un lote real, completa las aprobaciones; se pide una frase de confirmación
+con el contenido y la lista exacta. Importar o simular nunca envían mensajes.
+Cada mensaje tiene un solo destinatario y no expone la lista completa.
+Configura tamaño del lote e intervalo con el administrador.
+
+Máximo local por defecto: 400 intentos en 24 horas móviles. Es una precaución,
+NO una cuota concedida por Google. Cuenta intentos de todas las campañas en
+esta copia para la misma cuenta SMTP, incluidas pruebas y rechazos.
+No conoce envíos desde Gmail, otras aplicaciones, otras copias, otros endpoints
+SMTP ni los anteriores a esta versión del contador. Reduce el máximo según
+el uso real. No cambies de cuenta o copia para eludir los límites de Google.
+Al alcanzar el máximo se detiene: no programa ni reinicia lotes automáticamente.
+Gmail y Workspace no permiten envíos ilimitados. Dividir en lotes no evita
+sus límites ni garantiza que los mensajes sean aceptados.
+
+6. CONTINUAR Y VER RESULTADOS
+Conserva el mismo identificador y contenido para continuar la campaña.
+El registro evita repetir destinatarios registrados. Un identificador nuevo
+puede volver a contactarlos: úsalo solo para una campaña distinta.
+«Consultar registro» muestra un resumen y genera JSON y CSV para Excel.
+ACEPTADO_SMTP significa aceptado por el servidor, NO entregado ni leído.
+EN_CURSO e INCIERTO requieren revisión y no se repiten automáticamente.
+Detener interrumpe después de la operación actual.
+Conserva datos al mover el programa: incluye información privada, listas,
+configuración y registro. No uses copias con registros distintos en paralelo.
+El ZIP distribuible no incluye bases ni cuentas reales del cliente.
+
+Documentación de Google consultada el 10 de septiembre de 2026:
+Contraseñas de aplicación: https://support.google.com/accounts/answer/185833
+Límites Gmail: https://support.google.com/mail/answer/22839
+Límites Workspace: https://support.google.com/a/answer/166852
+Requisitos de remitentes: https://support.google.com/mail/answer/81126

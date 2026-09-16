@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+        }
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        body {
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+            color: #111111;
+            background: #ffffff;
+            margin: 0;
+            padding: 0;
+            font-size: 9.5pt;
+            line-height: 1.4;
+        }
+
+        .page {
+            page-break-after: always;
+            page-break-inside: avoid;
+            box-sizing: border-box;
+            width: 210mm;
+            height: 297mm;
+            max-height: 297mm;
+            padding: 16mm 18mm 16mm 18mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        /* PORTADA PERICIAL CLÁSICA */
+        .portada {
+            text-align: center;
+            justify-content: space-between;
+            padding: 35mm 20mm 25mm 20mm;
+        }
+        .portada-header {
+            margin-bottom: 20px;
+        }
+        .portada-empresa {
+            font-size: 15pt;
+            font-weight: bold;
+            color: #000000;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+        .portada-sub {
+            font-size: 9.5pt;
+            color: #333333;
+            margin-top: 6px;
+        }
+        .portada-cuerpo {
+            margin: 40px 0;
+        }
+        .portada-subtitulo {
+            font-size: 11pt;
+            font-weight: bold;
+            color: #222222;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+        .portada-titulo {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #000000;
+            line-height: 1.4;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .portada-norma {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #222222;
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+        }
+        .portada-corte {
+            font-size: 10.5pt;
+            font-weight: bold;
+            color: #111111;
+            text-transform: uppercase;
+            border-top: 1px solid #444444;
+            border-bottom: 1px solid #444444;
+            display: inline-block;
+            padding: 6px 20px;
+            margin-top: 10px;
+        }
+        .portada-footer {
+            border-top: 1px solid #666666;
+            padding-top: 14px;
+            font-size: 10pt;
+            line-height: 1.4;
+        }
+        .author-name {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #000000;
+        }
+        .author-title {
+            font-size: 9.5pt;
+            color: #333333;
+        }
+
+        /* ENCABEZADOS DISCRETOS DE AUDITORÍA */
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid #222222;
+            padding-bottom: 4px;
+            margin-bottom: 14px;
+            font-size: 8pt;
+            color: #444444;
+            text-transform: uppercase;
+        }
+        .doc-header .dh-left {
+            font-weight: bold;
+            color: #000000;
+            max-width: 60%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .doc-header .dh-right {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* PIE DE PÁGINA */
+        .doc-footer {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #888888;
+            padding-top: 4px;
+            font-size: 7.5pt;
+            color: #555555;
+            margin-top: auto;
+        }
+
+        /* TIPOGRAFÍA FORMAL */
+        h2 {
+            font-size: 11pt;
+            font-weight: bold;
+            color: #000000;
+            text-transform: uppercase;
+            margin: 10px 0 6px 0;
+            padding-bottom: 2px;
+            border-bottom: 0.5pt solid #888888;
+        }
+        h3 {
+            font-size: 9.5pt;
+            font-weight: bold;
+            color: #111111;
+            margin: 8px 0 4px 0;
+        }
+        p {
+            text-align: justify;
+            margin-bottom: 6px;
+            font-size: 9pt;
+            line-height: 1.38;
+        }
+        ul {
+            margin: 4px 0 8px 18px;
+            font-size: 9pt;
+        }
+        li {
+            margin-bottom: 2px;
+        }
+
+        /* TABLAS FORMALES CLÁSICAS DE AUDITORÍA */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0 10px 0;
+            font-size: 8.5pt;
+        }
+        th, td {
+            border: 0.5pt solid #555555;
+            padding: 4px 6px;
+        }
+        th {
+            background: #f0f0f0;
+            color: #000000;
+            font-weight: bold;
+            text-align: center;
+        }
+        .table-title {
+            font-size: 8.5pt;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 6px;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+        }
+
+        /* CAJAS RESUMEN CLÁSICAS (SIN ESTÉTICA IA NI CARDS) */
+        .tabla-resumen {
+            margin: 10px 0;
+        }
+        .tabla-resumen td {
+            padding: 5px 8px;
+        }
+
+        /* FIRMAS */
+        .firma-container {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+        .firma-box {
+            width: 44%;
+            border-top: 1px solid #000000;
+            padding-top: 6px;
+            font-size: 8.5pt;
+            line-height: 1.35;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PÁGINA 1: CARÁTULA FORMAL -->
+    <div class="page portada">
+        <div class="portada-header">
+            <div class="portada-empresa">COOPERATIVA DE AHORRO Y CRÉDITO MAGISTERIO MANABITA LTDA.</div>
+            <div class="portada-sub">RUC: 1390027763001 · Portoviejo, Manabí, Ecuador</div>
+        </div>
+
+        <div class="portada-cuerpo">
+            <div class="portada-subtitulo">INFORME DE VALORACIÓN ACTUARIAL</div>
+            <div class="portada-titulo">
+                PROVISIÓN PARA JUBILACIÓN PATRONAL<br>
+                Y BONIFICACIÓN POR DESAHUCIO
+            </div>
+            <div class="portada-norma">NORMA INTERNACIONAL DE CONTABILIDAD No. 19 (NIC 19 / NIIF)</div>
+            <div class="portada-corte">AL 31 DE DICIEMBRE DE 2025</div>
+        </div>
+
+        <div class="portada-footer">
+            <div class="author-name">Sebastian Zambrano</div>
+            <div class="author-title">Consultoría Actuarial</div>
+            <div style="font-size:9pt; color:#444444; margin-top:4px;">Guayaquil, Ecuador</div>
+        </div>
+    </div>
+
+    <!-- PÁGINA 2: ANTECEDENTES Y RESUMEN EJECUTIVO -->
+    <div class="page">
+        <div>
+            <div class="doc-header">
+                <span class="dh-left">COOP. DE AHORRO Y CRÉDITO MAGISTERIO MANABITA LTDA.</span>
+                <span class="dh-right">ESTUDIO ACTUARIAL · NIC 19</span>
+            </div>
+
+            <h2>1. Antecedentes e Información General</h2>
+            <p>
+                La <strong>COOPERATIVA DE AHORRO Y CRÉDITO MAGISTERIO MANABITA LTDA.</strong> fue legalmente constituida el 7 de agosto de 1952, en la ciudad de Portoviejo, capital de la provincia de Manabí, con estatutos sociales aprobados mediante Acuerdo Ministerial No. 2492 de fecha 24 de febrero de 1955. La institución tiene como objeto social la intermediación financiera y prestación de servicios de ahorro y crédito para los servidores de la educación y comunidad en general.
+            </p>
+            <p>
+                A fin de dar estricto cumplimiento a lo preceptuado en el Código del Trabajo y en la <strong>Norma Internacional de Contabilidad No. 19 (NIC 19 — Beneficios a los Empleados)</strong>, la administración de la institución dispuso la elaboración del presente informe técnico de valoración actuarial, con fecha de corte al <strong>31 de diciembre de 2025</strong>, destinado a determinar las provisiones y obligaciones por <strong>Jubilación Patronal</strong> (Art. 216) y <strong>Bonificación por Desahucio</strong> (Art. 185).
+            </p>
+
+            <h2>2. Resumen Ejecutivo de la Obligación Actuarial</h2>
+            <p>
+                El colectivo de servidores evaluado bajo relación de dependencia está integrado por <strong>dieciocho (18) personas activas</strong> (14 mujeres y 4 hombres). La edad actual de los trabajadores oscila entre los 26 y 60 años, situándose la edad promedio en <strong>47,0 años</strong>. La permanencia ininterrumpida dentro de la empresa comprende desde 1 año 9 meses hasta 41 años 2 meses, con un promedio de <strong>19,0 años de servicio</strong>. El sueldo mensual computable promedio asciende a <strong>$981,00 USD</strong>.
+            </p>
+
+            <table class="tabla-resumen">
+                <thead>
+                    <tr>
+                        <th style="text-align:left; width:55%;">Concepto de Prestación Laboral (NIC 19)</th>
+                        <th style="width:20%;">Base Legal</th>
+                        <th style="width:25%; text-align:right;">Provisión al 31/12/2025</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Provisión por Jubilación Patronal a cargo del Empleador</td>
+                        <td style="text-align:center;">Art. 216 C.T.</td>
+                        <td style="text-align:right; font-weight:bold;">$250.038,48</td>
+                    </tr>
+                    <tr>
+                        <td>Provisión para Bonificación por Desahucio</td>
+                        <td style="text-align:center;">Art. 185 C.T.</td>
+                        <td style="text-align:right; font-weight:bold;">$94.660,12</td>
+                    </tr>
+                    <tr style="background:#f0f0f0; font-weight:bold;">
+                        <td>OBLIGACIÓN TOTAL POR BENEFICIOS DEFINIDOS (PASIVO NIC 19)</td>
+                        <td style="text-align:center;">NIC 19.64</td>
+                        <td style="text-align:right; font-size:9.5pt;">$344.698,60</td>
+                    </tr>
+                    <tr>
+                        <td>Activo por Impuesto a la Renta Diferido Reconocido (Tasa 25%)</td>
+                        <td style="text-align:center;">Circular SRI</td>
+                        <td style="text-align:right; font-weight:bold;">$86.174,65</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                La institución no mantiene a la fecha ex-empleados percibiendo pensión patronal activa. Se identifican <strong>siete (7) colaboradores</strong> con más de veinte años de antigüedad (seis de ellos superando los 25 años), quienes poseen el derecho perfeccionado para acogerse a la jubilación patronal al momento de su retiro voluntario.
+            </p>
+            <p>
+                Conforme a la <em>Ley Orgánica para el Desarrollo Económico y Sostenibilidad Fiscal</em>, la provisión total calculada constituye gasto no deducible del ejercicio fiscal corriente; no obstante, genera una diferencia temporaria deducible que da origen al registro de un <strong>Activo por Impuesto Diferido del 25% por un valor de $86.174,65</strong>, amortizable tributariamente al momento del pago efectivo de la prestación.
+            </p>
+        </div>
+
+        <div class="doc-footer">
+            <span>Sebastian Zambrano · Consultoría Actuarial (Guayaquil, Ecuador)</span>
+            <span>Página 2</span>
+        </div>
+    </div>
+
+    <!-- PÁGINA 3: SECCIÓN A - JUBILACIÓN PATRONAL -->
+    <div class="page">
+        <div>
+            <div class="doc-header">
+                <span class="dh-left">COOP. DE AHORRO Y CRÉDITO MAGISTERIO MANABITA LTDA.</span>
+                <span class="dh-right">ESTUDIO ACTUARIAL · NIC 19</span>
+            </div>
+
+            <h2>A. Jubilación a Cargo del Empleador (Art. 216)</h2>
+            
+            <h3>1. Base Legal y Precedente Jurisprudencial</h3>
+            <p>
+                El Artículo 216 del Código del Trabajo establece que los trabajadores que por 25 años o más hubieren prestado servicios continua o interrumpidamente, tendrán derecho a ser jubilados por sus empleadores. Quienes cumplieren 20 años y menos de 25 años y fueren separados intempestivamente, tienen derecho a la parte proporcional de dicha prestación.
+            </p>
+            <p>
+                En estricta observancia de la <strong>Resolución No. 07-2021 expedida por el Pleno de la Corte Nacional de Justicia</strong> (precedente vinculante), la pensión mensual de jubilación patronal no podrá exceder de la remuneración básica mínima unificada media percibida por el trabajador en el último año de servicio, sujetándose al límite mínimo de $20,00 USD (doble jubilación) o $30,00 USD (jubilación única).
+            </p>
+
+            <h3>2. Colectivo Activo y Demografía</h3>
+            <div class="table-title">Distribución del Colectivo por Género</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Género</th>
+                        <th>Número Servidores</th>
+                        <th>Edad Promedio</th>
+                        <th>Tiempo de Servicio</th>
+                        <th>Remuneración Promedio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Femenino</td>
+                        <td style="text-align:center;">14</td>
+                        <td style="text-align:center;">46,5 años</td>
+                        <td style="text-align:center;">19,4 años</td>
+                        <td style="text-align:right;">$1.076,00</td>
+                    </tr>
+                    <tr>
+                        <td>Masculino</td>
+                        <td style="text-align:center;">4</td>
+                        <td style="text-align:center;">49,0 años</td>
+                        <td style="text-align:center;">17,5 años</td>
+                        <td style="text-align:right;">$650,00</td>
+                    </tr>
+                    <tr style="font-weight:bold; background:#f0f0f0;">
+                        <td>TOTAL GENERAL</td>
+                        <td style="text-align:center;">18</td>
+                        <td style="text-align:center;">47,0 años</td>
+                        <td style="text-align:center;">19,0 años</td>
+                        <td style="text-align:right;">$981,00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3. Hipótesis Actuariales y Financieras</h3>
+            <ul>
+                <li><strong>Tasa Técnica de Descuento Actuarial:</strong> 4,00% efectivo anual (Resolución CI. 141 del IESS).</li>
+                <li><strong>Tasa de Interés Financiero Pasiva:</strong> 6,34% anual (Promedio referencial publicado por el BCE).</li>
+                <li><strong>Tasa de Inflación a Largo Plazo:</strong> 2,23% anual promedio bajo dolarización.</li>
+                <li><strong>Crecimiento Salarial Futuro:</strong> 3,00% anual constante para sueldos menores a $984 USD; constante para remuneraciones superiores.</li>
+                <li><strong>Incremento Anual de RBU:</strong> 2,90% anual constante.</li>
+                <li><strong>Tablas Biométricas de Mortalidad:</strong> Coeficientes del Art. 218 del Código del Trabajo y Tabla de Activos IESS 1995/2000.</li>
+            </ul>
+
+            <h3>4. Provisión Acumulada según Segmentación de Antigüedad</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Segmento de Antigüedad</th>
+                        <th>No. Personas</th>
+                        <th>Obligación Financiera Acumulada</th>
+                        <th>Provisión Asentada en Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Personal con menos de 20 años de servicio</td>
+                        <td style="text-align:center;">11</td>
+                        <td style="text-align:right;">$82.410,20</td>
+                        <td style="text-align:right;">$57.853,47</td>
+                    </tr>
+                    <tr>
+                        <td>Personal con 20 o más años de servicio (Derecho Adquirido)</td>
+                        <td style="text-align:center;">7</td>
+                        <td style="text-align:right;">$235.321,15</td>
+                        <td style="text-align:right;">$192.185,01</td>
+                    </tr>
+                    <tr style="font-weight:bold; background:#f0f0f0;">
+                        <td>TOTAL PROVISIÓN JUBILACIÓN PATRONAL</td>
+                        <td style="text-align:center;">18</td>
+                        <td style="text-align:right;">$317.731,35</td>
+                        <td style="text-align:right;">$250.038,48</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="doc-footer">
+            <span>Sebastian Zambrano · Consultoría Actuarial (Guayaquil, Ecuador)</span>
+            <span>Página 3</span>
+        </div>
+    </div>
+
+    <!-- PÁGINA 4: SECCIÓN B Y REGISTRO CONTABLE -->
+    <div class="page">
+        <div>
+            <div class="doc-header">
+                <span class="dh-left">COOP. DE AHORRO Y CRÉDITO MAGISTERIO MANABITA LTDA.</span>
+                <span class="dh-right">ESTUDIO ACTUARIAL · NIC 19</span>
+            </div>
+
+            <h2>B. Bonificación por Desahucio (Art. 185)</h2>
+            <p>
+                El Artículo 185 del Código del Trabajo preceptúa que en los casos de terminación del contrato individual, el empleador bonificará al trabajador con el 25% del equivalente a la última remuneración mensual por cada año de servicios prestados.
+            </p>
+
+            <div class="table-title">Distribución de Provisión por Desahucio</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tiempo de Servicio (TS)</th>
+                        <th>No. Servidores</th>
+                        <th>Costo del Período</th>
+                        <th>Provisión Acumulada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Trabajadores con TS &lt; 10 años</td>
+                        <td style="text-align:center;">6</td>
+                        <td style="text-align:right;">$4.737,52</td>
+                        <td style="text-align:right;">$4.737,52</td>
+                    </tr>
+                    <tr>
+                        <td>Trabajadores con TS &ge; 10 y &lt; 20 años</td>
+                        <td style="text-align:center;">5</td>
+                        <td style="text-align:right;">$23.066,81</td>
+                        <td style="text-align:right;">$23.066,81</td>
+                    </tr>
+                    <tr>
+                        <td>Trabajadores con TS &ge; 20 años</td>
+                        <td style="text-align:center;">7</td>
+                        <td style="text-align:right;">$66.855,79</td>
+                        <td style="text-align:right;">$66.855,79</td>
+                    </tr>
+                    <tr style="font-weight:bold; background:#f0f0f0;">
+                        <td>TOTAL BONIFICACIÓN POR DESAHUCIO</td>
+                        <td style="text-align:center;">18</td>
+                        <td style="text-align:right;">$94.660,12</td>
+                        <td style="text-align:right;">$94.660,12</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>C. Asientos Contables Oficiales de Cierre</h2>
+            <div class="table-title">Asiento 1: Provisión de Pasivo Laboral Post-Empleo (NIC 19)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Cuenta y Detalle Contable</th>
+                        <th>Parcial</th>
+                        <th>Debe</th>
+                        <th>Haber</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>GASTOS GENERALES NO DEDUCIBLES</strong></td>
+                        <td></td>
+                        <td style="text-align:right; font-weight:bold;">$344.698,60</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:14px;">- Provisión Jubilación Patronal (&lt; 20 años de servicio)</td>
+                        <td style="text-align:right;">$57.853,47</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:14px;">- Provisión Jubilación Patronal (&ge; 20 años de servicio)</td>
+                        <td style="text-align:right;">$192.185,01</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:14px;">- Provisión Bonificación por Desahucio</td>
+                        <td style="text-align:right;">$94.660,12</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>OBLIGACIONES BENEFICIOS POST-EMPLEO (NIC 19)</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:right; font-weight:bold;">$344.698,60</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:14px;">- Pasivo Jubilación Patronal Acumulado</td>
+                        <td style="text-align:right;">$250.038,48</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:14px;">- Pasivo Bonificación por Desahucio Acumulado</td>
+                        <td style="text-align:right;">$94.660,12</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr style="font-weight:bold; background:#f0f0f0;">
+                        <td>SUMAS IGUALES</td>
+                        <td></td>
+                        <td style="text-align:right;">$344.698,60</td>
+                        <td style="text-align:right;">$344.698,60</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="table-title">Asiento 2: Reconocimiento del Activo por Impuesto Diferido (25%)</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Cuenta y Detalle Contable</th>
+                        <th>Parcial</th>
+                        <th>Debe</th>
+                        <th>Haber</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ACTIVO POR IMPUESTO DIFERIDO (Diferencias Temporarias)</strong></td>
+                        <td></td>
+                        <td style="text-align:right; font-weight:bold;">$86.174,65</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:14px;">- 25% sobre Provisión Jubilación Patronal ($250.038,48)</td>
+                        <td style="text-align:right;">$62.509,62</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left:14px;">- 25% sobre Provisión Desahucio ($94.660,12)</td>
+                        <td style="text-align:right;">$23.665,03</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>INGRESO POR IMPUESTO DIFERIDO (Resultados)</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:right; font-weight:bold;">$86.174,65</td>
+                    </tr>
+                    <tr style="font-weight:bold; background:#f0f0f0;">
+                        <td>SUMAS IGUALES</td>
+                        <td></td>
+                        <td style="text-align:right;">$86.174,65</td>
+                        <td style="text-align:right;">$86.174,65</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="doc-footer">
+            <span>Sebastian Zambrano · Consultoría Actuarial (Guayaquil, Ecuador)</span>
+            <span>Página 4</span>
+        </div>
+    </div>
+
+    <!-- PÁGINA 5: SENSIBILIDAD Y CONCILIACIÓN -->
+    <div class="page">
+        <div>
+            <div class="doc-header">
+                <span class="dh-left">COOP. DE AHORRO Y CRÉDITO MAGISTERIO MANABITA LTDA.</span>
+                <span class="dh-right">ESTUDIO ACTUARIAL · NIC 19</span>
+            </div>
+
+            <h2>D. Análisis de Sensibilidad Paramétrica (NIC 19.145)</h2>
+            <p>
+                En cumplimiento del párrafo 145 de la NIC 19, se ha evaluado el impacto que fluctuaciones de 50 puntos básicos en las hipótesis financieras clave generarían sobre el pasivo actuarial total:
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Escenario de Sensibilidad</th>
+                        <th>Hipótesis Modificada</th>
+                        <th>Obligación Total Resultante</th>
+                        <th>Variación Relativa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f9f9f9; font-weight:bold;">
+                        <td>Escenario Base Oficial</td>
+                        <td>Tasa Descuento 4,00% / Salarios 3,00%</td>
+                        <td style="text-align:right;">$344.698,60</td>
+                        <td style="text-align:center;">Base (0,0%)</td>
+                    </tr>
+                    <tr>
+                        <td>Tasa de Descuento + 50 pbs</td>
+                        <td>Tasa Descuento a 4,50%</td>
+                        <td style="text-align:right;">$326.774,27</td>
+                        <td style="text-align:right;">-5,20%</td>
+                    </tr>
+                    <tr>
+                        <td>Tasa de Descuento - 50 pbs</td>
+                        <td>Tasa Descuento a 3,50%</td>
+                        <td style="text-align:right;">$364.346,42</td>
+                        <td style="text-align:right;">+5,70%</td>
+                    </tr>
+                    <tr>
+                        <td>Incremento Salarial + 50 pbs</td>
+                        <td>Incremento Salarial a 3,50%</td>
+                        <td style="text-align:right;">$359.865,34</td>
+                        <td style="text-align:right;">+4,40%</td>
+                    </tr>
+                    <tr>
+                        <td>Incremento Salarial - 50 pbs</td>
+                        <td>Incremento Salarial a 2,50%</td>
+                        <td style="text-align:right;">$330.565,96</td>
+                        <td style="text-align:right;">-4,10%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>E. Conciliación de Saldos NIC 19</h2>
+            <div class="table-title">Conciliación de Obligaciones por Beneficios Definidos</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:left;">Concepto del Plan</th>
+                        <th>Jubilación Patronal</th>
+                        <th>Bonificación Desahucio</th>
+                        <th>Total Consolidado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Obligación por Beneficios Definidos al inicio de año</td>
+                        <td style="text-align:right;">$0,00</td>
+                        <td style="text-align:right;">$0,00</td>
+                        <td style="text-align:right;">$0,00</td>
+                    </tr>
+                    <tr>
+                        <td>Costo de los servicios prestados en el ejercicio</td>
+                        <td style="text-align:right;">$250.038,48</td>
+                        <td style="text-align:right;">$94.660,12</td>
+                        <td style="text-align:right; font-weight:bold;">$344.698,60</td>
+                    </tr>
+                    <tr>
+                        <td>Beneficios cancelados directamente por el empleador</td>
+                        <td style="text-align:right;">$0,00</td>
+                        <td style="text-align:right;">$0,00</td>
+                        <td style="text-align:right;">$0,00</td>
+                    </tr>
+                    <tr style="font-weight:bold; background:#f0f0f0;">
+                        <td>OBLIGACIÓN AL 31 DE DICIEMBRE DE 2025</td>
+                        <td style="text-align:right;">$250.038,48</td>
+                        <td style="text-align:right;">$94.660,12</td>
+                        <td style="text-align:right;">$344.698,60</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="firma-container" style="margin-top:28px;">
+                <div class="firma-box">
+                    <strong>Sebastian Zambrano</strong><br>
+                    <span>Consultoría Actuarial</span><br>
+                    <span style="font-size:8pt; color:#555555;">Guayaquil, Ecuador</span>
+                </div>
+                <div class="firma-box">
+                    <strong>Representante Legal / Gerencia</strong><br>
+                    <span>COOPERATIVA DE AHORRO Y CRÉDITO MAGISTERIO MANABITA LTDA.</span><br>
+                    <span style="font-size:8pt; color:#555555;">Aprobado para fines contables</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="doc-footer">
+            <span>Sebastian Zambrano · Consultoría Actuarial (Guayaquil, Ecuador)</span>
+            <span>Página 5</span>
+        </div>
+    </div>
+
+    <!-- PÁGINA 6: ANEXO - PLANILLA INDIVIDUAL -->
+    <div class="page">
+        <div>
+            <div class="doc-header">
+                <span class="dh-left">COOP. DE AHORRO Y CRÉDITO MAGISTERIO MANABITA LTDA.</span>
+                <span class="dh-right">ESTUDIO ACTUARIAL · NIC 19</span>
+            </div>
+
+            <h2>Anexo: Planilla y Detalle Individual de Nómina Activa</h2>
+            <p style="font-size:8.5pt; color:#444444; margin-bottom:6px;">
+                Valoración individual efectuada bajo el Método de la Unidad de Crédito Proyectada (PUCM) con fecha de corte al 31 de diciembre de 2025:
+            </p>
+
+            <table style="font-size:8pt;">
+                <thead>
+                    <tr>
+                        <th style="width:5%;">No.</th>
+                        <th style="width:42%; text-align:left;">Apellidos y Nombres</th>
+                        <th style="width:15%;">Tiempo Servicio</th>
+                        <th style="width:13%; text-align:right;">Provisión Jubilación</th>
+                        <th style="width:12%; text-align:right;">Provisión Desahucio</th>
+                        <th style="width:13%; text-align:right;">Total Pasivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+        <tr>
+            <td style="text-align:center;">1</td>
+            <td>MENDOZA ZAMBRANO BIELKA MARIA</td>
+            <td style="text-align:center;">1 a 9 m</td>
+            <td style="text-align:right;">$664,62</td>
+            <td style="text-align:right;">$369,28</td>
+            <td style="text-align:right; font-weight:bold;">$1.033,90</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">2</td>
+            <td>CASTRO ANZULEZ LUIS MANUEL</td>
+            <td style="text-align:center;">1 a 9 m</td>
+            <td style="text-align:right;">$483,41</td>
+            <td style="text-align:right;">$312,47</td>
+            <td style="text-align:right; font-weight:bold;">$795,88</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">3</td>
+            <td>CEDEÑO JARAMILLO JESSENIA ELIZABETH</td>
+            <td style="text-align:center;">3 a 7 m</td>
+            <td style="text-align:right;">$1.599,91</td>
+            <td style="text-align:right;">$824,83</td>
+            <td style="text-align:right; font-weight:bold;">$2.424,74</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">4</td>
+            <td>ESMENJAUD PONCE ELIANA MAILY</td>
+            <td style="text-align:center;">3 a 9 m</td>
+            <td style="text-align:right;">$1.468,86</td>
+            <td style="text-align:right;">$697,53</td>
+            <td style="text-align:right; font-weight:bold;">$2.166,39</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">5</td>
+            <td>PARRAGA RIVAS HENRY GEOVANNY</td>
+            <td style="text-align:center;">6 a 4 m</td>
+            <td style="text-align:right;">$1.649,88</td>
+            <td style="text-align:right;">$1.121,52</td>
+            <td style="text-align:right; font-weight:bold;">$2.771,40</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">6</td>
+            <td>VERA ALAVA ANGEL GABRIEL</td>
+            <td style="text-align:center;">9 a 8 m</td>
+            <td style="text-align:right;">$3.020,75</td>
+            <td style="text-align:right;">$1.411,89</td>
+            <td style="text-align:right; font-weight:bold;">$4.432,64</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">7</td>
+            <td>GARCIA SONOZA MARIA CRISTINA</td>
+            <td style="text-align:center;">10 a 8 m</td>
+            <td style="text-align:right;">$4.881,69</td>
+            <td style="text-align:right;">$2.874,33</td>
+            <td style="text-align:right; font-weight:bold;">$7.756,02</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">8</td>
+            <td>ZAMBRANO RIVERA BRENSKIN PASKALINE</td>
+            <td style="text-align:center;">14 a 8 m</td>
+            <td style="text-align:right;">$9.224,06</td>
+            <td style="text-align:right;">$5.205,25</td>
+            <td style="text-align:right; font-weight:bold;">$14.429,31</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">9</td>
+            <td>MENENDEZ LOPEZ GILMA DANIELA</td>
+            <td style="text-align:center;">16 a 8 m</td>
+            <td style="text-align:right;">$13.288,43</td>
+            <td style="text-align:right;">$5.975,82</td>
+            <td style="text-align:right; font-weight:bold;">$19.264,25</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">10</td>
+            <td>CEDEÑO MOREIRA FREDDY WILSON</td>
+            <td style="text-align:center;">18 a 6 m</td>
+            <td style="text-align:right;">$9.618,35</td>
+            <td style="text-align:right;">$4.077,87</td>
+            <td style="text-align:right; font-weight:bold;">$13.696,22</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">11</td>
+            <td>MORAN CASTRO STELA MARIA</td>
+            <td style="text-align:center;">18 a 8 m</td>
+            <td style="text-align:right;">$11.953,53</td>
+            <td style="text-align:right;">$4.933,55</td>
+            <td style="text-align:right; font-weight:bold;">$16.887,08</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">12</td>
+            <td>ZAMORA HERNANDEZ SONIA GEOCONDA</td>
+            <td style="text-align:center;">21 a 1 m</td>
+            <td style="text-align:right;">$12.962,35</td>
+            <td style="text-align:right;">$5.291,05</td>
+            <td style="text-align:right; font-weight:bold;">$18.253,40</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">13</td>
+            <td>ZAMBRANO INTRIAGO KAREN VANESSA</td>
+            <td style="text-align:center;">25 a 3 m</td>
+            <td style="text-align:right;">$21.014,77</td>
+            <td style="text-align:right;">$6.312,49</td>
+            <td style="text-align:right; font-weight:bold;">$27.327,26</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">14</td>
+            <td>CEDEÑO CEDEÑO LILIANA MARIA</td>
+            <td style="text-align:center;">30 a 11 m</td>
+            <td style="text-align:right;">$24.029,67</td>
+            <td style="text-align:right;">$8.086,73</td>
+            <td style="text-align:right; font-weight:bold;">$32.116,40</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">15</td>
+            <td>BARRAGAN OZAETA ANGELA MARIA</td>
+            <td style="text-align:center;">34 a 11 m</td>
+            <td style="text-align:right;">$35.683,55</td>
+            <td style="text-align:right;">$12.328,76</td>
+            <td style="text-align:right; font-weight:bold;">$48.012,31</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">16</td>
+            <td>AZUA SANTANA VICENTA JASMINA</td>
+            <td style="text-align:center;">38 a 0 m</td>
+            <td style="text-align:right;">$41.492,09</td>
+            <td style="text-align:right;">$14.629,04</td>
+            <td style="text-align:right; font-weight:bold;">$56.121,13</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">17</td>
+            <td>VELIZ GARCIA JUANA ALEXANDRA</td>
+            <td style="text-align:center;">39 a 5 m</td>
+            <td style="text-align:right;">$39.204,09</td>
+            <td style="text-align:right;">$13.895,24</td>
+            <td style="text-align:right; font-weight:bold;">$53.099,33</td>
+        </tr>
+        
+        <tr>
+            <td style="text-align:center;">18</td>
+            <td>LOOR MARIA IVANOBA</td>
+            <td style="text-align:center;">41 a 2 m</td>
+            <td style="text-align:right;">$17.798,50</td>
+            <td style="text-align:right;">$6.312,49</td>
+            <td style="text-align:right; font-weight:bold;">$24.110,99</td>
+        </tr>
+        
+                    <tr style="font-weight:bold; background:#f0f0f0;">
+                        <td colspan="3" style="text-align:center;">TOTAL (18 COLABORADORES ACTIVOS)</td>
+                        <td style="text-align:right;">$250.038,48</td>
+                        <td style="text-align:right;">$94.660,12</td>
+                        <td style="text-align:right;">$344.698,60</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top:14px; font-size:8pt; color:#333333; text-align:justify;">
+                <strong>Certificación Actuarial:</strong> Los valores consignados en la presente planilla individual corresponden al cálculo matemático actuarial del pasivo laboral contingente conforme al método de la unidad de crédito proyectada, empleando las funciones biométricas vigentes en el país y observando los límites establecidos en la Resolución No. 07-2021 de la Corte Nacional de Justicia.
+            </div>
+
+            <div class="firma-container" style="margin-top:18px;">
+                <div class="firma-box" style="margin:0 auto; width:280px;">
+                    <strong>Sebastian Zambrano</strong><br>
+                    <span>Consultoría Actuarial</span><br>
+                    <span style="font-size:8pt; color:#555555;">Guayaquil, Ecuador</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="doc-footer">
+            <span>Sebastian Zambrano · Planilla Individualizada</span>
+            <span>Página 6</span>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+# ==========================================
+# Maestro .gitignore - Workspace ChatGPT
+# ==========================================
+
+# Ambientes virtuales de Python
+**/.venv/
+**/venv/
+**/env/
+**/ENV/
+**/env.bak/
+**/venv.bak/
+
+# Dependencias de Node.js
+**/node_modules/
+**/.pnp/
+**/.pnp.*
+**/.yarn/*
+!**/.yarn/patches
+!**/.yarn/plugins
+
+# Compilaciones y artefactos de Python / PyInstaller
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/build/
+**/dist/
+**/*.spec
+**/*.egg-info/
+**/.eggs/
+
+# Next.js, Webpack, Vercel y cachés web
+**/.next/
+**/.vinext/
+**/.nuxt/
+**/.turbo/
+**/.cache/
+**/.vercel/
+**/.wrangler/
+**/out/
+**/*.tsbuildinfo
+**/next-env.d.ts
+
+# Entornos y secretos locales
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.template
+
+# Bases de datos y logs locales
+**/*.sqlite3*
+**/*.sqlite
+**/*.db-journal
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# Archivos pesados / resultados temporales de Mx
+Mx/resultados/
+Mx/output/
+Mx/tmp/
+Mx/datos/
+Mx/entradas/
+Mx/adjuntos/
+Mx/entrega/*.zip
+Mx/entrega/MxCorreo_Windows_*
+Mx/entrega/Bases de correos reunidas*
+Mx/entrega/Solo bases con correos*
+Mx/correos.txt
+Mx/campana.json
+Mx/mensaje.txt
+Mx/mensaje.html
+Mx/exclusiones.txt
+
+# Archivos pesados / generados en nexo-inventario-python-backup
+nexo-inventario-python-backup/data/
+nexo-inventario-python-backup/datos-importados-windows/
+nexo-inventario-python-backup/entrega-linux/
+nexo-inventario-python-backup/dist/
+nexo-inventario-python-backup/build/
+
+# Backups locales de subrepositorios de Git
+_subrepos_git_backup/
+_git_backup/
+
+# Archivos del sistema operativo y editores
+.DS_Store
+Thumbs.db
+desktop.ini
+**/.vscode/
+**/.idea/

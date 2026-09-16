@@ -1,0 +1,9 @@
+Hola,
+
+Este es solo un borrador de demostración. Sustituye este contenido por el mensaje aprobado por la empresa.
+
+Puedes personalizarlo con ${nombre}, ${correo} y ${empresa} si utilizas un CSV con esas columnas.
+En una lista TXT, nombre y empresa quedan vacíos.
+
+Saludos,
+Equipo de la empresa

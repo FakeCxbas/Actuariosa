@@ -1,0 +1,5 @@
+persona@gmail.com
+persona@GMAIL.COM
+otra.persona@outlook.com
+correo-sin-arroba
+persona@example.com

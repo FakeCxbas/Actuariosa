@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio Actuarial Ejecutivo — RETAILPOINT DEL ECUADOR (2025-12-31)</title>
+    <style>
+        :root {
+            --navy: #0755ae;
+            --dark-navy: #102a5c;
+            --accent-blue: #0284c7;
+            --purple: #30286d;
+            --ink: #0f172a;
+            --muted: #64748b;
+            --light-muted: #94a3b8;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --border: #cbd5e1;
+            --success-bg: #dcfce7;
+            --success-text: #15803d;
+            --warning-bg: #fef3c7;
+            --warning-text: #b45309;
+            --danger-bg: #fee2e2;
+            --danger-text: #b91c1c;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            padding: 30px 15px;
+        }
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .top-banner {
+            background: #fffbeb;
+            border-bottom: 1px solid #fde68a;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: #92400e;
+            font-weight: 500;
+        }
+        .top-banner strong { color: #78350f; }
+        .btn-print {
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .btn-print:hover { background: var(--dark-navy); }
+        .header {
+            background: linear-gradient(135deg, #0755ae 0%, #1e3a8a 60%, #30286d 100%);
+            color: #ffffff;
+            padding: 45px 50px;
+            position: relative;
+        }
+        .brand-sub {
+            font-size: 13px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: #93c5fd;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .header h1 {
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+        .header-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            font-size: 14px;
+            color: #e2e8f0;
+            margin-top: 15px;
+        }
+        .header-meta span { display: flex; align-items: center; gap: 6px; }
+        .header-meta strong { color: #ffffff; }
+
+        .section {
+            padding: 35px 50px;
+            border-bottom: 1px solid var(--border);
+        }
+        .section:last-child { border-bottom: none; }
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark-navy);
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .badge-pill {
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 22px;
+            position: relative;
+            transition: transform 0.15s ease;
+        }
+        .card:hover { transform: translateY(-2px); }
+        .card.primary {
+            background: linear-gradient(145deg, #eff6ff, #dbeafe);
+            border-color: #93c5fd;
+        }
+        .card.primary .card-value { color: var(--navy); }
+        .card-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+        .card-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--ink);
+            line-height: 1.1;
+        }
+        .card-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-top: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            background: white;
+        }
+        th, td {
+            padding: 13px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.6px;
+        }
+        tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: #f8fafc; }
+        .text-right { text-align: right; }
+        .text-muted { color: var(--muted); }
+        .badge {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .badge-success { background: var(--success-bg); color: var(--success-text); }
+        .badge-warning { background: var(--warning-bg); color: var(--warning-text); }
+        .badge-neutral { background: #f1f5f9; color: #475569; }
+
+        .demography-bar {
+            background: #e2e8f0;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            margin: 15px 0 8px 0;
+        }
+        .demography-bar .female { background: #ec4899; width: 35.0%; }
+        .demography-bar .male { background: #3b82f6; width: 65.0%; }
+
+        .box-callout {
+            background: #f8fafc;
+            border-left: 4px solid var(--navy);
+            border-radius: 0 10px 10px 0;
+            padding: 18px 24px;
+            font-size: 13.5px;
+            color: #334155;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+        .signatures {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 40px 50px;
+            background: #fafafa;
+            border-top: 1px solid var(--border);
+        }
+        .sig-box {
+            border-top: 2px solid #94a3b8;
+            padding-top: 14px;
+            font-size: 13px;
+        }
+        .sig-box strong { font-size: 14px; color: var(--ink); }
+        .sig-box p { color: var(--muted); margin-top: 2px; }
+
+        @media print {
+            body { padding: 0; background: white; }
+            .container { box-shadow: none; border: none; border-radius: 0; }
+            .top-banner, .btn-print { display: none !important; }
+            .section { padding: 25px 0; page-break-inside: avoid; }
+            .header { padding: 30px 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-banner">
+            <div><strong>DOCUMENTO DE MUESTRA PARA REVISIÓN DIRECTIVA</strong> · Valoración actuarial generada para presentación ejecutiva</div>
+            <button class="btn-print" onclick="window.print()">Imprimir / Guardar en PDF</button>
+        </div>
+
+        <div class="header">
+            <div class="brand-sub">Actuariosa S.A. · Informes de Valoración Actuarial</div>
+            <h1>Estudio Actuarial de Jubilación Patronal y Desahucio</h1>
+            <div class="header-meta">
+                <span><strong>Empresa:</strong> RETAILPOINT DEL ECUADOR</span>
+                <span><strong>Fecha de Corte:</strong> 2025-12-31</span>
+                <span><strong>Norma Técnica:</strong> NIC 19 / NIIF para PYMES</span>
+                <span><strong>Ámbito:</strong> Ecuador</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <span>1. Resumen de Obligaciones y Provisiones Contables</span>
+                <span class="badge-pill">Cierre de Ejercicio Fiscal</span>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card primary">
+                    <div class="card-label">Obligación Total (NIC 19)</div>
+                    <div class="card-value">$764.857,63</div>
+                    <div class="card-sub">Pasivo Actuarial Consolidado</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Jubilación Patronal (Art. 216)</div>
+                    <div class="card-value">$718.299,76</div>
+                    <div class="card-sub">0 con derecho (&ge;25a) · 0 en período prop.</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Bonif. Desahucio (Art. 185)</div>
+                    <div class="card-value">$46.557,87</div>
+                    <div class="card-sub">20 (&lt;20a) : $46.557,87</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Activo Impuesto Diferido (25%)</div>
+                    <div class="card-value">$191.214,41</div>
+                    <div class="card-sub">Circular SRI NAC-23-00000006</div>
+                </div>
+            </div>
+
+            <div class="box-callout">
+                <strong>Fundamentación Técnica y Legal:</strong><br>
+                El cálculo se basa en el <em>Método de la Unidad de Crédito Proyectada (PUCM)</em> requerido por la NIC 19. Aplica la tasa de descuento oficial del <strong>4.0% anual</strong> establecida por la Comisión Interventora del IESS (Resolución CI. 141), los coeficientes de renta vitalicia del Código del Trabajo (Art. 218) y la jurisprudencia vinculante de la Corte Nacional de Justicia (Resolución 07-2021) que fija el tope de pensión patronal en la remuneración media del propio trabajador.
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <span>2. Composición Demográfica de la Nómina</span>
+                <span class="badge-pill">20 Colaboradores Evaluados</span>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-label">Edad Media</div>
+                    <div class="card-value">46.18 años</div>
+                    <div class="card-sub">Población activa</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Antigüedad Promedio</div>
+                    <div class="card-value">11.67 años</div>
+                    <div class="card-sub">Permanencia laboral acumulada</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Sueldo Promedio Mensual</div>
+                    <div class="card-value">$861,50</div>
+                    <div class="card-sub">Base de remuneración mensual</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Distribución de Género</div>
+                    <div class="card-value">35.0% F / 65.0% M</div>
+                    <div class="demography-bar">
+                        <div class="female" title="Mujeres: 7"></div>
+                        <div class="male" title="Hombres: 13"></div>
+                    </div>
+                    <div class="card-sub">7 mujeres · 13 hombres</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <span>3. Propuesta de Asiento Contable (Cierre Anual NIIF)</span>
+                <span class="badge-pill">Partida Doble Balance General</span>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cuenta Contable y Detalle de Registro</th>
+                            <th class="text-right">Debe (USD)</th>
+                            <th class="text-right">Haber (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr>
+            <td><strong>Gastos Generales por Beneficios a Empleados (Gasto No Deducible)</strong><br><small class="text-muted">Reconocimiento contable de la provisión acumulada del ejercicio (NIC 19)</small></td>
+            <td class="text-right">$764.857,63</td>
+            <td class="text-right">-</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Provisión por Jubilación Patronal (Pasivo a Largo Plazo)</strong><br><small class="text-muted">Obligación por beneficios definidos de jubilación patronal</small></td>
+            <td class="text-right">-</td>
+            <td class="text-right">$718.299,76</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Provisión por Bonificación por Desahucio (Pasivo a Largo Plazo)</strong><br><small class="text-muted">Obligación acumulada por desahucio</small></td>
+            <td class="text-right">-</td>
+            <td class="text-right">$46.557,87</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Activo por Impuestos Diferidos (25% según Circular SRI)</strong><br><small class="text-muted">Diferencia temporaria deducible en el momento del pago efectivo</small></td>
+            <td class="text-right">$191.214,41</td>
+            <td class="text-right">-</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Ingreso por Impuesto a la Renta Diferido (Resultados)</strong><br><small class="text-muted">Efecto tributario diferido en resultados</small></td>
+            <td class="text-right">-</td>
+            <td class="text-right">$191.214,41</td>
+        </tr>
+        
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="box-callout" style="border-left-color: #059669; background: #f0fdf4;">
+                <strong>Nota Contable y Tributaria:</strong> De conformidad con la Ley Orgánica de Desarrollo Económico y la Circular del SRI No. NAC-DGECCGC23-00000006, la provisión contable constituye un gasto no deducible del ejercicio que genera una <em>diferencia temporaria</em> recuperable como activo por impuesto diferido en el momento en que se efectúen los pagos de jubilación o desahucio.
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <span>4. Análisis de Sensibilidad Paramétrica (NIC 19.145)</span>
+                <span class="badge-pill">Escenarios de Estrés Financiero</span>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Escenario Evaluado</th>
+                            <th>Variación del Parámetro</th>
+                            <th class="text-right">Obligación Total Estimada</th>
+                            <th class="text-right">Impacto en Pasivo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Tasa de Descuento (Escenario Base: 4.0%)</strong></td>
+                            <td>Tasa disminuye en 0.5% (a 3.5%)</td>
+                            <td class="text-right">$804.630,23</td>
+                            <td class="text-right"><span class="badge badge-warning">+5.2%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tasa de Descuento</strong></td>
+                            <td>Tasa aumenta en 0.5% (a 4.5%)</td>
+                            <td class="text-right">$728.144,46</td>
+                            <td class="text-right"><span class="badge badge-success">-4.8%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Incremento Salarial (Escenario Base: 2.0%)</strong></td>
+                            <td>Sueldos aumentan 0.5% adicional</td>
+                            <td class="text-right">$799.276,22</td>
+                            <td class="text-right"><span class="badge badge-warning">+4.5%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Incremento Salarial</strong></td>
+                            <td>Sueldos aumentan 0.5% menos</td>
+                            <td class="text-right">$733.498,47</td>
+                            <td class="text-right"><span class="badge badge-success">-4.1%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <span>5. Detalle Individualizado de la Nómina</span>
+                <span class="badge-pill">Auditoría Empleado por Empleado</span>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Empleado / Cédula</th>
+                            <th>Género</th>
+                            <th>Edad</th>
+                            <th>Antigüedad</th>
+                            <th>Sueldo Mensual</th>
+                            <th>Pensión Est.</th>
+                            <th>Jubilación OBD</th>
+                            <th>Desahucio OBD</th>
+                            <th>Total Pasivo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr>
+            <td><strong>ANDRADE ESPINOZA MIGUEL ANGEL</strong><br><small class="text-muted">0930786421</small></td>
+            <td>M</td>
+            <td>35.34 años</td>
+            <td>11.75 años</td>
+            <td>$450,00</td>
+            <td>$585,00</td>
+            <td>$20.798,23<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$1.113,75</td>
+            <td><strong>$21.911,98</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>APRAES GUTIERREZ SHARON PAOLA</strong><br><small class="text-muted">0927219634</small></td>
+            <td>F</td>
+            <td>35.89 años</td>
+            <td>12.25 años</td>
+            <td>$650,00</td>
+            <td>$836,71</td>
+            <td>$31.634,38<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$1.755,00</td>
+            <td><strong>$33.389,38</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>CARTAGENA ORDOÑEZ MARCO ENRIQUE</strong><br><small class="text-muted">0919819649</small></td>
+            <td>M</td>
+            <td>44.68 años</td>
+            <td>13.42 años</td>
+            <td>$800,00</td>
+            <td>$1.006,28</td>
+            <td>$36.822,85<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$2.340,00</td>
+            <td><strong>$39.162,85</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>CASTRO CASTRO CARLOS ALBERTO</strong><br><small class="text-muted">0919005488</small></td>
+            <td>M</td>
+            <td>36.03 años</td>
+            <td>13.54 años</td>
+            <td>$500,00</td>
+            <td>$627,32</td>
+            <td>$30.652,42<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$1.462,50</td>
+            <td><strong>$32.114,92</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>CASTILLO MIRANDA CARLOS FRANCISCO</strong><br><small class="text-muted">0910715630</small></td>
+            <td>M</td>
+            <td>55.92 años</td>
+            <td>13.58 años</td>
+            <td>$2.880,00</td>
+            <td>$3.447,28</td>
+            <td>$109.612,90<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$8.424,00</td>
+            <td><strong>$118.036,90</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>CASTILLO MIRANDA ENRIQUE FABIAN</strong><br><small class="text-muted">0913589677</small></td>
+            <td>M</td>
+            <td>54.2 años</td>
+            <td>13.58 años</td>
+            <td>$1.950,00</td>
+            <td>$2.415,20</td>
+            <td>$62.993,22<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$5.703,75</td>
+            <td><strong>$68.696,97</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>CRUZ ALMEIDA CESAR ANTONIO</strong><br><small class="text-muted">0908952450</small></td>
+            <td>M</td>
+            <td>56.82 años</td>
+            <td>13.91 años</td>
+            <td>$1.470,00</td>
+            <td>$1.728,63</td>
+            <td>$62.368,40<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$4.361,98</td>
+            <td><strong>$66.730,38</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>ERREIZ DE LA A KARINA LISBETH</strong><br><small class="text-muted">0915231765</small></td>
+            <td>F</td>
+            <td>52.92 años</td>
+            <td>12.91 años</td>
+            <td>$790,00</td>
+            <td>$908,95</td>
+            <td>$48.009,08<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$2.222,39</td>
+            <td><strong>$50.231,46</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>FERNANDEZ VALDOSPINO CARLOS MIGUEL</strong><br><small class="text-muted">0801979535</small></td>
+            <td>M</td>
+            <td>49.85 años</td>
+            <td>8.25 años</td>
+            <td>$400,00</td>
+            <td>$539,97</td>
+            <td>$5.332,01<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$720,00</td>
+            <td><strong>$6.052,01</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>BENJAMIN ROBERTO HERRERO PEÑA</strong><br><small class="text-muted">0911029460</small></td>
+            <td>M</td>
+            <td>57.92 años</td>
+            <td>8.24 años</td>
+            <td>$400,00</td>
+            <td>$460,21</td>
+            <td>$14.547,48<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$720,00</td>
+            <td><strong>$15.267,48</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>GUACHAMIN CAÑAR BRAULIO RAFAEL</strong><br><small class="text-muted">1713731485</small></td>
+            <td>M</td>
+            <td>41.06 años</td>
+            <td>13.58 años</td>
+            <td>$590,00</td>
+            <td>$739,68</td>
+            <td>$31.861,69<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$1.725,75</td>
+            <td><strong>$33.587,44</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>MOLINA CHERO FERNANDO ANDRES</strong><br><small class="text-muted">0930784657</small></td>
+            <td>M</td>
+            <td>35.07 años</td>
+            <td>13.16 años</td>
+            <td>$450,00</td>
+            <td>$568,86</td>
+            <td>$26.400,29<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$1.316,25</td>
+            <td><strong>$27.716,54</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>MUÑOZ ZAMORA GARDENIA ELIZABETH</strong><br><small class="text-muted">0921225330</small></td>
+            <td>F</td>
+            <td>43.92 años</td>
+            <td>13.58 años</td>
+            <td>$1.500,00</td>
+            <td>$1.880,55</td>
+            <td>$71.851,92<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$4.387,50</td>
+            <td><strong>$76.239,42</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>PONCE MORALES DILIA YOLANDA</strong><br><small class="text-muted">0918796665</small></td>
+            <td>F</td>
+            <td>48.39 años</td>
+            <td>13.75 años</td>
+            <td>$750,00</td>
+            <td>$937,22</td>
+            <td>$30.814,58<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$2.193,75</td>
+            <td><strong>$33.008,33</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>ROSALES DELPEZO OSCAR JOSHUE</strong><br><small class="text-muted">0957523780</small></td>
+            <td>M</td>
+            <td>26.62 años</td>
+            <td>7.46 años</td>
+            <td>$400,00</td>
+            <td>$566,11</td>
+            <td>$7.842,35<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$630,00</td>
+            <td><strong>$8.472,35</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>ROUSSEAU ARTEAGA ERIKA JAHAIRA</strong><br><small class="text-muted">0922013545</small></td>
+            <td>F</td>
+            <td>44.11 años</td>
+            <td>7.08 años</td>
+            <td>$550,00</td>
+            <td>$753,31</td>
+            <td>$7.725,40<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$866,25</td>
+            <td><strong>$8.591,65</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>SOLA CHIGUANO DIEGO EFRAIN</strong><br><small class="text-muted">1718420191</small></td>
+            <td>M</td>
+            <td>40.45 años</td>
+            <td>8.82 años</td>
+            <td>$450,00</td>
+            <td>$619,94</td>
+            <td>$8.083,48<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$810,00</td>
+            <td><strong>$8.893,48</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>TRIANA CHIRIBOGA JESSENIA VANESSA</strong><br><small class="text-muted">0912422599</small></td>
+            <td>F</td>
+            <td>40.31 años</td>
+            <td>11.67 años</td>
+            <td>$600,00</td>
+            <td>$781,27</td>
+            <td>$23.548,99<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$1.485,00</td>
+            <td><strong>$25.033,99</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>VALDIVIESO ARMIJOS SANTIAGO</strong><br><small class="text-muted">0914735592</small></td>
+            <td>M</td>
+            <td>54.0 años</td>
+            <td>13.58 años</td>
+            <td>$900,00</td>
+            <td>$1.119,13</td>
+            <td>$28.998,89<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$2.632,50</td>
+            <td><strong>$31.631,39</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>GARDENIA NANCY ELIZABETH ZAMORA URQUIZA</strong><br><small class="text-muted">0906655634</small></td>
+            <td>F</td>
+            <td>70.02 años</td>
+            <td>9.25 años</td>
+            <td>$750,00</td>
+            <td>$750,00</td>
+            <td>$58.401,20<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$1.687,50</td>
+            <td><strong>$60.088,70</strong></td>
+        </tr>
+        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="signatures">
+            <div class="sig-box">
+                <strong>Actuariosa S.A. · Peritaje Actuarial</strong>
+                <p>Econ. Hugo Paredes Estrella · Consultor Actuarial</p>
+                <p>Reg. Superintendencia de Compañías: No. 1-014 SCVS</p>
+                <p>Reg. Superintendencia de Bancos: No. PEA-2007-005 SB</p>
+            </div>
+            <div class="sig-box">
+                <strong>Recepción de la Entidad Empleadora</strong>
+                <p>Representante Legal / Gerencia Financiera</p>
+                <p>RETAILPOINT DEL ECUADOR</p>
+                <p>Fecha de Entrega: 14 de September de 2026</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

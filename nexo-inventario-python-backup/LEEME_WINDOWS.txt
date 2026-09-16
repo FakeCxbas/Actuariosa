@@ -1,0 +1,51 @@
+NEXO INVENTARIO 0.1.0 — EDICIÓN LOCAL PARA WINDOWS
+
+1. Extrae la carpeta completa NexoInventario del ZIP.
+2. Abre NexoInventario.exe. No necesitas instalar Python ni Node.
+3. Se abrirá una pequeña ventana y la aplicación en tu navegador.
+4. Crea tu empresa o elige «Explorar una demostración».
+5. Mantén la ventana de Nexo abierta mientras trabajas. Puedes minimizarla.
+6. Al cerrar la ventana de Nexo se detiene el programa; los datos quedan guardados.
+
+Conserva la carpeta _internal junto al ejecutable.
+La aplicación no requiere Internet. Solo acepta conexiones del propio equipo.
+
+PRIMEROS PASOS
+- Crea una empresa con su nombre, sector y moneda.
+- Agrega productos con SKU único, categoría, unidad, mínimo, costo y precio.
+- Registra el stock inicial como Entrada en Movimientos.
+- Crea bodegas para sucursales, almacenes o áreas.
+- Usa Traslado para mover existencias entre bodegas.
+- Registra proveedores y crea órdenes de compra.
+- Confirma una recepción únicamente cuando recibas todos los productos.
+- Consulta Reportes para valoración y reposición.
+
+DATOS Y RESPALDOS
+Los datos se guardan fuera de la carpeta del programa:
+%LOCALAPPDATA%\NexoInventario\data\nexo.sqlite3
+
+Actualizar o mover el programa no borra esos datos.
+En Configuración, «Descargar respaldo» genera una copia completa de todas las empresas.
+Conserva los respaldos en otra ubicación y controla quién puede acceder a ellos.
+
+Para restaurar un respaldo:
+1. Cierra la ventana de Nexo y verifica que no quede otra instancia abierta.
+2. Copia toda la carpeta de datos actual a otra carpeta como respaldo previo.
+3. Aparta la carpeta data actual, conservándola, y crea una carpeta data vacía.
+4. Copia el respaldo en la nueva carpeta data y llámalo nexo.sqlite3.
+5. Abre Nexo y comprueba tus empresas, productos y movimientos.
+No mezcles un respaldo con archivos -wal o -shm de otra base de datos.
+
+ALCANCE DE ESTA VERSIÓN
+Base funcional para un operador en un equipo. Las empresas están separadas en
+los datos, pero todas son accesibles al usuario de este equipo. No hay cuentas,
+roles de empleados, acceso por Internet ni sincronización con otros dispositivos.
+
+Las categorías y unidades son configurables. Para una variante, usa otro SKU.
+No incluye lotes, vencimientos, números de serie, recetas, reservas, conversiones
+de unidades, facturación fiscal, POS ni valoración FIFO/promedio ponderado.
+La valoración usa el costo de referencia del catálogo; las compras no lo cambian.
+La importación CSV carga catálogo, no existencias, y no sobrescribe productos.
+
+Los datos de demostración pertenecen a una empresa independiente.
+Este paquete es una primera versión funcional para validar el producto.

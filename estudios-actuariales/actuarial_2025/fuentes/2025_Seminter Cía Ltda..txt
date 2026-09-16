@@ -1,0 +1,1468 @@
+
+--- PAGINA 1 ---
+                     SEGURIDAD MINERA INTERNACIONAL
+                                          SEMINTER C. LTDA.
+
+
+
+                                               PROVISIÓN POR
+
+
+
+                    JUBILACIÓN A CARGO DEL EMPLEADOR
+
+
+                                                                Y
+
+
+
+                            BONIFICACIÓN POR DESAHUCIO
+
+
+
+
+                                              ESTUDIO ACTUARIAL
+
+                                       AL 31 DE DICIEMBRE DE 2025
+
+
+
+
+
+                                                                                  Econ. Hugo Paredes Estrella
+                                                                                         Servicios Actuariales,
+                                                                                           Registro No. 1-014 SCVS
+                                                                                              Registro No. PEA-2007-005 SB
+
+
+
+
+
+                                                Quito, febrero de 2026
+
+--- PAGINA 2 ---
+INTRODUCCIÓN
+
+
+SEGURIDAD MINERA INTERNACIONAL “SEMINTER” C. LTDA., en adelante la “empresa”,
+fue constituida el 9 de noviembre de 1993, en la ciudad de Quito, Distrito Metropolitano.
+El plazo del contrato social es de (50) años, hasta el 9 de noviembre de 2043.
+
+El objeto social es la realización de actividades complementarias en vigilancia-seguridad,
+prestación de  servicios de  prevención del  delito,  vigilancia  y seguridad a  favor  de
+personas naturales o jurídicas, instalaciones y bienes.
+
+Para cumplir con las disposiciones de la ley en materia laboral, que exige a las entidades
+constituidas o establecidas en el país, determinen actuarialmente, el monto de las
+provisiones anuales que a la fecha de cálculo deben mantener para cubrir la eventual
+jubilación a cargo del empleador y la bonificación por desahucio, contrató la realización
+del presente estudio actuarial.
+
+Éste se halla elaborado en apego a los preceptos establecidos en el Código del Trabajo;
+Resolución No. 07      -2021    de la Corte Nacional de Justicia;           Ley Orgánica de Régimen
+Tributario  Interno;     Reglamento  para  la  aplicación  de  la  Ley  Orgánica  de  Régimen
+Tributario Interno    ; Ley Orgánica de Desarrollo Económico y Sustentabilidad Fiscal y su
+reglamento;     Acuerdos Ministeriales expedidos por la Cartera de Estado competente;
+normas internacionales de información financiera, NIIF, (NIC 19); y,  circulares del
+servicio de rentas internas.
+
+Los resultados del presente informe se sustentan en la información proporcionada por
+la empresa, la que es suficiente para la valoración de                los riesgos de las prestaciones
+laborales antes señaladas, pero la veracidad y calidad de la misma es de su absoluta
+responsabilidad.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- PAGINA 3 ---
+RESUMEN EJECUTIVO
+
+
+El rol de empleados activos bajo el Código del Trabajo está compuesto por cincuenta y
+ocho (58) personas. Cien menos de los existentes en el año pasado.
+
+La edad actual se encuentra entre         veintidós (22) y sesenta y un (61) años; la edad jubilar
+entre cuarenta y cuatro (44) y ochenta y un (81) años, para los empleados de menor y
+mayor edad, respectivamente.
+
+La permanencia como servidores de la empresa se halla entre                       un año     dos meses y
+diecisiete años     nueve meses, el promedio es de             siete  (7) años.    Dos   más que el año
+anterior.
+
+El sueldo medio es de        475   dólares mensuales, más alto que la remuneración básica
+unificada vigente en el año, y       3,7 por ciento mayor que el nivel mantenido en el 2024.
+
+La obligación financiera acumulada de la jubilación patronal es algo m                 enos de 381,0 mil
+dólares, mientras el monto de la provisión acumulada de aquella, aproximadamente los
+108,0   mil dólares. De acuerdo con la Ley Orgánica para el Desarrollo Económico y
+Sustentabilidad Fiscal vigente, la provisión total, ya no es deducible de la base imponible
+del impuesto a la renta, pero si objeto de impuesto diferido.
+
+La provisión global por desahucio calculada para el año entrante, es alrededor de                      51,1
+mil dólares. Esta provisión tampoco es deducible de dicha base imponible de acuerdo
+con la ley especificada en el párrafo anterior,             pero, así mismo, reconocida como un
+activo por impuesto diferido.
+
+No tiene ex empleados que estén en goce de la pensión de jubilación patronal.                     Los años
+de servicio de los trabajadores en ella, no llegan a reunir los requisitos legales para tener
+derecho a esta prestación social.
+
+Las cifras en unidades monetarias, se presentan en el apartado 7 de literal A de este
+estudio para la jubilación a cargo del empleador y, en el numeral 5 del literal B para la
+bonificación por desahucio.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- PAGINA 4 ---
+                             A.  JUBILACIÓN A CARGO DEL EMPLEADOR
+
+
+De conformidad con el Código del Trabajo, los empleados en relación de dependencia
+que por veinticinco (25) años o más hubieren prestados servicios, en forma continua o
+interrumpidamente,    tienen    derecho    a    ser    jubilados    por    los    empleadores,
+independientemente de la jubilación otorgada por el Instituto Ecuatoriano de Seguridad
+Social, IESS.
+
+Dicho Código dispone también que el o los empleados que hubieren cumplido veinte
+años y menos de veinticinco años de trabajo, continuada o interrumpidamente, y fueren
+despedidos intempestivamente por el empleador, adicionalmente a la indemnización
+por ese concepto, tienen derecho a la parte proporcional de la jubilación patronal
+
+Los cálculos de la pensión mensual vitalicia,          haber individual de jubilación,        valor actual
+actuarial del fondo global       y provisión anual      deben ser debidamente fundamentados,
+siguiendo las normas fijadas por el IESS para sus afiliados, respecto de los coeficientes,
+tiempo de servicio y edad.
+
+La pensión mensual de jubilación a cargo del empleador tiene como piso, el valor de
+treinta dólares de los Estados Unidos de América (US $ 30,00), si solamente el jubilado
+percibiría aquella, o veinte dólares de los Estados Unidos de América (US $ 20,00),                       si
+fuere beneficiario de doble jubilación. El techo, es el valor de la remu                 neración básica
+unificada medio del último año de activo en la empresa. Cualquier desviación en exceso
+o en defecto de esa banda, debe ser corregida para enmarcarse en tal rango.
+
+La pensión será pagada a partir de la fecha en que termina la relación laboral con el
+empleador y vence un año después del fallecimiento del causante, en cuyo lapso, los
+herederos legales tendrán derecho a recibir la pensión que percibía el trabajador o
+empleado.
+
+Como los empleados de la empresa se hallan afiliados al IESS, el fondo de reserva no
+forma parte del haber individual, habida cuenta que el empleador tiene derecho a
+rebajar de dicho haber, los valores que por tal concepto hubiese legalmente depositado
+en el IESS o entregado directamente al empleado o funcionario.
+
+Las pensiones de jubilación no están sujetas al pago de impuesto alguno.
+
+
+1.  BASE LEGAL
+
+
+La jubilación a cargo del empleador se sustenta en los artículos 216 al 219, inclusive, del
+Código del Trabajo. En esos artículos se determinan las condiciones, requisitos, límites
+inferior y superior de la pensión vitalicia mensual, y           manera de determinar la misma.
+
+
+
+
+
+
+--- PAGINA 5 ---
+La Corte Nacional de Justicia, mediante resolución No. 07-2021, de 30 de junio de 2021,
+dispone    declarar    como jurisprudencia vinculante el siguiente punto de derecho:                        “El
+artículo 216.2    (leerse 219.2) del Código del T       rabajo debe entenderse así: que la pensión
+jubilar  patronal  no  será  mayor  que  la  remuneración  básica  u                  nificada  media  del
+trabajador. P   ara este cálculo se debe considerar la remuneración mensual promedio del
+último año (sumado lo ganado en el año y dividido para doce) percibido por el trabajador
+y no el salario básico unificado del trabajador en general, vigente al momento de la
+terminación de la relación laboral”.
+
+El Código  del  Trabajo       en el  artículo  216,  numeral  3, establece  que  los adicionales
+determinados en la ley,       constituyen la décima tercera y décima cuarta               renta. La primera
+en mención, es el valor integro de una pensión mensual habida cuenta que se trata de
+una renta consta      nte; la segunda, el salario básico unificado             para los trabajadore       s en
+general, vigente en el año.
+
+La cobertura de la jubilación a cargo del empleador está asegurada por las provisiones
+que  vaya  formando  anualmente  la  empresa.  Representa  el  valor  actual  de  las
+obligaciones por prestaciones futuras a los empleados, deducido el valor real de los
+activos líquidos destinados a estas pensiones, ajustado por los beneficios y pérdidas
+actuariales no reconocidas.
+
+La  contrapartida  contable de  la prestación se  registrará  en  la  cuenta de  gasto  de
+personal del balance de resultados, tanto si corresponden a las pensiones en curso de
+formación como a las pensiones causadas, si las hubiere.
+
+Este tratamiento contable prescribe la NIIF 19.64, (NIC 19) y también los desgloses de
+información financiera acerca de los compromisos por pensiones u otros similares de los
+empleadores con los trabajadores y beneficiarios por su relación laboral.
+
+Dichos  compromisos  por  concepto  de  pensiones,  según  tales  normas  NIIF,  deben
+valorarse aplicando el método de unidad de crédito proyectada, que mide el valor actual
+de los futuros egresos de fondos estimados, descontados a la tasa de interés de los
+títulos  públicos  con  vencimientos  que  se  asemejen  a  los  plazos  de  los  pasivos
+jubilatorios.
+
+No obstante, el Ministerio del Trabajo, mediante Acuerdo Ministerial No. MDT                           -2018-
+0118 publicado en el Registro Oficial 263 de 15 de junio de 2018, modifica el Acuerdo
+Ministerial No. MDT       -2016-0099, publicado en el Registro Oficial 732 de 13 de abril de
+2016, en la parte relativa al cálculo del fondo global, al pago de la pensión por jubilación
+patronal mensual y al trámite para solicitar al Ministerio, asistencia técnica para el
+cálculo del valor de la pensión mensual o fondo global.
+
+En esencia, las vigentes disposiciones ministeriales establecen que la determinación de
+la pensión mensual sigue las reglas establecidas en el Código del Trabajo; en cambio, el
+fondo global, es regulado en cuanto a las variables que intervienen, tabla de c                  oeficientes
+y tasa de interés, sin salirse de la disposición del Código en cuanto a que el ex trabajador
+no podrá recibir una cantidad inferior al cincuenta por ciento (50%) del salario básico
+
+
+
+
+--- PAGINA 6 ---
+vigente al cese de sus funciones, multiplicado por los años de servicio, en cuyo caso se
+pagará ésta.
+
+Lo medular en la fórmala de cálculo tanto de la pensión mensual como del fondo global
+es:
+
+1.  El  retorno  a los  coeficientes  originales determinados  en  el  Código  del  Trabajo,
+    dejando a un lado los       deducidos de las tablas de mortalidad general del IESS, 2000,
+    hombres y mujeres, y
+2.  La sujeción a la tasa de interés         empleada en la determinación del valor actual del
+    coeficiente de renta, cuya tabla se halla inserta en el artículo 218 del Código del
+    Trabajo.
+
+Los dos acuerdos ministeriales nombrados anteriormente, no dicen nada respecto a la
+fórmula de cálculo de la provisión por jubilación patronal, pero se debe entender que
+dicha reserva matemática debe calcularse con los mismos parámetros establecidos para
+el pago de tales prestaciones,        esto es, remuneraciones        que intervienen, coeficientes de
+renta vitalicia utilizados y tasa      de interés para la actualizació       n del monto, a efectos de
+que exista consistencia entre el haber individual tota            l y el fondo global.
+
+En ese entendido, lo único que quedaría por determinar, para precisar la provisión, son
+las tasas de rotación por edades para obtener el valor actual actuarial de activos, lo cual
+conlleva a presuponer que se podría utilizar una de aquellas tablas que reflejen mejor el
+comportamiento de actividad de la población ecuatoriana.
+
+La Ley Orgánica de Régimen Tributario Interno, Capítulo IV, Depuración de los ingresos,
+Sección Primera, De las deducciones, artículo 10, Deducciones, numeral 13,                       preceptúa
+“los pagos efectuados por concepto de desahucio y de pensiones jubilares patronales,
+conforme a lo dispuesto en el Código del Trabajo, que no provengan de provisiones
+declaradas en ejercicios fiscales anteriores, como deducibles o no, para efectos de
+impuesto a la renta, sin perjuicio de la obligación del empleador de mantener los fondos
+necesarios  para  el  cumplimiento  de  su  obligación  de  pago  de  la  bonificación  por
+desahucio y de jubilación patronal”.
+
+La Ley Orgánica para el Desarrollo Económico y Sustentabilidad Fiscal, publicada en el
+Registro Oficial Suplemento No. 587 de 29 de noviembre de 2021, elimina el numeral 13
+del artículo 10 de la Ley de Régimen Tributario Interno. Por su parte, el Reglament                    o a la
+indicada ley, publicado en el Registro Oficial Segundo Suplemento No. 608 de 30 de
+diciembre de 2021, artículos 36 y 37, eliminan el literal f del numeral 1 del artículo 28 y
+el numeral 11 del artículo innumerado a continuación del artículo 28                    , del Reglamento
+para  la  aplicación  de  la  Ley  de  Régimen  Tributario  Interno.  En  ese  contexto,  las
+provisiones por jubilación patronal no son deducibles de la base imponible del impuesto
+a la renta ni da lugar a impuesto diferido.
+
+La circular No. NAC-DGECCGC23-00000006, suscrita por el Director General de Rentas
+Internas el 25 de julio de 2023, publicada en el Tercer Suplemento del Registro Oficial
+No. 365 de 1 de agosto de 2023, preceptúa que las provisiones para atender los pagos
+
+
+
+
+--- PAGINA 7 ---
+de  desahucio  y  de  pensiones  jubilares  deben  ser  consideradas  como  gastos  no
+deducibles en el ejercicio económico en que se registren contablemente, pero originan
+una diferencia temporaria que permite el reconocimiento de un activo por impuesto
+diferido.
+
+Este impuesto diferido podrá ser utilizado en el momento en que se produzca el pago
+de la jubilación patronal y/o desahucio.
+
+En cuanto al reverso de estas provisiones, incluso por no cumplirse las condiciones para
+el pago de la jubilación patronal o desahucio, los ingresos generados por tal reversión
+tendrán que ser considerados como gravados o no sujetos de impuesto a la renta en la
+misma proporción en que hubieren sido considerados como gastos deducibles o no en
+el ejercicio en que fueron provisionados.
+
+
+2.  CONTEXTO DEMOGRÁFICO
+
+
+La empresa tiene cincuenta y ocho (58) trabajadores activos regidos por el Código del
+Trabajo, de cuya nómina forma parte integrante uno de los accionistas.                      Respecto del
+año anterior, hay una reducción de cien trabajadores              .
+
+Tres  (3) de los empleados son del sexo femenino y                  cincuenta y cinco       (55) del sexo
+masculino.    No tiene empleados pasivos. El de mayor permanencia tiene menos de
+dieciocho (18) años de servicio, por esa razón, en condiciones normales, ninguno cuenta
+con los requisitos legales para tener derecho a esta prestación,                 pero la empresa tiene
+que ir acumulando, a través del tiempo, los recursos necesarios para cumplir con esa
+vigente obligación.     Los promedios demográficos           se detallan a continuación      :
+
+
+
+                              PROMEDIO DE EDADES Y TIEMPO DE SERVICIO
+                                                 Año 2025
+
+                                                                   PROMEDIO
+          Género             Número               Edad                 Edad               Tiempo
+                           empleados             actual               jubilar          servicio - años
+     COLECTIVO DE ACTIVOS
+     femenino                   3                  38                   60                   3
+     masculino                 55                  42                   60                   7
+     Total                     58                  42                   60                   7
+
+
+El cuadro anterior demuestra que          por el tiempo de servicio y los años en que la empresa
+se halla en marcha, el personal tiene una rotación relativamente                   alta. El promedio de
+permanencia se ubica en          siete (7) años.    Los empleados del sexo masculino              más que
+duplican el tiempo de servicio del personal           femenino.
+
+
+
+
+
+
+
+--- PAGINA 8 ---
+La edad actual promedio tiende a la madurez, se halla en cuarenta y dos (42) años. La
+edad jubilar para los dos sexos, es igual a la establecida por la seguridad social para los
+trabajadores en general, esto es sesenta (60) años.  El ingreso a la empresa es alrededor
+de los treinta y cinco (35) años de edad, en promedio.
+
+Dado el tiempo que falta para tener derecho a la prestación y la persistente fidelidad
+con la empresa que debe tener el personal actual y futuro, hace presumir que la
+probabilidad de la mayoría de empleados activos de jubilarse en ella                 , es todavía incierta
+y baja; pero puede irse incrementando cada año si los empleados permanecen afectos
+a la misma. Los resultados de esa contingencia se reflejan en la provisión                 .
+
+
+3.  REMUNERACIONES
+
+
+La política salarial va encaminada a ofrecer remuneraciones que estén acorde con los
+lineamientos en esta materia implementados por la empresa en función del grado de
+productividad, mirando las decisiones del gobierno sobre remuneración básica unificada
+y salario digno. Esa estrategia le permite          cumplir con las normas legales vigentes y a la
+vez tener garantía de rendimiento, eficiencia, eficacia,              productividad      y fidelidad   en el
+trabajo.
+
+Los salarios promedio       se pueden apreciar en el siguiente cuadro:
+
+
+                                    PROMEDIO DE REMUNERACIONES
+                                                 Año 2025
+
+                  COLECTIVO DE ACTIVOS
+                         Género             Número empleados             Promedio1
+                  femenino                           3                       476
+                  masculino                          55                      475
+                  Total                              58                      475
+                  1/ valores redondeados
+
+
+El nivel de salarios, en general, refleja el pago por actividades diferenciadas realizadas
+por ambos sexos, con cierto equilibrio en la remuneración general para mantener un
+ambiente de satisfacción por el nivel de compensación salarial para una misma labo                        r o
+trabajo.
+
+Como no existe una estrategia salarial predeterminada que permita vislumbrar a ciencia
+cierta la tendencia futura de esta variable, p          ara obrar con absoluta prudencia, en            este
+estudio se asumió que los sueldo         s crecerán durante el horizonte de tiempo previsto en
+la ley para esta prestación, en el tres por ciento (3,0%) anual, únicamente para el
+personal  que  tiene  una  remuneración  inferior  a  984  dólares  mensuales,  bajo  la
+consideración de que los sueldos y salar            ios de este segmento de trabajadores están
+influenciados por el nivel de la remuneración básica unificada que mira el crecimiento
+
+
+
+
+
+--- PAGINA 9 ---
+de  la  inflación  nacional,  y  por  ende,  dependen  directamente  de  su  margen  de
+variabilidad. Los sueldos y salarios de los demás trabajadores no tienen crecimiento en
+el tiempo bajo la hipótesis que los mismos están determinados en función de las
+actividades a desempeñar o de la productividad.
+
+
+4.  VALORACIÓN DE RIESGOS INVOLUCRADOS
+
+
+Para el cálculo del valor actual actuarial de las provisiones              relativas a esta prestación       se
+utilizan las siguientes funciones biométricas:
+
+    •    Tabla de coeficientes fijados por el IESS, que consta en el artículo 218 del Código
+         del Trabajo, para determinar el valor actual de la renta vitalicia unitaria anual a
+         edad de jubilación
+    •    Tablas de activos, hombres y mujeres, IESS 1995/2000, que contempla las tasas
+         de rotación y sirve       para calcular el valor actual actuarial de la renta vitalicia
+         unitaria anual a edad actual del colectivo de empleados que al momento del
+         cálculo tienen derecho en curso de formación.
+
+
+5.  HIPÓTESIS
+
+
+El  comportamiento  histórico  de  las  variables  macro  y  micro  económicas  del  país
+proyecta, en el mediano plazo, las siguientes tendencias:
+
+
+a. Interés técnico efectivo anual:            4,0 % de contra capitalización compuesta               (tasa de
+                                              interés    técnico con la cual se establecen los
+                                              valores de conmutación de la tabla de mortalidad
+                                              de activos)
+
+b. Tasa de interés financiero                  6,34 % (tasa pasiva referencial promedio del   año
+                                               2025, deducida de las tasas mensuales publicado
+                                               por el Banco Central del Ecuador).
+
+c. Inflación:                                        2.23 % anual promedio a largo plazo, bajo el
+                                              sistema monetario de dolarización
+
+d. Variación de sueldos:                       3,0% anual acumulativo constante para los
+                                               sueldos o salarios que no superen los 984 dólares
+                                               mensuales. Los sueldos más elevados,
+                                               permanecen constantes en el tiempo
+
+e. Variación de la remuneración
+     básica mínima unificada:                 2,90 % anual acumulativo constante
+
+
+
+
+--- PAGINA 10 ---
+La pensión jubilar patronal contemplada en la ley proyecta las siguientes características:
+
+
+f. Pensión jubilar a recibir:                   vitalicia, constante
+
+g. Valor de la pensión:                         igual o menor a la remuneración básica unificada
+                                                 media del último año, e igual o mayor a veinte
+                                                 dólares de los Estados Unidos de América (US    $
+                                                 20,00), por ser   el   colectivo    de    empleados,
+                                                 beneficiarios de doble jubilación.
+
+h. Periodicidad pago pensión:                   mensual, pre pagable.
+
+i. Número de pensiones en el
+     año:                                           doce (12) mensualidades.
+
+j. Adicionales de ley:
+
+   Décima tercera pensión:                      doceava parte de las pensiones que hubiere
+                                                percibido durante el año calendario (art. 111 del
+                                                Código del Trabajo).
+
+   Décima cuarta pensión:                       un salario básico unificado para los trabajadores
+                                                en general, vigente a la fecha de pago, (art. 113
+                                                del Código del Trabajo).
+
+k. Beneficio por muerte:                        pensión igual al que percibía el causahabiente
+                                                durante un año.
+
+
+
+6.  PROYECCIONES ACTUARIALES
+
+
+Renta constante, diferida, vitalicia, pre pagable, que empieza el mes siguiente a la fecha
+de jubilación y termina un año después del fallecimiento del trabajador en goce de
+pensión jubilar.
+
+El  coste  total  actualizado  o  valor  actual  actuarial  de  la  prestación  a  la  fecha  de
+valoración, equivalente a la provisión, es:
+
+
+COLECTIVO DE ACTIVOS:
+
+
+
+
+
+
+--- PAGINA 11 ---
+         VAAJxa  =  ( xj-xaEaaxa  .  VAAJxj )  +  PJ(12)xj
+
+
+siendo:
+
+
+VAAJxa  =          Valor actual actuarial de la prestación de jubilación, calculada a edad Xa
+
+xj  =              Edad de jubilación
+
+xa  =              Edad actual
+
+
+xj-xaEaaxa  =      Factor de actualización actuarial para un período xj-xa , referido a un
+                          activo activo de edad xa
+
+
+VAAJxj   =         Haber individual de jubilación en xj.
+
+PJ(12)xj  =        Pensión de jubilación mensual constante que se encuentra cobrando el
+                   beneficiario a la fecha de valoración
+
+
+
+7.   RESULTADOS
+
+
+7.1. VALOR ACTUAL DE LA OBLIGACIÓN FINANCIERA TOTAL
+
+
+
+                      OBLIGACIÓN FINANCIERA ACUMULADA JUBILACIÓN PATRONAL
+                                                   al 2025/12/31
+                             Tiempo de servicio                     Número               Valor
+                                                                   empleados            dólares
+                COLECTIVO DE ACTIVOS
+                Menor a 20 años                                         58            380,996.90
+                Igual o mayor a 20 años                                 0                0,00
+                Total                                                   58            380,996.90
+
+
+
+La obligación financiera total representa una proyección de los compromisos futuros en
+caso de que el personal actual se jubile en la empresa. Es el valor actual actuarial a la
+fecha de valoración, el cual, capitalizado a la tasa de interés correspondiente                         , permitirá
+acumular el monto necesario para satisfacer las exigencias legales en la materia.
+
+
+
+
+
+--- PAGINA 12 ---
+7.2. PROVISIÓN
+
+La valoración de la obligación financiera actuarial, efectuada en los términos descritos,
+corresponde a la responsabilidad prospectiva atribuible al tiempo futuro que falta hasta
+completar los veinticinco (25) años de servicio en la empresa.
+
+Como esa cifra hay que financiarla durante el lapso señalado en el párrafo anterior, el
+método actuarial determinado en la NIIF 19.64, es el denominado “unidad de crédito
+proyectada” según el cual, cada año de servicio se contempla como generador de una
+unidad adicional de derecho a los beneficios y, cada unidad se mide de manera separada
+para conformar la obligación final.
+
+Este método de prestaciones devengadas toma en cuenta la proyección del incremento
+salarial hasta la fecha de jubilación y acredita año a año una proporción de la prestación
+en  función del salario  final  a  dicha  fecha,  estimado  de  acuerdo  a  la hipótesis  de
+crecimiento adoptada.
+
+
+                                        (xa  - xy )              xa – xy ≤ 25
+         Bt  =   ProvJxa   --------------  ;
+                                       (xj  -  xy)         xj – xy = 25
+
+
+siendo:
+
+
+Bt  =  parte proporcional de la provisión ProvJx             a, en el año de valoración       t, acumulada
+           hasta el momento de la jubilación x       j
+
+Xy  =  edad de ingreso
+
+
+La aplicación de esa metodología a las prestaciones de la jubilación patronal da como
+resultado la provisión o coste normal anual, que llega a los siguientes montos en función
+del tiempo de servicio.
+
+
+                             PROVISIÓN ACUMULADA JUBILACIÓN PATRONAL
+                                                al 2025/12/31
+                            Tiempo de servicio                  Número              Valor
+                                                               empleados          dólares
+                COLECTIVO DE ACTIVOS
+                Menor a 20 años                                    58           107,991.63
+                Igual o mayor a 20 años                             0               0,00
+                Total                                              58           107,991.63
+
+
+
+
+--- PAGINA 13 ---
+El valor de la provisión que debe asentarse en libros es el que consta como total general.
+No podrá deducir de la base imponible sujeta al impuesto a la renta, el valor de ésta; sin
+embargo, tiene derecho a un impuesto diferido, por interpretación de las regulaciones
+existentes por parte del Director General de Rentas.
+
+
+                                JUBILACIÓN PATRONAL
+                                             año 2025
+
+
+
+
+
+
+
+
+                                                                               Menor a 10 años
+                            50%                    50%                         Entre 10 y 20 años
+
+
+
+
+
+
+
+
+El detalle de la provisión individual, consta en el Anexo adjunto a este informe.
+
+Si  la  empresa  cuenta  con activos  líquidos afectos a  esta  jubilación  con  los  cuales
+liquidaría directamente tales obligaciones, deberá deducirlas del monto de la provisión,
+caso contrario no.
+
+
+7.3.     PÉRDIDAS Y GANACIAS ACTUARIALES
+
+
+a.  Reconocidas por diferencias en bases actuariales
+
+Las pérdidas y ganancias actuariales a ser reconocidas contablemente, NIIF 19.92-93
+(tales  como  variaciones  que  se  produzcan  como  consecuencia  de  cambios  en  las
+hipótesis actuariales o diferencias entre los cálculos previos a base de dichas hipótesis y
+los sucesos efectivamente ocurridos, siempre que el importe neto al final del período
+contable inmediatamente anterior, exceda del 10% del valor actual de las obligaciones
+o de los activos afectos a este plan), normalmente se dan en pago de beneficios post
+empleo bajo el sistema de prestación definida que tiene como uno de sus componentes
+los aportes personales de los trabajadores; y, el fondo creado con ese y/u otros recursos
+provenientes de las partes involucradas y  se administren en forma legalmente  separada
+del peculio  de la empresa.
+
+
+
+
+
+
+--- PAGINA 14 ---
+En la jubilación patronal, el Código del Trabajo y el Ministerio respectivo han establecido
+los  lineamientos  bajo  los  cuales  se  otorgan  esta  prestación,  sin  que  haya  habido
+modificaciones radicales por parte de esta Cartera de Estado respecto de los perfiles
+actuariales concebidos en el Código, que hubieren producido diferencias sustanciales en
+el monto de la provisión en relación a la obtenida en el año pasado, básicamente porque
+no le corresponde hacerlo a esa cartera de estado sino a la Asamblea Constituyente,
+organismo que no ha tocado el tema. En esa virtud, en el presente año no existen ni
+pérdidas ni ganancias actuariales por cambios en las bases actuariales.
+
+b.  Reconocidas por cambios en hipótesis actuariales
+
+Las pérdidas y ganancias actuariales a ser reconocidas contablemente, NIIF 19.92                         -93,
+debido a cambios en hipótesis actuariales (tales como variación de la tasa de incremento
+de sueldos, salarios o remuneraciones, reducción de esos estipendios, estancamiento u
+oscilaciones  negativas  en  el  salarios  básico  unificado,  aumento  o  disminución  de
+beneficios  adicionales,  reducción de la plantilla  de  empleados o  trabajadores),   se
+producirían siempre que el importe neto al final del período contable inmediatamente
+anterior, exceda del 10% del valor actual de las obligaciones o de los activos afectos a
+este plan.
+
+
+7.4.     VARIACIÓN ANUAL DE LA PROVISIÓN
+
+
+
+                             Provisión jubilación patronal – período corriente
+     Año 2024                                    Año 2025                                  Variación anual
+     Provisión               Pagos            P y G Actuariales         Provisión
+     191,914.55               0,00               -117,532.02           107,991.63             33,609.10
+
+
+La empresa tiene provisionado el valor de 191.914,55                   dólares en el balance del año
+2024, la variación interanual será la diferencia de la provisión determinada para el año
+2025, menos la del año 2024 (incluyendo también los pagos de la prestación realizados
+en el año en curso y       -+ las pérdidas o ganancias a        ctuariales, si las hubieren), es decir,
+33.609,10 dólares.
+
+
+8.  CONCLUSIONES
+
+
+1.  El Código del Trabajo no hace distinción entre trabajadores y ejecutivos, lo que quiere
+     decir, que todos tienen derecho a la jubilación a cargo del empleador                        , excepto
+     accionistas, propietarios o dueños de compañías, en cualquiera de las posiciones
+     funcionales en que se encuentren, salvo que estén aportando a la seguridad social
+     como trabajadores de la empresa y sobre la base del sueldo de aportación. En ese
+     entendido, se calculó la provisión para el conjunto de personas con contrato laboral
+     registrado en el Ministerio del Trabajo.
+
+
+
+
+--- PAGINA 15 ---
+2.  El Código del Trabajo abre un abanico de alternativas para el pago de la pensión al
+    trabajador jubilado. La primera, a través del propio empleador; la segunda, por
+    medio del Instituto Ecuatoriano de Seguridad Social, IESS, siempre que el empleador
+    deposite el capital necesario para que éste le jubile por su cuenta, con pensión igual
+    a la pagable por el empleador; la tercera, entregar directamente al trabajador
+    jubilado,  el  capital  global  que  cubra  las  pensiones  mensuales  y  adicionales
+    determinados por la ley, a fin de que el mismo trabajador administre el fondo.
+
+    Si se elige la tercera opción,       el empleador deberá calcular el monto del fondo de
+    conformidad con lo establecido en el Acuerdo Ministerial No. MDT-2018-0118 de 29
+    de mayo de 2018, pero         el jubilado no podrá recibir por este concepto, una cantidad
+    inferior al cincuenta por ciento (50%) del sueldo, salario básico o remuneración
+    básica mínima unificada sectorial que correspondiere al puesto que ocupaba el
+    jubilado en la empresa al momento de               acogerse al beneficio, multiplicado por los
+    años de servicio.
+
+3.  La reserva matemática de esta jubilación debe calcularse cada año, a efectos de
+    actualizar los requerimientos monetarios en función del desenvolvimiento temporal
+    de las variables económicas y demográficas.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- PAGINA 16 ---
+                                 B.   BONIFICACIÓN POR DESAHUCIO
+
+
+El Capitulo X del Código de Trabajo reformado por la Ley Orgánica de justicia laboral y
+reconocimiento del trabajo en el hogar, publicada en el Tercer Suplemento del Registro
+Oficial 483 de 20 de abril de 2015, trata del desahucio, entendido como tal, el aviso con
+el que una de las partes hace saber a la otra que su voluntad es la de dar por terminado
+el contrato laboral.
+
+La  reforma  al  Código del  Trabajo  contemplada  en  dicha  ley,  también obliga a  los
+empleadores a pagar la bonificación por desahucio en todos los casos en los cuales la
+relación laboral termine “por acuerdo entre las partes”. Sin embargo, la Corte Nacional
+de Justicia (CNJ), en sentencia emitida el 29 de enero de 2025, determina que “El
+trabajador que haya decidido terminar su relación laboral por retiro voluntario con la
+finalidad  de  acogerse  a  los  beneficios  de  la  jubilación,  no  podrá  acogerse  a  la
+bonificación por desahucio contemplada en el inciso segundo del artículo 184 del Código
+del Trabajo, pues se estaría beneficiando dos veces por la terminación de la relación
+laboral”.
+
+Consecuentemente, la determinación de esta provisión guarda concordancia con los
+preceptos  legales  citados,  con  los  principios  técnicos  actuariales,  con  las  normas
+internacionales de información financiara, NIIF, (NIC 19) y con las disposiciones del
+organismo competente en materia laboral, por tratarse de una obligación legal, de
+efectuar pagos futuros por sucesos pasados atribuibles a servicios prestados.
+
+La bonificación por desahucio está exenta del impuesto a la renta, en la parte que no
+exceda a lo determinado en el Código del Trabajo.
+
+
+1.  BASE LEGAL
+
+
+El artículo 185 del Código del Trabajo       , reformado por la ley antes citada        , determina que
+en los casos de terminación laboral por desahucio solicitado por el empleador o por el
+trabajador, el empleador bonificará al trabajador con el veinticinco por ciento (25%) del
+equivalente a la última remuneración mensual por cada uno de lo                     s años de servicios
+prestados en la misma empresa o empleador               , excepto en el caso señalado por la Corte
+Nacional de Justicia el 29 de enero de 2025, antes descrito             .
+
+La Ley Orgánica de Régimen Tributario Interno, Capítulo IV, Depuración de los ingresos,
+Sección Primera, De las deducciones, artículo 10, Deducciones, numeral 13,                     preceptúa
+“los pagos efectuados por concepto de desahucio y de pensiones jubilares patronales,
+conforme a lo dispuesto en el Código del Trabajo, que no provengan de provisiones
+declaradas en ejercicios fiscales anteriores, como deducibles o no, para efectos de
+impuesto a la renta, sin perjuicio de la obligación del empleador de mantener los fondos
+necesarios  para  el  cumplimiento  de  su  obligación  de  pago  de  la  bonificación  por
+desahucio y de jubilación patronal”.
+
+
+
+
+--- PAGINA 17 ---
+La Ley Orgánica para el Desarrollo Económico y Sustentabilidad Fiscal, publicada en el
+Registro Oficial Suplemento No. 587 de 29 de noviembre de 2021, elimina el numeral 13
+del artículo 10 de la Ley de Régimen Tributario Interno. Por su parte, el Reglamento a la
+indicada ley, publicado en el Registro Oficial Segundo Suplemento No. 608 de 30 de
+diciembre de 2021, artículos 36 y 37, eliminan el literal f del numeral 1 del artículo 28 y
+el numeral 11 del artículo innumerado a continuación del artículo 28, del Reglamento
+para  la  aplicación  de  la  Ley  de  Régimen  Tributario  Interno.  En  ese  contexto,  las
+provisiones por desahucio no son deducibles de la base imponible del impuesto a la
+renta.
+
+La circular No. NAC-DGECCGC23-00000006, suscrita por el Director General de Rentas
+Internas el 25 de julio de 2023, publicada en el Tercer Suplemento del Registro Oficial
+No. 365 de 1 de agosto de 2023, preceptúa que las provisiones para atender los pagos
+de  desahucio  y  de  pensiones  jubilares  deben  ser  consideradas  como  gastos  no
+deducibles en el ejercicio económico en que se registren contablemente, pero originan
+una diferencia temporaria que permite el reconocimiento de un activo por impuesto
+diferido.
+
+Este impuesto diferido podrá ser utilizado en el momento en que se produzca el pago
+de la jubilación patronal y/o desahucio.
+
+En cuanto al reverso de estas provisiones, incluso por no cumplirse las condiciones para
+el pago de la jubilación patronal o desahucio, los ingresos generados por tal reversión
+tendrán que ser considerados como gravados o no sujetos de impuesto a la renta en la
+misma proporción en que hubieren sido considerados como gastos deducibles o no en
+el ejercicio en que fueron provisionados.
+
+
+2.  VALORACIÓN DE RIESGOS
+
+
+Para  el  cálculo  del  valor  actual  actuarial  de  las  provisiones  se  utiliza  la  fórmula
+determinado en el Código del Trabajo, aplicada a la totalidad del personal de la empresa
+que se encuentre laborando al final del ejercicio económico del año de valoración.
+
+
+3.  HIPÓTESIS
+
+
+La  tendencia  de  la  proyección  de  las  variables  que  influyen  en  el  cálculo  de  esta
+prestación social, serán las siguientes:
+
+
+a. Interés técnico efectivo anual:           4.0 % de contra capitalización compuesta (tasa de
+                                             de interés técnico para descontar a valor actual
+                                             la bonificación por desahucio), habida cuenta que
+
+
+
+
+--- PAGINA 18 ---
+                                              el país se halla inmerso en el sistema de
+                                              dolarización (moneda muy fuerte) y no puede
+                                              devaluar ni apreciar o depreciar dicha moneda.
+
+b. Tasa de interés financiero                  6,34 % (tasa pasiva referencial promedio del   año
+                                               2025, deducida de las tasas mensuales, publicado
+                                               por el Banco Central del Ecuador).
+
+
+c. Variación de sueldos:                       3,0 % anual acumulativo constante para los
+                                               sueldos o salarios que no superen los 984 dólares
+                                               mensuales. Los sueldos más elevados,
+                                               permanecen constantes en el tiempo
+
+d. Terminación de la relación
+     laboral:                                      uniformemente distribuida a lo largo del próximo
+                                              año y, por consiguiente, conclusión común
+                                              promedio de los contratos de trabajo en la mitad
+                                              de ese ejercicio.
+
+
+4.  FOMULACIÓN ACTUARIAL
+
+
+Como se trata de estimaciones anuales realizadas a fin de período o ejercicio económico
+anterior,  que  coincide  con  la  fecha  de  valoración  de  riesgos,  las                  proyecciones,
+corresponden al valor actual de dicha bonificación a pagar en el curso del año venidero.
+
+
+         VADxa  = (0,25 * Wxa * t(12))   *  1/2VAxa
+
+
+siendo:
+
+
+VADxa =           valor actual de la bonificación por         desahucio
+
+xa  =             edad actual
+
+Wxa =             última remuneración mensual
+
+t(12)     =       tiempo de servicio prestados al empleador
+
+1/2VAxa  =        factor financiero de actualización actuarial para un período xa - xa +1/2,
+
+
+
+
+
+--- PAGINA 19 ---
+                       referido a un activo activo de edad xa,  [ (1/1 + i)1/2 ]
+
+
+5.  RESULTADOS
+
+
+5.1. PROVISIÓN
+
+Como la Ley Orgánica para la justicia laboral y reconocimiento del trabajo en el hogar,
+eliminó el artículo 186 del Código del Trabajo, que establecía el número máximo de
+despidos en el mes y por ende en el año,              la provisión de la  bonificación por desahucio
+no está, entonces,  sujeta a tales limitaciones y, por lo tanto, el monto  de la misma,
+bajo el principio de       “suficiencia de provisiones”,         deberá computarse con la suma de
+todas las bonificaciones, habida cuenta que la administración de la empresa podría
+llegar a la terminación de la relación laboral , con el número de trabajadores que sea, o
+con la totalidad de ellos, solamente a condición de que haya  “acuerdo entre las partes”.
+
+La provisión     para esta prestación, bajo la hipótesis planteada, a contabilizarse en los
+balances, es:
+
+
+
+                        PROVISIÓN ACUMULADA BONIFICACIÓN POR DESAHUCIO
+                                                al 2025/12/31
+               COLECTIVO DE ACTIVOS
+                          Tiempo de servicio                   Número            Bonificación
+                                                             empleados             dólares
+               Menor a 20 años                                    58              51,136.06
+               Igual o mayor a 20 años                            0                  0,00
+               total                                              58              51,136.06
+
+
+De  conformidad  con  lo  dispuesto  en  la             Ley  Orgánica  de       Desarrollo  Económico  y
+Sustentabilidad Fiscal y su reglamento              , la empresa      no   podrá deducir,       a efectos de
+determinar  la base imponible  sujeta  al  impuesto  a  la  renta de  ingresos  de  fuente
+ecuatoriana     que no estén exentos,          el valor de esta provisión, pero se considerará un
+activo por impuesto diferido.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- PAGINA 20 ---
+                         PROVISIÓN BONIFICACIÓN DESAHUCIO
+                                                año 2025
+
+
+
+
+
+
+                                         23352.21                     27783.84
+
+
+
+
+
+
+
+
+
+
+                                    Menor a 10 años      Entre 10 y 20 años
+
+
+
+
+El detalle individual global de esta prestación, consta en el Anexo de este informe.
+
+
+5.2.     PÉRDIDAS Y GANANCIAS ACTUARIALES
+
+
+a.  Reconocidas por diferencias en bases actuariales
+
+Como las regulaciones de ley sobre el valor de la bonificación por desahucio no han
+variado, la repercusión en la provisión tiene una relación directamente proporcional, al
+número de empleados y tiempo de servicio, e inversamente proporcional a la tasa pasiva
+referencial; en consecuencia, en el presente año no existen ni pérdidas ni ganancias
+actuariales por este concepto.
+
+b.  Reconocidas por cambios en hipótesis actuariales
+
+Las pérdidas y ganancias actuariales a ser reconocidas contablemente, NIIF 19.92                        -93,
+debido a cambios en hipótesis actuariales, se producirían en casos en los cuales haya
+una reducción significativa de personal activo de la empresa, siempre que el importe
+neto al final del período contable inmediatamente anterior, exceda del 10% del valor
+actual de las obligaciones o de los activos afectos a este plan.
+
+
+5.3.      VARIACIÓN ANUAL
+
+
+                        Provisión bonificación por desahucio – período corriente
+      Año 2024                                   Año 2025                                 Variación anual
+      Provisión              Pagos          P y G Actuariales         Provisión
+      99,291.49            -58,362.46           -1,396.39             51,136.06              11,603.42
+
+
+
+
+--- PAGINA 21 ---
+La empresa tiene provisionado el valor de 99.291,49 dólares en el balance del año 2024,
+la variación anual será la diferencia de la provisión determinada para el año 2025, menos
+la del año 2024 (restando los pagos realizados en el año en curso y                           -+ las pérdidas o
+ganancias actuariales, si las hubieren), es            to es 11.603,42 dólares.
+
+
+6.  CONCLUSIONES
+
+
+1.  De acuerdo con las normas legales, la provisión para esta prestación debe calcularse
+   cada año, para         el conjunto total de empleados               , debido a la aleatoriedad de las
+   relaciones laborales respecto de altas y bajas; vinculación permanente o temporal; y,
+   tipo de remuneración, variables que pueden tener constante mutaciones durante el
+   plazo de duración de la empresa.
+
+2. Esta es una operación de tipo netamente financiera porque las escisiones de los
+   contratos laborales por voluntad de una de las partes, no están sujetas a sucesos
+   aleatorios contingentes, sino a variables objetivas y subjetivas.
+
+3.  Esta bonificación, en todo caso, está sujeta a la liquidación que ejecute el Inspector
+     del Trabajo del Ministerio correspondiente.
+
+
+DICTAMEN
+
+El  presente  estudio  actuarial  está  basado  en  los  datos  proporcionados  por  la
+administración de la empresa, los cuales se consideran suficientes y confiables.
+
+Las hipótesis planteadas reflejan fehacientemente el curso de las variables económicas
+y financieras que se vislumbran en el corto, mediano y largo plazo, en el país.
+
+La metodología obedece a principios actuariales generalmente aceptados en materia de
+beneficios post empleo y a los lineamientos expuestos por autoridad competente en
+leyes y acuerdos ministeriales expedidos para el efecto. En tal virtud, los métodos
+empleados son válidos, consistentes y reflejan el fiel cumplimiento de las normas legales
+vigentes.
+
+
+
+
+
+
+
+Profesional responsable                                          Hugo Paredes Estrella
+                                                              Servicios actuariales,
+                                                                                           Registro No. 1-014 SCVS
+                                                                                           Registro No. PEA-2007-005 SB
+
+
+
+
+--- PAGINA 22 ---
+                                                                                                                               ANEXO 1
+
+
+
+ JUBILACIÓN PATRONAL
+ al 31 de diciembre de 2025
+ Principales resultados de la aplicación NIIF (IAS19 R)
+ Valores en dólares
+
+                                                                                                                              Año 2024            Año 2025
+       A         Balance de situación
+       1         Obligaciones por beneficios definidos (OBD) al inicio del año                                                 235,078.01          191,914.55
+       2         Costo laboral por servicios actuales                                                                            66,433.72           21,441.72
+       3         Interés neto (costo financiero)                                                                                 18,876.76           12,167.38
+       4         Contribuciones de los partícipes al plan                                                                               0.00                0.00
+       5         Pérdida/ganancia actuarial por cambios en hipótesis actuariales                                                        0.00                0.00
+       6         Pérdida/ganancia actuarial por diferencias en bases actuariales                                              -128,473.94         -117,532.02
+       7         (Beneficios Pagados)                                                                                                   0.00                0.00
+       8         Transferencia de empleados desde/hacia otras empresas del grupo                                                        0.00                0.00
+       9         Efecto de reducciones y liquidaciones anticipadas                                                                      0.00                0.00
+      10         Obligación por beneficios definidos al final del año                                                          191,914.55          107,991.63
+      12         Costo de servicios pasados                                                                                             0.00                0.00
+      13         Pasivo (RESERVA) al final de año                                                                              191,914.55          107,991.63
+       B         Estado de resultados
+       a         Costo laboral por servicios actuales                                                                            66,433.72           21,441.72
+       b         Interés neto (costo financiero                                                                                  18,876.76           12,167.38
+       c         Servicio pasado total                                                                                                  0.00                0.00
+      16         Costo neto del período enero-diciembre                                                                          85,310.48           33,609.10
+       C         Conciliación del balance de situación
+      17         Pasivo (RESERVA) al inicio de año                                                                             235,078.01          191,914.55
+      18         Costo neto del período enero-diciembre                                                                          85,310.48           33,609.10
+      19         Pérdidas/ganancias reconocidas en el ORI                                                                     -128,473.94         -117,532.02
+      20         Contribuciones del empleador durante el año                                                                            0.00                0.00
+      21         (Beneficios pagados directamente por el empleador)                                                                     0.00                0.00
+      22         Transferencia de empleados desde/hacia otras empresas del grupo                                                        0.00                0.00
+      23         Ajuste a los libros contables locales                                                                                  0.00                0.00
+      24         Pasivo (RESERVA) al final de año                                                                              191,914.55          107,991.63
+ OTROS GESGLOSES NIIF
+       D         Costo laboral del período
+      41         Costo generado por los trabajadores con un TS < a 10 años                                                       40,382.07           10,737.79
+      42         Costo generado por los trabajadores con un TS ≥ a 10  < 20 años                                                 26,051.65           10,703.93
+      43         Costo generado por los trabajadores con un TS ≥  20 años                                                               0.00                0.00
+      44         Costo del período generado por los trabajadores                                                                 66,433.72           21,441.72
+ OTROS DESGLOSES
+       E         Hipótesis actuariales
+       a         Tasa de descuento actuarial                                                                                     4.00%              4.00%
+
+
+
+
+--- PAGINA 23 ---
+       b          Tasa de interés financiero                                                                                     8.03%               6.34%
+       c          Tasa de rendimiento de activos                                                                                   N/A                 N/A
+       d          Tasa de incremento salarial (incluye ascensos laborales)                                                       2.50%               3.00%
+       e          Tasa de inflación                                                                                              1.00%               2.23%
+       f          Tasa de variación de la remuneración básica mínima unificada                                                   2.20%               2.90%
+       g          Tasa de incremento de pensiones (en caso de tener jubilados)                                                   0.00%               0.00%
+                                                                                                                             Tabla activos       Tabla activos
+       h          Tasa de rotación (promedio)                                                                                  IESS-2001           IESS-2000
+                                                                                                                              Coeficientes        Coeficientes
+        i         Tasa de mortalidad e invalidez                                                                               C. Trabajo          C. Trabajo
+       F          Información demográfica comparativa
+       a          Número de trabajadores activos al final del año con derecho en formación                                         158                  58
+       b          Número de trabajadores activos con TS < 10 años                                                                  137                  44
+       c          Número de trabajadores activos con TS  ≥  10 <  20 años                                                           21                  14
+       d          Número de trabajadores activos con TS  ≥  20 años                                                                 0                   0
+       e          Número de jubilados                                                                                               0                   0
+       f          Número de ingresos hasta el final del período                                                                     0                   9
+       g          Número de salidas hasta el final del período                                                                     138                 109
+       h          Tiempo de servicio promedio de los trabajadores activos (años)                                                    5                   7
+        i          Edad actual promedio de los trabajadores activos (años)                                                          39                  42
+        j         Vida laboral promedio remanente (años)                                                                            20                  18
+       k          Ingreso mensual promedio de trabajadores activos (dólares)                                                       458                 475
+        l         Ingreso anual promedio de los trabajadores activos (sin décimos)                                                5,496               5,700
+       m          Pensión mensual promedio de jubilados (dólares)                                                                   0                   0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- PAGINA 24 ---
+                                                                                                                               ANEXO 2
+
+
+
+
+
+ BONIFICACIÓN POR DESAHUCIO
+ al 31 de diciembre de 2025
+ Principales resultados de la aplicación NIIF (IAS19 R)
+ Valores en dólares
+
+                                                                                                                       Año 2024        Año 2025
+       A         Balance de situación
+       1         Obligaciones por beneficios definidos (OBD) al inicio del año                                         124,447.80      99,291.49
+       2         Costo laboral por servicios actuales                                                                   32,863.28        7,158.43
+       3         Interés neto (costo financiero)                                                                          7,663.67       4,444.99
+       4         Contribuciones de los partícipes al plan                                                                      0.00           0.00
+       5         Pérdida/ganancia actuarial por cambios en hipótesis actuariales                                         -7,663.68      -1,396.39
+       6         Pérdida/ganancia actuarial por diferencias en bases actuariales                                               0.00           0.00
+                                                                                                                                                  -
+       7         (Beneficios Pagados)                                                                                  -58,019.58      58,362.46
+       8         Transferencia de empleados desde/hacia otras empresas del grupo                                               0.00           0.00
+       9         Efecto de reducciones y liquidaciones anticipadas                                                             0.00           0.00
+      10         Obligación por beneficios definidos al final del año                                                   99,291.49      51,136.06
+      12         Costo de servicios pasados                                                                                    0.00           0.00
+      13         Pasivo (RESERVA) al final de año                                                                       99,291.49      51,136.06
+       B         Estado de resultados
+       a         Costo laboral por servicios actuales                                                                   32,863.28        7,158.43
+       b         Interés neto (costo financiero                                                                           7,663.67       4,444.99
+       c         Servicio pasado total                                                                                         0.00           0.00
+      16         Costo neto del período enero-diciembre                                                                 40,526.95      11,603.42
+       C         Conciliación del balance de situación
+      17         Pasivo (RESERVA) al inicio de año                                                                     124,447.80      99,291.49
+      18         Costo neto del período enero-diciembre                                                                 40,526.95      11,603.42
+      19         Pérdidas/ganancias reconocidas en el ORI                                                                -7,663.68      -1,396.39
+      20         Contribuciones del empleador durante el año                                                                   0.00           0.00
+                                                                                                                                                  -
+      21         (Beneficios pagados directamente por el empleador)                                                    -58,019.58      58,362.46
+      22         Transferencia de empleados desde/hacia otras empresas del grupo                                               0.00           0.00
+      23         Ajuste a los libros contables locales                                                                         0.00           0.00
+      24         Pasivo (RESERVA) al final de año                                                                       99,291.49      51,136.06
+ OTROS DESGLOSES NIIF
+       D         Costo laboral del período
+      41         Costo generado por los trabajadores con un TS  < a 10 años                                             21,941.46        3,889.40
+      42         Costo generado por los trabajadores con un TS  ≥ a 10  < 20 años                                       10,921.82        3,269.03
+      43         Costo generado por los trabajadores con un TS  ≥ 20 años                                                      0.00           0.00
+      44         Costo del período generado por los trabajadores                                                        32,863.28        7,158.43
+
+
+
+
+--- PAGINA 25 ---
+ OTROS DESGLOSES
+       E         Hipótesis actuariales
+       a         Tasa de descuento actuarial                                                                               4.00%           4.00%
+       b         Tasa de interés financiero                                                                                8.03%           6.34%
+       c         Tasa de rendimiento de activos                                                                              N/A             N/A
+       d         Tasa de incremento salarial (incluye ascensos laborales)                                                  2.50%           3.00%
+       e         Tasa de inflación                                                                                         1.00%           2.23%
+       F         Información demográfica comparativa
+       a         Número de trabajadores activos al final del año con derecho adquirido                                       158             58
+       b         Número de ingresos hasta el final del período                                                                0               9
+       c         Número de salidas hasta el final del período                                                                138             109
+       d         Tiempo de servicio promedio de los trabajadores activos (años)                                               5               7
+       e         Edad actual promedio de los trabajadores activos (años)                                                      39             42
+       f         Ingreso mensual promedio de los trabajadores activos (dólares)                                              458             475
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- PAGINA 26 ---
+                                                                                                              ANEXO 3
+
+
+
+
+                                              IMPUESTO DIFERIDO
+                                                      en dólares
+                                          al 31 de diciembre de 2025
+
+
+
+                           JUBILAIÓN PATRONAL
+                           Costo laboral por servicios actuales                      21,441.72
+                           Interés neto                                              12,167.38
+                           Costo neto del período ene-dic/2025                     33,609.10
+                           Tasa impositiva (25%)
+                           IMPUESTO DIFERIDO                                         8,402.28
+
+                           BONIFICAIÓN POR DESAHUCIO
+                           Costo laboral por servicios actuales                       7,158.43
+                           Interés neto                                               4,444.99
+                           Costo neto del período ene-dic/2025                     11,603.42
+                           Tasa impositiva (25%)
+                           IMPUESTO DIFERIDO                                         2,900.86
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- PAGINA 27 ---
+                                                                                                              ANEXO 4
+
+
+
+
+                                            PROVISIÓN INDIVIDUAL
+                                                      en dólares
+                                          al 31 de diciembre de 2025
+
+
+Personal de nómina:
+
+
+                                                                Tiempo           Provisión        Provisión
+                              Nombre                             servicio       jubilación       bonificación
+                                                                 aa.mm           patronal         desahucio
+
+          Menendez Macias Ángel David                             1.02            227.24            199.00
+          Lema Villamar Johanna Alexandra                         1.06            231.48            240.78
+          Anchundia Mantuano Nexar Adrián                         1.06            270.32            238.80
+          Cedeño Vinces Mauro Adonis                              1.06            274.55            238.80
+          García Mendoza José Homero                              1.06            229.26            238.80
+          Reyes Maruri Marlon José                                1.06            214.39            240.78
+          Frank Villavicencio Steven Gerardo                      1.09            544.87            268.64
+          Cabrera Ordoñez Andrés Alejandro                        1.11            544.87            288.54
+          Echeverria Tamayo Juan Carlos                           2.00            503.18            298.49
+          Calle Chancay Johnny Enrique                            2.05            469.76            348.24
+          Pazmiño Zambrano Jhonny Gabriel                         2.05            383.00            348.24
+          Sánchez Juan Moises                                     3.00            716.77            417.89
+          Vera Veas Ángelo Humberto                               3.01            646.79            427.84
+          Ordoñez Malla Edwin Nino                                3.03            708.97            447.74
+          Atre Ojeda Brayam Anthony                               3.04            888.58            457.69
+          Balseca Jiménez Martha Susana                           3.05            704.66            467.64
+          Quezada Urrego Braulio David                            3.07            916.64            487.54
+          Conforme Mantuano Carmelo Olmedo                        3.09            932.95            507.44
+          Muñiz Pibaque Oswaldo Víctor                            4.00            835.86            537.29
+          Sarango Calderon Jhon Alexis                            4.00            1142.73           537.29
+          Tamayo Maridueña Nelson Eduardo                         4.00            968.61            537.29
+          Cuenca Cuenca Hipolito Vinicio                          4.03            899.91            567.14
+          Martillo Haz Ernesto Darwin                             5.03            1719.58           686.54
+          Chiriboga Mafla Alex Enrique                            5.04            1131.83           696.49
+          Mantuano Farias Robinson Adan                           5.04            1463.13           696.49
+          Zambrano Dominguez Gladys Nathaly                       5.05            1420.18           706.44
+          Posligua Bravo Juan Javier                              5.05            1111.33           706.44
+          Delgado Quijije Alejandro Miguel                        5.07            1470.55           726.34
+          Echeverria Tamayo Martin Johao                          5.11            1906.26           766.14
+          Ibarra Pinargote Ángel Eduardo                          6.05            1341.76           825.83
+          Cedeño Sánchez Johnny Stalin                            6.08            1956.83           855.68
+          Loor Laaz Luis Adrián                                   6.08            1599.36           855.68
+          Ceballo Cedeño Jairo Eudoro                             6.09            1989.21           865.63
+          Cumbicus Ramírez Julio Cesar                            6.09            1956.83           865.63
+          Santillan Ochoa Iván Enrique                            7.02            2053.43           915.38
+          Sánchez Cesar Alcides                                   7.07            1985.07           965.13
+
+
+
+--- PAGINA 28 ---
+          Castro Alomoto Eduardo Rodrigo                           7.10           2253.76            994.98
+          Toaquiza Orozco Hennry Bolivar                           7.11           2329.98           1004.93
+          Carabajo Sinchi Jorge Anibal                             8.00           1969.06           1014.88
+          Cantos Baque Tyrone Eduardo                              8.01           2517.97           1024.83
+          Quimis Plua John Eduardo                                 8.01           2292.06           1024.83
+          Macias Macias Anibal Querubin                            8.06           1879.47           1074.58
+          Zamora Cabrera Ramon Toribio                             8.06           1969.06           1074.58
+          Ponce Morrillo José Humberto                             8.08           2508.98           1094.48
+          Román Zambrano José Geovanny                            10.04           2335.61           1293.48
+          Zea Calderon Carlos Leonel                              10.07           2994.27           1323.33
+          Orozco Calderon Francisco Efrain                        11.05           2791.55           1422.82
+          Vinces Villafuerte Lorenzo Teodoro                      11.06           2538.50           1432.77
+          Cedeño Barre Roberth Alberto                            12.02           3005.45           1512.37
+          Vinocunga Pilataxi Carlos Alberto                       12.10           3341.52           1591.97
+          Bravo Vera Julio Cesar                                  13.02           4354.19           1631.77
+          Macias Mendoza Darwin Fernando                          13.02           3588.63           1631.77
+          Rivadeneira Posligua Alexi Adrián                       13.02           4001.70           1631.77
+          Frank Benavidez Hugo Eduardo                            13.09           3760.24           1701.42
+          Echanique Quinde Luis Alberto                           15.04           5112.62           1890.46
+          Teran Sevilla Fernando Javier                           16.01           5498.57           1980.01
+          Acosta Murillo Nelson Alex                              17.04           5115.30           2129.26
+          Guerrero Bone Washington Blas                           17.09           5472.40           2179.01
+                                Total                                            107991.63         51136.06
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

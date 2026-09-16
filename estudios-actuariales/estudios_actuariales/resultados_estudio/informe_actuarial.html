@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio Actuarial — Cooperativa Magisterio Manabita Ltda. (2025-12-31)</title>
+    <style>
+        :root {
+            --navy: #0755ae;
+            --dark-navy: #123b76;
+            --purple: #30286d;
+            --ink: #18233b;
+            --muted: #64748b;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --success-bg: #ecfdf5;
+            --success-text: #065f46;
+            --warning-bg: #fffbeb;
+            --warning-text: #92400e;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--ink);
+            line-height: 1.5;
+            padding: 30px 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--purple) 100%);
+            color: var(--white);
+            padding: 40px;
+        }
+        .header h1 { font-size: 26px; margin-bottom: 6px; font-weight: 700; }
+        .header p { font-size: 15px; opacity: 0.9; }
+        .section { padding: 30px 40px; border-bottom: 1px solid var(--border); }
+        .section:last-child { border-bottom: none; }
+        .section-title {
+            font-size: 18px;
+            color: var(--dark-navy);
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+        }
+        .card-label { font-size: 13px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+        .card-value { font-size: 22px; font-weight: 700; color: var(--ink); }
+        .card-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+        .card.highlight {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+        }
+        .card.highlight .card-value { color: var(--navy); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 12px;
+        }
+        th, td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: var(--bg);
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+        .text-right { text-align: right; }
+        .text-muted { color: var(--muted); }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-success { background: var(--success-bg); color: var(--success-text); }
+        .badge-warning { background: var(--warning-bg); color: var(--warning-text); }
+        .badge-neutral { background: #f1f5f9; color: #475569; }
+        .legal-box {
+            background: #fafafa;
+            border-left: 4px solid var(--navy);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 13px;
+            color: #334155;
+            margin-top: 16px;
+        }
+        .print-footer {
+            padding: 20px 40px;
+            background: #f8fafc;
+            color: var(--muted);
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        @media print {
+            body { padding: 0; background: white; }
+            .container { box-shadow: none; border: none; border-radius: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <p>ACTUARIOSA S.A. · SERVICIOS ACTUARIALES</p>
+            <h1>Estudio Actuarial de Jubilación Patronal y Desahucio</h1>
+            <p><strong>Entidad:</strong> Cooperativa Magisterio Manabita Ltda. &nbsp;|&nbsp; <strong>Fecha de Valoración:</strong> 2025-12-31 &nbsp;|&nbsp; <strong>Normativa:</strong> NIC 19 / NIIF</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">1. Resumen de la Provisión Actuarial (Cierre de Balance)</h2>
+            <div class="cards-grid">
+                <div class="card highlight">
+                    <div class="card-label">Provisión Total NIC 19</div>
+                    <div class="card-value">$1.464.624,40</div>
+                    <div class="card-sub">Obligación Pasivo Total</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Jubilación Patronal (Art. 216)</div>
+                    <div class="card-value">$1.392.879,17</div>
+                    <div class="card-sub">4 con derecho adquirido</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Bonif. Desahucio (Art. 185)</div>
+                    <div class="card-value">$71.745,23</div>
+                    <div class="card-sub">11 &lt;20a · 7 &ge;20a</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Activo Impuesto Diferido (25%)</div>
+                    <div class="card-value">$366.156,10</div>
+                    <div class="card-sub">Circular SRI NAC-23-00000006</div>
+                </div>
+            </div>
+
+            <div class="legal-box">
+                <strong>Marco Técnico y Legal:</strong> Valoración realizada bajo el <em>Método de la Unidad de Crédito Proyectada (PUCM)</em> según NIC 19. Tasa técnica de descuento del 4.0% anual oficial del IESS (Resolución CI. 141), coeficientes de renta vitalicia del Código del Trabajo (Art. 218) y límite jurisprudencial de la Corte Nacional de Justicia (Resolución 07-2021).
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">2. Demografía del Personal Activo</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-label">Nómina Evaluada</div>
+                    <div class="card-value">18</div>
+                    <div class="card-sub">14 Mujeres · 4 Hombres</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Edad Promedio</div>
+                    <div class="card-value">43.07 años</div>
+                    <div class="card-sub">Población activa</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Antigüedad Promedio</div>
+                    <div class="card-value">15.58 años</div>
+                    <div class="card-sub">Permanencia laboral</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Sueldo Promedio Mensual</div>
+                    <div class="card-value">$884,44</div>
+                    <div class="card-sub">Remuneración computable</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">3. Propuesta de Registro Contable (Asiento Cierre de Ejercicio)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cuenta Contable y Detalle</th>
+                        <th class="text-right">Debe (USD)</th>
+                        <th class="text-right">Haber (USD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+        <tr>
+            <td><strong>Gastos Generales por Beneficios a Empleados (Gasto No Deducible)</strong><br><small class="text-muted">Reconocimiento contable de la provisión acumulada del ejercicio (NIC 19)</small></td>
+            <td class="text-right">$1.464.624,40</td>
+            <td class="text-right">-</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Provisión por Jubilación Patronal (Pasivo a Largo Plazo)</strong><br><small class="text-muted">Obligación por beneficios definidos de jubilación patronal</small></td>
+            <td class="text-right">-</td>
+            <td class="text-right">$1.392.879,17</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Provisión por Bonificación por Desahucio (Pasivo a Largo Plazo)</strong><br><small class="text-muted">Obligación acumulada por desahucio</small></td>
+            <td class="text-right">-</td>
+            <td class="text-right">$71.745,23</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Activo por Impuestos Diferidos (25% según Circular SRI)</strong><br><small class="text-muted">Diferencia temporaria deducible en el momento del pago efectivo</small></td>
+            <td class="text-right">$366.156,10</td>
+            <td class="text-right">-</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Ingreso por Impuesto a la Renta Diferido (Resultados)</strong><br><small class="text-muted">Efecto tributario diferido en resultados</small></td>
+            <td class="text-right">-</td>
+            <td class="text-right">$366.156,10</td>
+        </tr>
+        
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">4. Detalle Individual de la Provisión Actuarial</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Empleado</th>
+                        <th>Sexo</th>
+                        <th>Edad</th>
+                        <th>Antigüedad</th>
+                        <th>Sueldo</th>
+                        <th>Pensión Est.</th>
+                        <th>Jubilación OBD</th>
+                        <th>Desahucio OBD</th>
+                        <th>Total OBD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+        <tr>
+            <td><strong>Martha Delgado Mendoza</strong><br><small class="text-muted">1304567890</small></td>
+            <td>F</td>
+            <td>59.72 años</td>
+            <td>41.25 años</td>
+            <td>$1.450,00</td>
+            <td>$1.450,00</td>
+            <td>$198.699,90<br><span class="badge badge-success">Adquirido (>=25a)</span></td>
+            <td>$14.862,50</td>
+            <td><strong>$213.562,40</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Gloria Loor Zambrano</strong><br><small class="text-muted">1308765432</small></td>
+            <td>F</td>
+            <td>57.35 años</td>
+            <td>34.8 años</td>
+            <td>$1.280,00</td>
+            <td>$1.280,00</td>
+            <td>$198.873,00<br><span class="badge badge-success">Adquirido (>=25a)</span></td>
+            <td>$10.880,00</td>
+            <td><strong>$209.753,00</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Rosa Cedeño Macías</strong><br><small class="text-muted">1309876543</small></td>
+            <td>F</td>
+            <td>55.16 años</td>
+            <td>29.91 años</td>
+            <td>$1.150,00</td>
+            <td>$1.150,00</td>
+            <td>$192.316,80<br><span class="badge badge-success">Adquirido (>=25a)</span></td>
+            <td>$8.337,50</td>
+            <td><strong>$200.654,30</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Carlos Moreira Vélez</strong><br><small class="text-muted">1305432198</small></td>
+            <td>M</td>
+            <td>60.95 años</td>
+            <td>27.46 años</td>
+            <td>$1.300,00</td>
+            <td>$1.300,00</td>
+            <td>$170.648,80<br><span class="badge badge-success">Adquirido (>=25a)</span></td>
+            <td>$8.775,00</td>
+            <td><strong>$179.423,80</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Patricia Barberán Párraga</strong><br><small class="text-muted">1306549871</small></td>
+            <td>F</td>
+            <td>52.59 años</td>
+            <td>24.33 años</td>
+            <td>$980,00</td>
+            <td>$993,06</td>
+            <td>$167.327,17<br><span class="badge badge-warning">Proporcional (20-24a)</span></td>
+            <td>$5.884,26</td>
+            <td><strong>$173.211,42</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Lucía Álava Pico</strong><br><small class="text-muted">1307654321</small></td>
+            <td>F</td>
+            <td>50.3 años</td>
+            <td>22.71 años</td>
+            <td>$1.020,00</td>
+            <td>$1.067,25</td>
+            <td>$154.634,42<br><span class="badge badge-warning">Proporcional (20-24a)</span></td>
+            <td>$5.540,31</td>
+            <td><strong>$160.174,73</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Mariana Intriago Solórzano</strong><br><small class="text-muted">1308901234</small></td>
+            <td>F</td>
+            <td>48.06 años</td>
+            <td>20.97 años</td>
+            <td>$950,00</td>
+            <td>$1.028,88</td>
+            <td>$130.192,34<br><span class="badge badge-warning">Proporcional (20-24a)</span></td>
+            <td>$4.606,09</td>
+            <td><strong>$134.798,43</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Jorge Zambrano Vera</strong><br><small class="text-muted">1301239874</small></td>
+            <td>M</td>
+            <td>46.53 años</td>
+            <td>15.67 años</td>
+            <td>$890,00</td>
+            <td>$1.070,63</td>
+            <td>$62.421,10<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$3.003,75</td>
+            <td><strong>$65.424,85</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Carmen Bailón Mero</strong><br><small class="text-muted">1302345678</small></td>
+            <td>F</td>
+            <td>43.79 años</td>
+            <td>13.38 años</td>
+            <td>$850,00</td>
+            <td>$1.069,98</td>
+            <td>$40.204,58<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$2.486,25</td>
+            <td><strong>$42.690,83</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Teresa Quijije Lucas</strong><br><small class="text-muted">1303456789</small></td>
+            <td>F</td>
+            <td>41.24 años</td>
+            <td>11.91 años</td>
+            <td>$820,00</td>
+            <td>$1.062,60</td>
+            <td>$32.917,35<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$2.029,50</td>
+            <td><strong>$34.946,85</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Diana Anchundia Reyes</strong><br><small class="text-muted">1304561234</small></td>
+            <td>F</td>
+            <td>39.43 años</td>
+            <td>9.54 años</td>
+            <td>$780,00</td>
+            <td>$1.059,30</td>
+            <td>$16.736,99<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$1.579,50</td>
+            <td><strong>$18.316,49</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Manuel Chiquito Palma</strong><br><small class="text-muted">1305672345</small></td>
+            <td>M</td>
+            <td>37.05 años</td>
+            <td>7.97 años</td>
+            <td>$750,00</td>
+            <td>$1.050,75</td>
+            <td>$12.427,95<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$1.181,25</td>
+            <td><strong>$13.609,20</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Verónica Holguín Castro</strong><br><small class="text-muted">1306783456</small></td>
+            <td>F</td>
+            <td>35.75 años</td>
+            <td>6.33 años</td>
+            <td>$720,00</td>
+            <td>$1.042,02</td>
+            <td>$8.441,33<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$972,00</td>
+            <td><strong>$9.413,33</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Sandra Pincay Pin</strong><br><small class="text-muted">1307894567</small></td>
+            <td>F</td>
+            <td>33.37 años</td>
+            <td>4.8 años</td>
+            <td>$680,00</td>
+            <td>$1.014,52</td>
+            <td>$2.835,41<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$612,00</td>
+            <td><strong>$3.447,41</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Elena Bravo García</strong><br><small class="text-muted">1308905678</small></td>
+            <td>F</td>
+            <td>31.84 años</td>
+            <td>3.5 años</td>
+            <td>$650,00</td>
+            <td>$994,95</td>
+            <td>$1.786,90<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$438,75</td>
+            <td><strong>$2.225,65</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Víctor Hugo Mero</strong><br><small class="text-muted">1309016789</small></td>
+            <td>M</td>
+            <td>29.14 años</td>
+            <td>2.63 años</td>
+            <td>$600,00</td>
+            <td>$934,39</td>
+            <td>$1.169,09<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$270,00</td>
+            <td><strong>$1.439,09</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Karen Meza Andrade</strong><br><small class="text-muted">1310127890</small></td>
+            <td>F</td>
+            <td>27.66 años</td>
+            <td>1.98 años</td>
+            <td>$550,00</td>
+            <td>$867,65</td>
+            <td>$777,14<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$174,07</td>
+            <td><strong>$951,21</strong></td>
+        </tr>
+        
+        <tr>
+            <td><strong>Johanna Saltos Tubay</strong><br><small class="text-muted">1311238901</small></td>
+            <td>F</td>
+            <td>25.28 años</td>
+            <td>1.33 años</td>
+            <td>$500,00</td>
+            <td>$798,97</td>
+            <td>$468,90<br><span class="badge badge-neutral">En formación</span></td>
+            <td>$112,50</td>
+            <td><strong>$581,40</strong></td>
+        </tr>
+        
+                </tbody>
+            </table>
+        </div>
+
+        <div class="print-footer">
+            <span>Actuariosa S.A. · Servicios Actuariales en Ecuador</span>
+            <span>Generado automáticamente el 14/09/2026 01:43</span>
+        </div>
+    </div>
+</body>
+</html>
