@@ -71,12 +71,10 @@
     <rect x="0" y="240" width="1080" height="420" fill="url(#seamlessPhotoFade)"/>
   </g>
 
-  <!-- DIFFUSED AMBIENT LIGHT BLOOMS -->
   <circle cx="540" cy="720" r="380" fill="url(#goldGlow)" filter="url(#softBlur)"/>
   <circle cx="200" cy="1150" r="420" fill="url(#cyanAmbient)" filter="url(#softBlur)"/>
 
   
-  <!-- TOP BRANDING & COMPLIANCE -->
   <g id="capa-cabecera" transform="translate(60, 52)">
     <g transform="translate(0, 0)">
       <svg x="0" y="0" width="170" height="56" viewBox="0 0 1774 887">
@@ -101,7 +99,6 @@
     </g>
   </g>
 
-  <!-- EDITORIAL HEADLINE -->
   <g id="capa-titular" transform="translate(60, 580)">
     <g transform="translate(0, 0)">
       <rect x="0" y="-16" width="280" height="28" rx="14" fill="rgba(56, 189, 248, 0.12)" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1"/>
@@ -114,12 +111,10 @@
     <text x="0" y="186" class="font-sans" font-size="16.5" font-weight="400" fill="#CBD5E1">Nuestros actuarios defienden cada cifra e hipótesis en mesa con sus auditores.</text>
   </g>
 
-  <!-- UNIFIED FROSTED GLASS EDITORIAL CONTAINER -->
   <g id="capa-entregables" transform="translate(60, 830)" filter="url(#glassShadow)">
     <rect width="960" height="230" rx="18" fill="url(#glassFill)" stroke="url(#glassBorder)" stroke-width="1.2"/>
     <line x1="40" y1="1" x2="920" y2="1" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1"/>
 
-    <!-- PILLAR 1 -->
     <g transform="translate(36, 32)">
       <circle cx="18" cy="18" r="18" fill="rgba(212, 175, 55, 0.15)" stroke="rgba(212, 175, 55, 0.4)" stroke-width="1"/>
       <text x="10" y="24" class="font-display" font-size="14" font-weight="700" fill="#FDF4DC">01</text>
@@ -132,7 +127,6 @@
 
     <line x1="335" y1="30" x2="335" y2="200" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
 
-    <!-- PILLAR 2 -->
     <g transform="translate(365, 32)">
       <circle cx="18" cy="18" r="18" fill="rgba(56, 189, 248, 0.15)" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1"/>
       <text x="9" y="24" class="font-display" font-size="14" font-weight="700" fill="#38BDF8">02</text>
@@ -145,7 +139,6 @@
 
     <line x1="660" y1="30" x2="660" y2="200" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
 
-    <!-- PILLAR 3 -->
     <g transform="translate(690, 32)">
       <circle cx="18" cy="18" r="18" fill="rgba(212, 175, 55, 0.15)" stroke="rgba(212, 175, 55, 0.4)" stroke-width="1"/>
       <text x="9" y="24" class="font-display" font-size="14" font-weight="700" fill="#FDF4DC">03</text>
@@ -157,7 +150,6 @@
     </g>
   </g>
 
-  <!-- SOPHISTICATED EDITORIAL FOOTER -->
   <g id="capa-pie" transform="translate(60, 1180)">
     <line x1="0" y1="0" x2="960" y2="0" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1"/>
     <g transform="translate(0, 30)">

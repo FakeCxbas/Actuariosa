@@ -71,7 +71,6 @@
     <rect x="0" y="380" width="1080" height="540" fill="url(#seamlessPhotoFade)"/>
   </g>
 
-  <!-- DIFFUSED AMBIENT LIGHT BLOOMS -->
   <circle cx="540" cy="980" r="440" fill="url(#goldGlow)" filter="url(#softBlur)"/>
   <circle cx="200" cy="1550" r="460" fill="url(#cyanAmbient)" filter="url(#softBlur)"/>
 
