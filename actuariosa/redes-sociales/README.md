@@ -11,14 +11,10 @@ Espacio de trabajo dedicado a la creación, planificación y archivo de contenid
   * Banco de copies corporativos para LinkedIn, Instagram y WhatsApp.
 * **`disenos/`**:
   * Material gráfico listo para publicar:
-    * `feed/`: Formato cuadrado 1:1 y retrato vertical 4:5.
-      * `flyer-servicio-jubilacion-1x1.svg`: Código del Trabajo Arts. 188, 216, 217 y 218.
-      * `flyer-servicio-asientos-contables-1x1.svg`: Asientos contables, ORI y NIC 19.
-      * `flyer-servicio-impuestos-diferidos-1x1.svg`: Conciliación tributaria, LRTI y SRI.
-      * `flyer-auditorias-cierre-1x1.svg` & `4x5.svg`: Valuaciones y auditorías externas.
-    * `stories-reels/`: Formato vertical 9:16 para Stories, Estados y Reels.
-    * `canva-assets/`: Fondos limpios de alta resolución listos para Canva.
-    * `preview-studio.html`: Estudio local interactivo con visor, editor de texto y exportador PNG Retina 2x.
+    * `feed/`: Formato cuadrado 1:1 (1080×1080 px) y retrato vertical 4:5 (1080×1350 px) para los 4 servicios.
+    * `stories-reels/`: Formato vertical 9:16 (1080×1920 px) para Stories, Reels y WhatsApp para los 4 servicios.
+    * `canva-assets/`: Fondos y placas limpias sin texto en 1:1, 4:5 y 9:16 listos para usar en Canva o Figma.
+    * `preview-studio.html`: Estudio local interactivo con selector de 4 servicios × 3 formatos, editor de texto en vivo y exportador PNG Retina 2x.
 * **`recursos/`**:
   * Logos oficiales vectoriales (`actuariosa.svg`, `actuariosa-white.svg`, `actuariosa.png`).
   * Fotografía corporativa optimizada (`consultation-optimized.jpg`).

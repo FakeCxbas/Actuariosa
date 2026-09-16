@@ -6,15 +6,27 @@ Esta guía explica cómo importar, personalizar y exportar los archivos vectoria
 
 ## Archivos Disponibles en este Paquete
 
-| Archivo | Enfoque de Venta | Dimensiones | Plataformas Recomendadas |
+| Archivo | Enfoque de Venta | Dimensiones | Formato y Plataforma |
 | :--- | :--- | :--- | :--- |
-| [`flyer-servicio-jubilacion-1x1.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-servicio-jubilacion-1x1.svg) | Jubilación Patronal y Desahucio (Art. 188-218) | **1080 × 1080 px** | LinkedIn, Instagram Feed, WhatsApp |
-| [`flyer-servicio-asientos-contables-1x1.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-servicio-asientos-contables-1x1.svg) | Asientos Contables, ORI y NIC 19 | **1080 × 1080 px** | LinkedIn, Contadores Generales |
-| [`flyer-servicio-impuestos-diferidos-1x1.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-servicio-impuestos-diferidos-1x1.svg) | Impuestos Diferidos, LRTI y Conciliación SRI | **1080 × 1080 px** | LinkedIn, Directores Financieros |
-| [`flyer-auditorias-cierre-1x1.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-auditorias-cierre-1x1.svg) | Respaldo y Acompañamiento en Auditorías | **1080 × 1080 px** | LinkedIn, Instagram Feed |
-| [`flyer-auditorias-cierre-4x5.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-auditorias-cierre-4x5.svg) | Auditorías Externas (Retrato Vertical) | **1080 × 1350 px** | LinkedIn Feed Pro (Máxima visibilidad) |
-| [`flyer-auditorias-cierre-9x16.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/stories-reels/flyer-auditorias-cierre-9x16.svg) | Auditorías Externas (Stories / Estados) | **1080 × 1920 px** | Instagram Stories, WhatsApp Business |
-| [`preview-studio.html`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/preview-studio.html) | Estudio Web Interactivo Local | N/A | Editor de texto en vivo y exportación directa PNG 2x |
+| **Jubilación Patronal y Desahucio (Art. 188-218)** | | | |
+| [`flyer-servicio-jubilacion-1x1.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-servicio-jubilacion-1x1.svg) | Cálculo actuarial por anualidad | **1080 × 1080 px** | Feed Cuadrado (IG / FB / LinkedIn) |
+| [`flyer-servicio-jubilacion-4x5.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-servicio-jubilacion-4x5.svg) | Máxima visibilidad vertical | **1080 × 1350 px** | Feed Vertical Móvil (80% pantalla) |
+| [`flyer-servicio-jubilacion-9x16.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/stories-reels/flyer-servicio-jubilacion-9x16.svg) | Difusión de impacto | **1080 × 1920 px** | Stories, Reels, TikTok, WhatsApp |
+| **Asientos Contables y Registro Financiero (NIC 19)** | | | |
+| [`flyer-servicio-asientos-contables-1x1.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-servicio-asientos-contables-1x1.svg) | Gasto de periodo, ORI y notas | **1080 × 1080 px** | Feed Cuadrado |
+| [`flyer-servicio-asientos-contables-4x5.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-servicio-asientos-contables-4x5.svg) | Formulación de balances | **1080 × 1350 px** | Feed Vertical Móvil |
+| [`flyer-servicio-asientos-contables-9x16.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/stories-reels/flyer-servicio-asientos-contables-9x16.svg) | Soluciones contables ágiles | **1080 × 1920 px** | Stories, Reels, WhatsApp |
+| **Impuestos Diferidos y Conciliación Fiscal (SRI / LRTI)** | | | |
+| [`flyer-servicio-impuestos-diferidos-1x1.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-servicio-impuestos-diferidos-1x1.svg) | Deducibilidad legal y activos | **1080 × 1080 px** | Feed Cuadrado |
+| [`flyer-servicio-impuestos-diferidos-4x5.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-servicio-impuestos-diferidos-4x5.svg) | Optimización y blindaje fiscal | **1080 × 1350 px** | Feed Vertical Móvil |
+| [`flyer-servicio-impuestos-diferidos-9x16.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/stories-reels/flyer-servicio-impuestos-diferidos-9x16.svg) | Seguridad tributaria | **1080 × 1920 px** | Stories, Reels, WhatsApp |
+| **Acompañamiento en Cierre Contable y Auditorías** | | | |
+| [`flyer-auditorias-cierre-1x1.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-auditorias-cierre-1x1.svg) | Defensa directa con auditores | **1080 × 1080 px** | Feed Cuadrado |
+| [`flyer-auditorias-cierre-4x5.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/feed/flyer-auditorias-cierre-4x5.svg) | Auditorías externas sin fricción | **1080 × 1350 px** | Feed Vertical Móvil |
+| [`flyer-auditorias-cierre-9x16.svg`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/stories-reels/flyer-auditorias-cierre-9x16.svg) | Cumplimiento ante Supercias | **1080 × 1920 px** | Stories, Reels, WhatsApp |
+| **Herramientas de Edición** | | | |
+| [`disenos/canva-assets/`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/canva-assets) | Fondos sin texto para Canva | 1:1, 4:5, 9:16 | Plantillas limpias para montar texto libre |
+| [`preview-studio.html`](file:///c:/Users/WinterOS/Documents/ChatGPT/actuariosa/redes-sociales/disenos/preview-studio.html) | Estudio Interactivo en Vivo | Multi-formato | Selector de 4 servicios × 3 formatos con exportador 2x |
 
 ---
 

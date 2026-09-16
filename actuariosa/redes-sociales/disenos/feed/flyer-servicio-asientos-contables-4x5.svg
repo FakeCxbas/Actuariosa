@@ -96,8 +96,8 @@
         <line x1="21" y1="6" x2="18" y2="13" stroke="#D4AF37" stroke-width="1"/>
         <path d="M 14,13 Q 18,17 22,13 Z" fill="none" stroke="#D4AF37" stroke-width="1.1"/>
       </g>
-      <text x="50" y="20" class="font-sans" font-size="10" font-weight="800" fill="#D4AF37" letter-spacing="1.4">CIERRE CONTABLE Y AUDITORÍA EXTERNA</text>
-      <text x="50" y="35" class="font-sans" font-size="13.5" font-weight="700" fill="#FFFFFF">Superintendencia de Compañías · NIIF / NIC 19</text>
+      <text x="50" y="20" class="font-sans" font-size="10" font-weight="800" fill="#D4AF37" letter-spacing="1.4">INTEGRACIÓN FINANCIERA & NIIF</text>
+      <text x="50" y="35" class="font-sans" font-size="13.5" font-weight="700" fill="#FFFFFF">Norma Internacional de Contabilidad · NIC 19</text>
     </g>
   </g>
 
@@ -106,12 +106,12 @@
     <g transform="translate(0, 0)">
       <rect x="0" y="-16" width="280" height="28" rx="14" fill="rgba(56, 189, 248, 0.12)" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1"/>
       <circle cx="14" cy="-2" r="3.5" fill="#38BDF8"/>
-      <text x="26" y="2" class="font-sans" font-size="11.5" font-weight="800" fill="#38BDF8" letter-spacing="1.6">ACOMPAÑAMIENTO Y DEFENSA TÉCNICA</text>
+      <text x="26" y="2" class="font-sans" font-size="11.5" font-weight="800" fill="#38BDF8" letter-spacing="1.6">REGISTRO CONTABLE Y PATRIMONIAL</text>
     </g>
-    <text x="0" y="56" class="font-display" font-size="46" font-weight="700" fill="#FFFFFF" letter-spacing="-0.5">Valuaciones Actuariales para</text>
-    <text x="0" y="112" class="font-display" font-size="46" font-weight="700" fill="url(#goldMetallic)" letter-spacing="-0.5">Cierre Contable y Auditorías Externas</text>
-    <text x="0" y="160" class="font-sans" font-size="16.5" font-weight="400" fill="#CBD5E1">Evite observaciones y retrasos en la formulación de sus estados financieros.</text>
-    <text x="0" y="186" class="font-sans" font-size="16.5" font-weight="400" fill="#CBD5E1">Nuestros actuarios defienden cada cifra e hipótesis en mesa con sus auditores.</text>
+    <text x="0" y="56" class="font-display" font-size="46" font-weight="700" fill="#FFFFFF" letter-spacing="-0.5">Del informe actuarial</text>
+    <text x="0" y="112" class="font-display" font-size="46" font-weight="700" fill="url(#goldMetallic)" letter-spacing="-0.5">al balance de tu empresa</text>
+    <text x="0" y="160" class="font-sans" font-size="16.5" font-weight="400" fill="#CBD5E1">No dejamos sola a tu empresa con una fórmula matemática: facilitamos el trabajo contable</text>
+    <text x="0" y="186" class="font-sans" font-size="16.5" font-weight="400" fill="#CBD5E1">entregando la propuesta formal y exacta de asientos contables del ejercicio.</text>
   </g>
 
   <!-- UNIFIED FROSTED GLASS EDITORIAL CONTAINER -->
@@ -123,11 +123,11 @@
     <g transform="translate(36, 32)">
       <circle cx="18" cy="18" r="18" fill="rgba(212, 175, 55, 0.15)" stroke="rgba(212, 175, 55, 0.4)" stroke-width="1"/>
       <text x="10" y="24" class="font-display" font-size="14" font-weight="700" fill="#FDF4DC">01</text>
-      <text x="48" y="24" class="font-sans" font-size="11.5" font-weight="800" fill="#D4AF37" letter-spacing="1.2">NORMATIVA VIGENTE</text>
-      <text x="0" y="68" class="font-display" font-size="20" font-weight="700" fill="#FFFFFF">Apego a la NIC 19</text>
-      <text x="0" y="100" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">Modelos matemáticos</text>
-      <text x="0" y="124" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">con hipótesis biométricas</text>
-      <text x="0" y="148" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">y financieras sólidas.</text>
+      <text x="48" y="24" class="font-sans" font-size="11.5" font-weight="800" fill="#D4AF37" letter-spacing="1.2">ESTADO DE RESULTADOS</text>
+      <text x="0" y="68" class="font-display" font-size="20" font-weight="700" fill="#FFFFFF">Gasto del Periodo</text>
+      <text x="0" y="100" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">Contabilización precisa</text>
+      <text x="0" y="124" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">del costo de servicio actual</text>
+      <text x="0" y="148" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">y costo financiero.</text>
     </g>
 
     <line x1="335" y1="30" x2="335" y2="200" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
@@ -136,11 +136,11 @@
     <g transform="translate(365, 32)">
       <circle cx="18" cy="18" r="18" fill="rgba(56, 189, 248, 0.15)" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1"/>
       <text x="9" y="24" class="font-display" font-size="14" font-weight="700" fill="#38BDF8">02</text>
-      <text x="48" y="24" class="font-sans" font-size="11.5" font-weight="800" fill="#38BDF8" letter-spacing="1.2">DEFENSA EN MESA</text>
-      <text x="0" y="68" class="font-display" font-size="20" font-weight="700" fill="#FFFFFF">Soporte con Auditores</text>
-      <text x="0" y="100" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">Reuniones directas para</text>
-      <text x="0" y="124" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">sustentar metodologías y</text>
-      <text x="0" y="148" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">despejar dudas técnicas.</text>
+      <text x="48" y="24" class="font-sans" font-size="11.5" font-weight="800" fill="#38BDF8" letter-spacing="1.2">PATRIMONIO NETO</text>
+      <text x="0" y="68" class="font-display" font-size="20" font-weight="700" fill="#FFFFFF">Ajustes en el ORI</text>
+      <text x="0" y="100" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">Registro de pérdidas y</text>
+      <text x="0" y="124" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">ganancias actuariales</text>
+      <text x="0" y="148" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">conforme a la NIC 19.</text>
     </g>
 
     <line x1="660" y1="30" x2="660" y2="200" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/>
@@ -149,11 +149,11 @@
     <g transform="translate(690, 32)">
       <circle cx="18" cy="18" r="18" fill="rgba(212, 175, 55, 0.15)" stroke="rgba(212, 175, 55, 0.4)" stroke-width="1"/>
       <text x="9" y="24" class="font-display" font-size="14" font-weight="700" fill="#FDF4DC">03</text>
-      <text x="48" y="24" class="font-sans" font-size="11.5" font-weight="800" fill="#D4AF37" letter-spacing="1.2">ENTREGA PUNTUAL</text>
-      <text x="0" y="68" class="font-display" font-size="20" font-weight="700" fill="#FFFFFF">Cumplimiento de Plazos</text>
-      <text x="0" y="100" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">Informes listos a tiempo</text>
-      <text x="0" y="124" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">para la sesión de su</text>
-      <text x="0" y="148" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">Directorio y Junta General.</text>
+      <text x="48" y="24" class="font-sans" font-size="11.5" font-weight="800" fill="#D4AF37" letter-spacing="1.2">ESTADOS FINANCIEROS</text>
+      <text x="0" y="68" class="font-display" font-size="20" font-weight="700" fill="#FFFFFF">Notas Explicativas</text>
+      <text x="0" y="100" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">Redacción de revelaciones</text>
+      <text x="0" y="124" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">técnicas listas para anexar</text>
+      <text x="0" y="148" class="font-sans" font-size="14" font-weight="400" fill="#CBD5E1">a balances oficiales.</text>
     </g>
   </g>
 
@@ -196,7 +196,7 @@
 
     <g transform="translate(680, 16)">
       <rect width="280" height="62" rx="10" fill="url(#goldMetallic)" filter="url(#btnGlow)"/>
-      <text x="32" y="37" class="font-sans" font-size="14" font-weight="800" fill="#070F1E" letter-spacing="0.8">COTIZAR ESTUDIO</text>
+      <text x="32" y="37" class="font-sans" font-size="14" font-weight="800" fill="#070F1E" letter-spacing="0.8">SOLICITAR REVISIÓN</text>
       <g transform="translate(225, 22)">
         <path d="M 4,10 L 14,10 M 10,6 L 14,10 L 10,14" fill="none" stroke="#070F1E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
       </g>
