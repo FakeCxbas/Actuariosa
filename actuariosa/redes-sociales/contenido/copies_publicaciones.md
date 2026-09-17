@@ -1,4 +1,4 @@
-﻿# ✍️ Banco de Copies y Textos para Redes
+# Banco de Copies y Textos para Redes
 
 ## Post 1: Introducción / Lanzamiento
 **Objetivo:** Posicionar la marca Actuariosa y presentar la web corporativa.
@@ -7,7 +7,7 @@
 > 
 > En **Actuariosa**, combinamos rigor matemático, estricto apego a la NIC 19 y tecnología moderna para ofrecer estudios actuariales claros, auditables y a tiempo.
 > 
-> 🌐 Conoce más de nuestra propuesta en: https://actuariosa.com
+> Conoce más de nuestra propuesta en: https://actuariosa.com
 > 
 > #Actuarial #NIC19 #Finanzas #Ecuador #RiesgosFinancieros
 
