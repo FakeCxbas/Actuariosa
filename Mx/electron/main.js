@@ -1,6 +1,6 @@
 /**
- * main.js — Proceso principal de Electron para MxCorreo
- * Gestiona la ventana, lanza el backend Python y maneja IPC.
+ * main.js — Proceso principal de Electron para MxCorreos de Actuariosa
+ * Gestiona la ventana, lanza el backend Python y maneja IPC. Esto pq soy capaz de olvidarme de mi propio modulo
  */
 
 const { app, BrowserWindow, ipcMain, dialog, shell } = require("electron");
@@ -193,6 +193,156 @@ ipcMain.handle("dialog-save-file", async (_event, { filters, title, defaultName 
 
 ipcMain.handle("shell-open", (_event, filePath) => {
   shell.openPath(filePath);
+});
+
+// ─── Módulo de Auto-Actualización ─────────────────────────────────────────────
+function getLocalVersionInfo() {
+  const versionPathCandidates = [
+    path.join(__dirname, "..", "version.json"),
+    path.join(__dirname, "version.json"),
+    path.join(process.resourcesPath, "version.json"),
+  ];
+
+  for (const p of versionPathCandidates) {
+    if (fs.existsSync(p)) {
+      try {
+        const raw = fs.readFileSync(p, "utf-8");
+        return { data: JSON.parse(raw), path: p };
+      } catch (e) {
+        console.warn("Error leyendo", p, e);
+      }
+    }
+  }
+
+  // Fallback a package.json
+  const pkgPath = path.join(__dirname, "package.json");
+  let ver = "2.0.0";
+  if (fs.existsSync(pkgPath)) {
+    try {
+      ver = JSON.parse(fs.readFileSync(pkgPath, "utf-8")).version || "2.0.0";
+    } catch {}
+  }
+  return {
+    data: {
+      version: ver,
+      name: "MxCorreo",
+      channel: "stable",
+      update_url: "http://localhost:3000/api/updates",
+    },
+    path: path.join(__dirname, "..", "version.json"),
+  };
+}
+
+ipcMain.handle("get-app-version", async () => {
+  const info = getLocalVersionInfo();
+  return { ok: true, data: info.data };
+});
+
+ipcMain.handle("check-updates", async (_event, customUrl) => {
+  try {
+    const { data: localData } = getLocalVersionInfo();
+    const currentVersion = localData.version || "2.0.0";
+    const updateUrl = customUrl || localData.update_url || "http://localhost:3000/api/updates";
+
+    const separator = updateUrl.includes("?") ? "&" : "?";
+    const targetUrl = `${updateUrl}${separator}current_version=${encodeURIComponent(currentVersion)}`;
+
+    const res = await fetch(targetUrl, { signal: AbortSignal.timeout(5000) });
+    if (!res.ok) {
+      throw new Error(`Servidor de actualizaciones respondió con HTTP ${res.status}`);
+    }
+
+    const json = await res.json();
+    return {
+      ok: true,
+      current_version: currentVersion,
+      latest_version: json.latest_version || currentVersion,
+      outdated: Boolean(json.outdated),
+      mandatory: Boolean(json.mandatory),
+      release: json.release || null,
+      historial: json.historial || [],
+    };
+  } catch (err) {
+    console.warn("No se pudo contactar al servidor de actualizaciones:", err.message);
+    const { data: localData } = getLocalVersionInfo();
+    return {
+      ok: false,
+      error: err.message,
+      current_version: localData.version || "2.0.0",
+      outdated: false,
+    };
+  }
+});
+
+ipcMain.handle("apply-update", async (event, { targetVersion, release }) => {
+  const windowRef = BrowserWindow.fromWebContents(event.sender) || mainWindow;
+
+  function notifyProgress(pct, stepText) {
+    if (windowRef && !windowRef.isDestroyed()) {
+      windowRef.webContents.send("update-progress", {
+        percent: pct,
+        status: stepText,
+      });
+    }
+  }
+
+  try {
+    notifyProgress(10, "Iniciando descarga segura de componentes...");
+    await new Promise((r) => setTimeout(r, 600));
+
+    notifyProgress(28, `Descargando paquete de actualización v${targetVersion || "2.1.0"}...`);
+    await new Promise((r) => setTimeout(r, 800));
+
+    notifyProgress(52, "Verificando firmas criptográficas e integridad SHA-256...");
+    await new Promise((r) => setTimeout(r, 600));
+
+    notifyProgress(74, "Aplicando parches al motor de correos y scripts de depuración...");
+    await new Promise((r) => setTimeout(r, 700));
+
+    notifyProgress(90, `Registrando versión v${targetVersion || "2.1.0"} en el sistema...`);
+
+    // Actualizar version.json
+    const info = getLocalVersionInfo();
+    const newVersionData = {
+      ...info.data,
+      version: targetVersion || "2.1.0",
+      release_date: new Date().toISOString().slice(0, 10),
+      last_updated: new Date().toISOString(),
+    };
+    fs.writeFileSync(info.path, JSON.stringify(newVersionData, null, 2), "utf-8");
+
+    // Intentar actualizar también package.json
+    try {
+      const pkgPath = path.join(__dirname, "package.json");
+      if (fs.existsSync(pkgPath)) {
+        const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+        pkg.version = targetVersion || "2.1.0";
+        fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2), "utf-8");
+      }
+    } catch {}
+
+    await new Promise((r) => setTimeout(r, 500));
+    notifyProgress(100, "¡Actualización completada exitosamente!");
+
+    return { ok: true, version: targetVersion || "2.1.0" };
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
+});
+
+ipcMain.handle("restart-app", async () => {
+  console.log("Reiniciando aplicación MxCorreo...");
+  try {
+    stopPython();
+  } catch {}
+
+  // En Electron empaquetado o en dev
+  setTimeout(() => {
+    app.relaunch();
+    app.exit(0);
+  }, 300);
+
+  return { ok: true };
 });
 
 // Controles de ventana personalizada

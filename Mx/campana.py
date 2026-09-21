@@ -52,12 +52,31 @@ def load_contacts(path, column="correo", delimiter=None):
     if path.suffix.lower() == ".mxlista":
         from importar_contactos import load_import
         return load_import(path)
-    if path.suffix.lower() in {".xlsx", ".xls"}:
-        raise ValueError("Usa el botón Importar Excel de la aplicación para elegir hoja y columnas; después puedes reutilizar el archivo .mxlista generado.")
+    if path.suffix.lower() in {".xlsx", ".xls", ".xlsm"}:
+        from python_calamine import CalamineWorkbook
+        wb = CalamineWorkbook.from_path(path)
+        all_rows = []
+        for sheet_name in wb.sheet_names:
+            sheet = wb.get_sheet_by_name(sheet_name)
+            if sheet.end is None:
+                continue
+            table = sheet.to_python(skip_empty_area=False)
+            if not table:
+                continue
+            first_row = [str(c).strip().lower() for c in table[0]]
+            email_col = 0
+            for idx, h in enumerate(first_row):
+                if h == column.lower() or h in {"correo", "email", "mail", "correos"}:
+                    email_col = idx
+                    break
+            values = [str(r[email_col]).strip() for r in table[1:] if email_col < len(r) and r[email_col]]
+            rows = prepare_lines(values)
+            all_rows.extend(rows)
+        return all_rows
     if path.suffix.lower() == ".txt":
         return prepare_lines(path.read_text(encoding="utf-8-sig").splitlines())
     if path.suffix.lower() != ".csv":
-        raise ValueError("Entrada admitida: TXT, CSV UTF-8 o .mxlista. Para Excel, usa Importar Excel en la ventana.")
+        raise ValueError("Entrada admitida: Excel (.xlsx, .xls), CSV UTF-8, TXT o .mxlista.")
     with path.open(encoding="utf-8-sig", newline="") as stream:
         sample = stream.read(8192)
         stream.seek(0)
@@ -68,8 +87,14 @@ def load_contacts(path, column="correo", delimiter=None):
                 delimiter = ","
         reader = csv.DictReader(stream, delimiter=delimiter)
         fields = reader.fieldnames
-        if not fields or len(fields) != len(set(fields)) or column not in fields:
-            raise ValueError(f"El CSV debe tener cabeceras únicas y una columna '{column}'.")
+        if not fields or len(fields) != len(set(fields)):
+            raise ValueError("El CSV debe tener cabeceras únicas.")
+        if column not in fields:
+            candidates = [f for f in fields if f.lower() in {"correo", "email", "e-mail", "mail", "correos"}]
+            if candidates:
+                column = candidates[0]
+            else:
+                raise ValueError(f"El CSV debe tener cabeceras únicas y una columna '{column}'.")
         records = list(reader)
     values = []
     for record in records:

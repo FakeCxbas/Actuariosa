@@ -36,6 +36,17 @@ contextBridge.exposeInMainWorld("MxCorreo", {
   saveFile: (opts) => ipcRenderer.invoke("dialog-save-file", opts || {}),
   openPath: (p) => ipcRenderer.invoke("shell-open", p),
 
+  // ── Módulo de Auto-Actualizaciones ──────────────────────────────────────
+  getVersion: () => ipcRenderer.invoke("get-app-version"),
+  checkUpdates: (url) => ipcRenderer.invoke("check-updates", url),
+  applyUpdate: (opts) => ipcRenderer.invoke("apply-update", opts),
+  restartApp: () => ipcRenderer.invoke("restart-app"),
+  onUpdateProgress: (cb) => {
+    const handler = (_e, msg) => cb(msg);
+    ipcRenderer.on("update-progress", handler);
+    return () => ipcRenderer.removeListener("update-progress", handler);
+  },
+
   // ── Controles de ventana ────────────────────────────────────────────────
   minimize: () => ipcRenderer.send("window-minimize"),
   maximize: () => ipcRenderer.send("window-maximize"),

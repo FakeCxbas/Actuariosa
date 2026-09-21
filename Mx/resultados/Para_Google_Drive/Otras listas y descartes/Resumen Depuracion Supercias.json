@@ -1,0 +1,45 @@
+{
+  "fecha_depuracion": "2026-09-21T18:57:40.339966+00:00",
+  "total_entrada_20_septiembre": 136602,
+  "segmentos": {
+    "supercias_activas_con_ruc": 11779,
+    "negocios_corporativos_activos": 30869,
+    "total_negocios_depurados_unicos": 42648,
+    "descartados_disolucion_o_inactivas": 3496,
+    "instituciones_educativas_colegios": 4809,
+    "otros_genericos_conservados": 85649
+  },
+  "top_provincias_supercias_activas": {
+    "GUAYAS": 11236,
+    "PICHINCHA": 307,
+    "EL ORO": 52,
+    "MANABI": 37,
+    "SANTA ELENA": 35,
+    "AZUAY": 32,
+    "LOS RIOS": 30,
+    "LOJA": 9,
+    "GALAPAGOS": 7,
+    "SANTO DOMINGO DE LOS TSACHILAS": 7
+  },
+  "top_dominios_corporativos": {
+    "gye.satnet.net": 1045,
+    "andinanet.net": 739,
+    "interactive.net.ec": 414,
+    "uio.satnet.net": 386,
+    "telconet.net": 338,
+    "easynet.net.ec": 228,
+    "ecua.net.ec": 195,
+    "porta.net": 156,
+    "claro.com.ec": 154,
+    "impsat.net.ec": 149,
+    "cablemodem.com.ec": 143,
+    "yahoo.com.mx": 134,
+    "iclaro.com.ec": 104,
+    "ecutel.net": 86,
+    "etapanet.net": 84
+  },
+  "rutas_salida": {
+    "carpeta_local": "/home/fakecxbas/Proyectos/Actuariosa/Mx/resultados/depuracion_supercias_2026",
+    "carpeta_google_drive": "/home/fakecxbas/Proyectos/Actuariosa/Mx/resultados/Para_Google_Drive"
+  }
+}
