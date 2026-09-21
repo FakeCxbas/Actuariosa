@@ -56,11 +56,9 @@
 **/yarn-error.log*
 
 # Archivos pesados / resultados temporales de Mx
-Mx/resultados/
 Mx/output/
 Mx/tmp/
 Mx/datos/
-Mx/entradas/
 Mx/adjuntos/
 Mx/entrega/*.zip
 Mx/entrega/MxCorreo_Windows_*

@@ -1,0 +1,106 @@
+{"dominio": "aecpu.org", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.055291+00:00"}
+{"dominio": "adicolor.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.060781+00:00"}
+{"dominio": "avicarneselrancho.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.068601+00:00"}
+{"dominio": "caridel.com", "estado": "INVALIDO", "codigo": "NULL_MX", "motivo": "El dominio declara explícitamente que no recibe correo.", "mx": ["0 ."], "fecha_utc": "2026-09-17T18:08:50.068714+00:00"}
+{"dominio": "alipena.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.068758+00:00"}
+{"dominio": "cablemoden.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.068792+00:00"}
+{"dominio": "als.edu.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.068825+00:00"}
+{"dominio": "cecsaecuador.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.068857+00:00"}
+{"dominio": "adelcocoa.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.068897+00:00"}
+{"dominio": "bcsecuador.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.068961+00:00"}
+{"dominio": "aguimor.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.068995+00:00"}
+{"dominio": "businesspharm.net", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.069026+00:00"}
+{"dominio": "alegropcs.net", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.069056+00:00"}
+{"dominio": "chopchopsdelanderson.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.069086+00:00"}
+{"dominio": "acrimec.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.069115+00:00"}
+{"dominio": "camber.k12.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.069148+00:00"}
+{"dominio": "celamarcorp.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.075793+00:00"}
+{"dominio": "burneoyburneo.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.075865+00:00"}
+{"dominio": "coacauca.fin.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.075894+00:00"}
+{"dominio": "cartoandes.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.075925+00:00"}
+{"dominio": "auditservrc.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.075946+00:00"}
+{"dominio": "documentos-electronicos.info", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.080470+00:00"}
+{"dominio": "colegioadistancia8demarzo.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.081635+00:00"}
+{"dominio": "corecuaseg.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.082736+00:00"}
+{"dominio": "corposeg.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086474+00:00"}
+{"dominio": "calamante.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086565+00:00"}
+{"dominio": "cgconsulting.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086596+00:00"}
+{"dominio": "controsa.com", "estado": "INVALIDO", "codigo": "NULL_MX", "motivo": "El dominio declara explícitamente que no recibe correo.", "mx": ["0 ."], "fecha_utc": "2026-09-17T18:08:50.086623+00:00"}
+{"dominio": "cdmecuador.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086654+00:00"}
+{"dominio": "ecuabiogen.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086675+00:00"}
+{"dominio": "ecuaenlace.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086697+00:00"}
+{"dominio": "dinaser.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086717+00:00"}
+{"dominio": "cumbreazul.edu.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086738+00:00"}
+{"dominio": "enspire.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086762+00:00"}
+{"dominio": "eggoccp.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086785+00:00"}
+{"dominio": "gye.panchonet.net", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086807+00:00"}
+{"dominio": "frigipesca.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086829+00:00"}
+{"dominio": "etiquetasflexoprint.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086847+00:00"}
+{"dominio": "ect.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086868+00:00"}
+{"dominio": "fortuis.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086885+00:00"}
+{"dominio": "fidesprofile.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086900+00:00"}
+{"dominio": "equiser.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.086934+00:00"}
+{"dominio": "fabrez.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.087199+00:00"}
+{"dominio": "guaypro.com", "estado": "INVALIDO", "codigo": "NULL_MX", "motivo": "El dominio declara explícitamente que no recibe correo.", "mx": ["0 ."], "fecha_utc": "2026-09-17T18:08:50.087282+00:00"}
+{"dominio": "gye.com", "estado": "INVALIDO", "codigo": "NULL_MX", "motivo": "El dominio declara explícitamente que no recibe correo.", "mx": ["0 ."], "fecha_utc": "2026-09-17T18:08:50.091572+00:00"}
+{"dominio": "grasasunicol.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.091675+00:00"}
+{"dominio": "fesa.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.096170+00:00"}
+{"dominio": "gye.net.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.104469+00:00"}
+{"dominio": "gye.satnet.ner", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.104604+00:00"}
+{"dominio": "geoexplor.com", "estado": "INVALIDO", "codigo": "NULL_MX", "motivo": "El dominio declara explícitamente que no recibe correo.", "mx": ["0 ."], "fecha_utc": "2026-09-17T18:08:50.104644+00:00"}
+{"dominio": "junsa.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.104682+00:00"}
+{"dominio": "gmail.co", "estado": "INVALIDO", "codigo": "NULL_MX", "motivo": "El dominio declara explícitamente que no recibe correo.", "mx": ["0 ."], "fecha_utc": "2026-09-17T18:08:50.104711+00:00"}
+{"dominio": "larvalecp.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.104740+00:00"}
+{"dominio": "hosclipa.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.104766+00:00"}
+{"dominio": "llantaspacifico.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.104794+00:00"}
+{"dominio": "lrs.cnel.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.105681+00:00"}
+{"dominio": "iedyt.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.107799+00:00"}
+{"dominio": "metrosystem.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.110018+00:00"}
+{"dominio": "gye.satnet.net.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.110125+00:00"}
+{"dominio": "mikampus.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.110167+00:00"}
+{"dominio": "modercel.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.110211+00:00"}
+{"dominio": "mad-sender.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.110245+00:00"}
+{"dominio": "marriot.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.119234+00:00"}
+{"dominio": "natecua.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.119426+00:00"}
+{"dominio": "nesec.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.119514+00:00"}
+{"dominio": "multigeo.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.119553+00:00"}
+{"dominio": "monsjuanlarrea.edu.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.119582+00:00"}
+{"dominio": "niltondiazmarkets.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.126401+00:00"}
+{"dominio": "maxsyspro.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.129180+00:00"}
+{"dominio": "rcua.net.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.132422+00:00"}
+{"dominio": "net2digital.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.132536+00:00"}
+{"dominio": "provexcaruio.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.132575+00:00"}
+{"dominio": "edu.ec", "estado": "INVALIDO", "codigo": "SIN_RUTA_DNS", "motivo": "Sin MX ni dirección A/AAAA utilizable en esta consulta.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.132605+00:00"}
+{"dominio": "pasfrei.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.132645+00:00"}
+{"dominio": "maple.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.132672+00:00"}
+{"dominio": "plasmetalsa.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.132701+00:00"}
+{"dominio": "pelikanoplywood.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.139973+00:00"}
+{"dominio": "informateec.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.143039+00:00"}
+{"dominio": "rioroses.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.143144+00:00"}
+{"dominio": "silverfruit.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.143186+00:00"}
+{"dominio": "promar.or.cr", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.143219+00:00"}
+{"dominio": "poligafica.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.143259+00:00"}
+{"dominio": "obdac.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.143289+00:00"}
+{"dominio": "seguripalma.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.143323+00:00"}
+{"dominio": "servitalentoslaborales.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.151460+00:00"}
+{"dominio": "protelsa.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.157833+00:00"}
+{"dominio": "tecnoembalaje.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.159088+00:00"}
+{"dominio": "novis.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.160621+00:00"}
+{"dominio": "rrue.org", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.160730+00:00"}
+{"dominio": "unionvinicolainternacional.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.160781+00:00"}
+{"dominio": "paplesa.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.160813+00:00"}
+{"dominio": "servicontri.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.160855+00:00"}
+{"dominio": "transestiva.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.160886+00:00"}
+{"dominio": "prisegur.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.160927+00:00"}
+{"dominio": "seprisur.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.160959+00:00"}
+{"dominio": "textilcardiz.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.160988+00:00"}
+{"dominio": "tecnologicolci.edu.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.161016+00:00"}
+{"dominio": "pezcarmar.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.161046+00:00"}
+{"dominio": "rimesa.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.161074+00:00"}
+{"dominio": "stoper.com.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.161103+00:00"}
+{"dominio": "hotmai.com", "estado": "INVALIDO", "codigo": "MX_SIN_IP", "motivo": "Los MX publicados no tienen A/AAAA utilizable en esta consulta.", "mx": ["10 hotmai.com."], "fecha_utc": "2026-09-17T18:08:50.161689+00:00"}
+{"dominio": "tropiban.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.161790+00:00"}
+{"dominio": "viaproyectos.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.161860+00:00"}
+{"dominio": "transdatel.com", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.161901+00:00"}
+{"dominio": "travelnet.ec", "estado": "INVALIDO", "codigo": "DOMINIO_INEXISTENTE", "motivo": "DNS indica que el dominio no existe.", "mx": [], "fecha_utc": "2026-09-17T18:08:50.161962+00:00"}
+{"dominio": "burgerkingec.com.ec", "estado": "INVALIDO", "codigo": "MX_SIN_IP", "motivo": "Los MX publicados no tienen A/AAAA utilizable en esta consulta.", "mx": ["10 burgerkingec-com-ec.p10.mxthunder.com.", "20 burgerkingec-com-ec.p20.mxthunder.net.", "30 burgerkingec-com-ec.p30.mxthunder.net.", "40 burgerkingec-com-ec.p40.mxthunder.net."], "fecha_utc": "2026-09-17T18:08:50.175964+00:00"}
