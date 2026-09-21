@@ -12,3 +12,7 @@ build/
 entrega/
 output/listas/
 *.spec
+resultados/revision_*
+resultados/actualizacion*
+resultados/demo_etapas_*
+resultados/*.zip

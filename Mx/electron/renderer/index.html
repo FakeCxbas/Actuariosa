@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self';" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MxCorreo — Actuariosa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════ TITLEBAR ════════════════════════ -->
+  <header id="titlebar">
+    <div id="titlebar-drag">
+      <img src="assets/actuariosa-emblem.png" alt="Actuariosa" id="titlebar-logo" />
+      <span id="titlebar-title">MxCorreo</span>
+      <span id="titlebar-version">v2.0</span>
+    </div>
+    <div id="titlebar-controls">
+      <button class="wbtn" id="btn-minimize" title="Minimizar">─</button>
+      <button class="wbtn" id="btn-maximize" title="Maximizar">□</button>
+      <button class="wbtn danger" id="btn-close" title="Cerrar">✕</button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════ LAYOUT ══════════════════════════ -->
+  <div id="app-layout">
+
+    <!-- ── SIDEBAR ──────────────────────────────────────── -->
+    <aside id="sidebar">
+      <div id="sidebar-brand">
+        <img src="assets/actuariosa-emblem.png" alt="Actuariosa" id="brand-logo" />
+        <div id="brand-text">
+          <span id="brand-app">MxCorreo</span>
+          <span id="brand-sub">Gestión de Correos</span>
+        </div>
+      </div>
+
+      <nav id="step-nav">
+        <div class="step-item active" data-step="1" id="nav-step-1">
+          <div class="step-indicator">
+            <span class="step-num">1</span>
+            <svg class="step-check" viewBox="0 0 16 16"><polyline points="3,8 7,12 13,4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <div class="step-info">
+            <span class="step-label">Lista de Correos</span>
+            <span class="step-desc">Cargar y verificar</span>
+          </div>
+        </div>
+
+        <div class="step-item locked" data-step="2" id="nav-step-2">
+          <div class="step-indicator">
+            <span class="step-num">2</span>
+            <svg class="step-check" viewBox="0 0 16 16"><polyline points="3,8 7,12 13,4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <div class="step-info">
+            <span class="step-label">Resultados de Purga</span>
+            <span class="step-desc">Estadísticas y depuración</span>
+          </div>
+        </div>
+
+        <div class="step-item locked" data-step="3" id="nav-step-3">
+          <div class="step-indicator">
+            <span class="step-num">3</span>
+            <svg class="step-check" viewBox="0 0 16 16"><polyline points="3,8 7,12 13,4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <div class="step-info">
+            <span class="step-label">Configuración</span>
+            <span class="step-desc">Campaña y SMTP</span>
+          </div>
+        </div>
+
+        <div class="step-item locked" data-step="4" id="nav-step-4">
+          <div class="step-indicator">
+            <span class="step-num">4</span>
+            <svg class="step-check" viewBox="0 0 16 16"><polyline points="3,8 7,12 13,4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <div class="step-info">
+            <span class="step-label">Envío de Campaña</span>
+            <span class="step-desc">Simular y enviar</span>
+          </div>
+        </div>
+      </nav>
+
+      <div id="sidebar-status">
+        <div id="status-dot" class="dot-ok"></div>
+        <span id="status-label">Backend listo</span>
+      </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ──────────────────────────────────── -->
+    <main id="content">
+
+      <!-- ════ PASO 1: Lista de Correos ═══════════════════ -->
+      <section class="panel active" id="panel-1">
+        <div class="panel-header">
+          <h1>Lista de Correos</h1>
+          <p class="panel-subtitle">Carga tu base de datos y verifica los correos antes de enviar.</p>
+        </div>
+
+        <div class="card upload-card" id="dropzone">
+          <div class="upload-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="6" width="36" height="36" rx="4" stroke="currentColor" stroke-width="2.5"/>
+              <path d="M24 16v16M16 24l8-8 8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="upload-text">
+            <strong>Arrastra tu archivo aquí</strong>
+            <span>o haz clic para seleccionar</span>
+            <em>CSV, TXT, .mxlista</em>
+          </div>
+          <button class="btn btn-primary" id="btn-select-file">
+            <span>Seleccionar Archivo</span>
+          </button>
+        </div>
+
+        <div class="card" id="file-info" style="display:none">
+          <div class="file-info-row">
+            <div class="file-icon">📄</div>
+            <div class="file-details">
+              <span id="file-name-display" class="file-name">archivo.csv</span>
+              <span id="file-path-display" class="file-path"></span>
+            </div>
+            <button class="btn btn-ghost btn-sm" id="btn-change-file">Cambiar</button>
+          </div>
+        </div>
+
+        <div class="card" id="column-config" style="display:none">
+          <label class="field-label">Columna de correos en el CSV</label>
+          <div class="input-row">
+            <input type="text" id="input-column" class="input" value="correo" placeholder="correo" />
+            <label class="toggle-label">
+              <input type="checkbox" id="check-dns" checked />
+              <span class="toggle-track"></span>
+              <span>Verificar DNS (MX)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-hero" id="btn-purge" disabled>
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
+            <span>Revisar y Purgar Lista</span>
+          </button>
+        </div>
+
+        <!-- Barra de progreso -->
+        <div class="progress-card" id="progress-card" style="display:none">
+          <div class="progress-header">
+            <span id="progress-label">Procesando…</span>
+            <span id="progress-pct">0%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progress-bar"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ PASO 2: Resultados ══════════════════════════ -->
+      <section class="panel" id="panel-2">
+        <div class="panel-header">
+          <h1>Resultados de Purga</h1>
+          <p class="panel-subtitle">Análisis completo de tu base de datos de correos.</p>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card valid">
+            <div class="metric-icon">✅</div>
+            <div class="metric-value" id="m-validos">0</div>
+            <div class="metric-label">Correos válidos</div>
+          </div>
+          <div class="metric-card invalid">
+            <div class="metric-icon">❌</div>
+            <div class="metric-value" id="m-invalidos">0</div>
+            <div class="metric-label">Inválidos</div>
+          </div>
+          <div class="metric-card duplicate">
+            <div class="metric-icon">🔁</div>
+            <div class="metric-value" id="m-duplicados">0</div>
+            <div class="metric-label">Duplicados</div>
+          </div>
+          <div class="metric-card no-mx">
+            <div class="metric-icon">🚫</div>
+            <div class="metric-value" id="m-sinmx">0</div>
+            <div class="metric-label">Sin MX</div>
+          </div>
+          <div class="metric-card purged">
+            <div class="metric-icon">🧹</div>
+            <div class="metric-value" id="m-purgados">0</div>
+            <div class="metric-label">Purgados total</div>
+          </div>
+          <div class="metric-card rate">
+            <div class="metric-icon">📊</div>
+            <div class="metric-value" id="m-tasa">0%</div>
+            <div class="metric-label">Tasa de limpieza</div>
+          </div>
+        </div>
+
+        <div class="card table-card">
+          <div class="table-toolbar">
+            <h3>Correos inválidos</h3>
+            <input type="text" id="filter-invalid" class="input input-sm" placeholder="Filtrar…" />
+          </div>
+          <div class="table-scroll">
+            <table id="table-invalid">
+              <thead><tr><th>#</th><th>Correo</th><th>Razón</th></tr></thead>
+              <tbody id="tbody-invalid"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-secondary" id="btn-export-csv">
+            <span>💾 Exportar Válidos (.csv)</span>
+          </button>
+          <button class="btn btn-primary" id="btn-go-config">
+            Continuar → Configurar Campaña
+          </button>
+        </div>
+      </section>
+
+      <!-- ════ PASO 3: Configuración ═══════════════════════ -->
+      <section class="panel" id="panel-3">
+        <div class="panel-header">
+          <h1>Configurar Campaña</h1>
+          <p class="panel-subtitle">Carga un archivo de configuración <code>.json</code> de campaña o configura manualmente.</p>
+        </div>
+
+        <div class="card">
+          <label class="field-label">Archivo de configuración de campaña</label>
+          <div class="input-row">
+            <input type="text" id="input-config-path" class="input" placeholder="campana.json…" readonly />
+            <button class="btn btn-secondary" id="btn-select-config">Buscar…</button>
+          </div>
+        </div>
+
+        <div class="card" id="config-preview" style="display:none">
+          <h3>Vista previa de la campaña</h3>
+          <div class="config-grid">
+            <div class="config-field">
+              <span class="config-key">ID Campaña</span>
+              <span class="config-val" id="cfg-id">—</span>
+            </div>
+            <div class="config-field">
+              <span class="config-key">Remitente</span>
+              <span class="config-val" id="cfg-remitente">—</span>
+            </div>
+            <div class="config-field">
+              <span class="config-key">Asunto</span>
+              <span class="config-val" id="cfg-asunto">—</span>
+            </div>
+            <div class="config-field">
+              <span class="config-key">Servidor SMTP</span>
+              <span class="config-val" id="cfg-smtp">—</span>
+            </div>
+            <div class="config-field">
+              <span class="config-key">Máx. envíos</span>
+              <span class="config-val" id="cfg-max">—</span>
+            </div>
+            <div class="config-field">
+              <span class="config-key">Envío aprobado</span>
+              <span class="config-val" id="cfg-aprobado">—</span>
+            </div>
+          </div>
+
+          <div class="auth-checklist" id="auth-checklist">
+            <h4>Lista de verificación de autorización</h4>
+            <div class="auth-item" id="auth-remitente">
+              <span class="auth-icon">○</span>
+              <span>Remitente autorizado</span>
+            </div>
+            <div class="auth-item" id="auth-lista">
+              <span class="auth-icon">○</span>
+              <span>Lista revisada</span>
+            </div>
+            <div class="auth-item" id="auth-exclusiones">
+              <span class="auth-icon">○</span>
+              <span>Exclusiones revisadas</span>
+            </div>
+            <div class="auth-item" id="auth-limites">
+              <span class="auth-icon">○</span>
+              <span>Límites confirmados</span>
+            </div>
+            <div class="auth-item" id="auth-aprobado">
+              <span class="auth-icon">○</span>
+              <span>Envío aprobado</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-primary" id="btn-simular" disabled>
+            🔬 Simular envío (sin enviar)
+          </button>
+        </div>
+
+        <div class="card" id="simulation-result" style="display:none">
+          <h3>Resultado de simulación ✅</h3>
+          <div class="sim-info">
+            <span class="config-key">Contactos a enviar:</span>
+            <strong id="sim-contactos">—</strong>
+          </div>
+          <div class="sim-info">
+            <span class="config-key">Asunto:</span>
+            <strong id="sim-asunto">—</strong>
+          </div>
+          <div class="sim-preview" id="sim-preview">—</div>
+        </div>
+      </section>
+
+      <!-- ════ PASO 4: Envío ═══════════════════════════════ -->
+      <section class="panel" id="panel-4">
+        <div class="panel-header">
+          <h1>Envío de Campaña</h1>
+          <p class="panel-subtitle">Revisa el resumen y confirma el envío real.</p>
+        </div>
+
+        <div class="card send-summary">
+          <div class="summary-row">
+            <span class="summary-key">Lista válida</span>
+            <span class="summary-val" id="send-lista">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key">Configuración</span>
+            <span class="summary-val" id="send-config">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key">Destinatarios</span>
+            <span class="summary-val" id="send-total">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-key">Estado autorización</span>
+            <span class="summary-val" id="send-auth">—</span>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-hero send-btn" id="btn-enviar" disabled>
+            <span>🚀 Iniciar Envío Real</span>
+          </button>
+        </div>
+
+        <!-- Progreso de envío -->
+        <div class="card send-progress-card" id="send-progress-card" style="display:none">
+          <div class="progress-header">
+            <span id="send-progress-label">Enviando…</span>
+            <span id="send-counter">0 / 0</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="send-progress-bar"></div>
+          </div>
+          <div class="send-log" id="send-log"></div>
+        </div>
+
+        <div class="card send-done" id="send-done" style="display:none">
+          <div class="done-icon">🎉</div>
+          <h2 id="done-title">Campaña completada</h2>
+          <p id="done-summary">—</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ═══════════════════ MODAL ════════════════════════════ -->
+  <div id="modal-overlay" style="display:none">
+    <div id="modal-box">
+      <div id="modal-icon">⚠️</div>
+      <h2 id="modal-title">Confirmar</h2>
+      <p id="modal-body">¿Seguro?</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modal-cancel">Cancelar</button>
+        <button class="btn btn-danger" id="modal-confirm">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

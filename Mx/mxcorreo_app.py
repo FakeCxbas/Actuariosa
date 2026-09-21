@@ -37,7 +37,6 @@ def default_data_dir():
 
 def save_json_atomic(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
-    # Archivos propios de la aplicación; cambio atómico para que no explote epicamente
     with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, prefix="config_", suffix=".tmp", delete=False) as stream:
         json.dump(value, stream, ensure_ascii=False, indent=2)
         temporary = Path(stream.name)
@@ -64,13 +63,13 @@ class ConfirmSend(simpledialog.Dialog):
         super().__init__(parent, "Confirmar envío REAL")
 
     def body(self, master):
-        ttk.Label(master, text="Esto sí enviará correos. Revisa el contenido y los destinatarios.",
+        ttk.Label(master, text="Esto sí enviará correos reales. Revisa el contenido y los destinatarios:",
                   font=("Segoe UI", 11, "bold")).pack(anchor="w", pady=8)
-        text = ScrolledText(master, width=85, height=19, wrap="word")
+        text = ScrolledText(master, width=88, height=18, wrap="word", font=("Consolas", 9))
         text.pack(fill="both", expand=True)
         text.insert("1.0", self.detail)
         text.configure(state="disabled")
-        ttk.Label(master, text=self.prompt, wraplength=650).pack(anchor="w", pady=10)
+        ttk.Label(master, text=self.prompt, wraplength=680, font=("Segoe UI", 10)).pack(anchor="w", pady=10)
         self.entry = ttk.Entry(master, width=65)
         self.entry.pack(fill="x")
         return self.entry
@@ -78,7 +77,7 @@ class ConfirmSend(simpledialog.Dialog):
     def buttonbox(self):
         box = ttk.Frame(self)
         box.pack(pady=12)
-        ttk.Button(box, text="Autorizar este envío", command=self.ok).pack(side="left", padx=8)
+        ttk.Button(box, text="Autorizar este envío", style="Primary.TButton", command=self.ok).pack(side="left", padx=8)
         ttk.Button(box, text="Cancelar, no enviar", command=self.cancel).pack(side="left", padx=8)
         self.bind("<Escape>", self.cancel)
 
@@ -98,275 +97,573 @@ class App:
         self.approvals = {}
         self.attachments = []
         self.action_buttons = []
+        self.step_buttons = []
         self.pending_dialog = None
         self.rows = []
         self.filtered = []
         self.page = 0
         self.search_job = None
-        self.root.title("MxCorreo — Centro de correos")
-        width = min(1200, root.winfo_screenwidth() - 80)
-        height = min(850, root.winfo_screenheight() - 80)
+        
+        self.root.title("MxCorreo — Limpieza, Purga y Envío de Correos")
+        width = min(1240, root.winfo_screenwidth() - 60)
+        height = min(880, root.winfo_screenheight() - 60)
         root.geometry(f"{width}x{height}")
-        root.minsize(960, 680)
+        root.minsize(980, 700)
         root.protocol("WM_DELETE_WINDOW", self.close)
+        
+        # Icono de la ventana
+        icon_path = resources() / "mxcorreo.ico"
+        if icon_path.exists():
+            try:
+                self.root.iconbitmap(str(icon_path))
+            except Exception:
+                pass
+
+        # Estilo visual moderno Windows Fluent / Slate
         style = ttk.Style(root)
         style.theme_use("clam")
-        style.configure("TFrame", background="#f5f7fa")
-        style.configure("TLabel", background="#f5f7fa", foreground="#253348", font=("Segoe UI", 10))
-        style.configure("TButton", padding=(12, 7), font=("Segoe UI", 10), background='white', foreground='#253348',
-                        bordercolor='#d7e1ec', lightcolor='white', darkcolor='white', relief='flat')
-        style.map('TButton', background=[('active', '#e8f0fb'), ('disabled', '#eef1f5')], foreground=[('disabled', '#8796a8')])
-        style.configure("TNotebook.Tab", padding=(14, 9), font=("Segoe UI", 10))
-        style.configure("Primary.TButton", background="#1459ad", foreground="white", bordercolor='#1459ad', lightcolor='#1459ad', darkcolor='#1459ad')
-        style.map("Primary.TButton", background=[("active", "#104889"), ("disabled", "#8b9aaf")])
-        style.configure("Treeview", rowheight=27, font=("Segoe UI", 9), borderwidth=0, fieldbackground='white')
-        style.configure('TNotebook', background='#f5f7fa', borderwidth=0)
-        style.configure('TNotebook.Tab', padding=(24, 12), background='#e5ebf2', foreground='#43566c', lightcolor='#e5ebf2', darkcolor='#e5ebf2', borderwidth=0)
-        style.map('TNotebook.Tab', background=[('selected', '#ffffff')], foreground=[('selected', '#1459ad')])
-        style.configure('Card.TFrame', background='white')
-        style.configure('Card.TLabel', background='white', foreground='#52647a')
-        style.configure('Section.TLabel', font=('Segoe UI', 15, 'bold'), foreground='#172d48')
-        style.configure('Metric.TLabel', background='white', foreground='#172d48', font=('Segoe UI', 24, 'bold'))
-        style.configure('Treeview.Heading', background='#e5edf7', foreground='#172d48', padding=8, font=('Segoe UI', 10, 'bold'))
-        style.map('Treeview', background=[('selected', '#d9eaff')], foreground=[('selected', '#143554')])
-        top = ttk.Frame(root, padding=(22, 14))
+        
+        bg_color = "#f8fafc"
+        card_bg = "#ffffff"
+        text_color = "#1e293b"
+        
+        style.configure("TFrame", background=bg_color)
+        style.configure("TLabel", background=bg_color, foreground=text_color, font=("Segoe UI", 10))
+        style.configure("TCheckbutton", background=bg_color, foreground=text_color, font=("Segoe UI", 10))
+        
+        # Botón secundario estándar
+        style.configure("TButton", padding=(12, 7), font=("Segoe UI", 10), background=card_bg, foreground=text_color,
+                        bordercolor="#cbd5e1", lightcolor=card_bg, darkcolor=card_bg, relief="flat")
+        style.map("TButton", background=[("active", "#f1f5f9"), ("disabled", "#f8fafc")],
+                  foreground=[("disabled", "#94a3b8")])
+        
+        # Botón primario azul
+        style.configure("Primary.TButton", padding=(14, 8), font=("Segoe UI", 10, "bold"),
+                        background="#2563eb", foreground="white", bordercolor="#2563eb",
+                        lightcolor="#2563eb", darkcolor="#2563eb")
+        style.map("Primary.TButton", background=[("active", "#1d4ed8"), ("disabled", "#93c5fd")])
+        
+        # Botón verde de éxito / exportación
+        style.configure("Success.TButton", padding=(14, 8), font=("Segoe UI", 10, "bold"),
+                        background="#16a34a", foreground="white", bordercolor="#16a34a",
+                        lightcolor="#16a34a", darkcolor="#16a34a")
+        style.map("Success.TButton", background=[("active", "#15803d"), ("disabled", "#86efac")])
+        
+        # Botón destacado de purga
+        style.configure("BigPurge.TButton", padding=(18, 10), font=("Segoe UI", 11, "bold"),
+                        background="#1e40af", foreground="white", bordercolor="#1e40af",
+                        lightcolor="#1e40af", darkcolor="#1e40af")
+        style.map("BigPurge.TButton", background=[("active", "#1e3a8a"), ("disabled", "#93c5fd")])
+        
+        # Botones chips / de acción rápida
+        style.configure("Chip.TButton", padding=(8, 4), font=("Segoe UI", 9, "bold"),
+                        background="#eff6ff", foreground="#1d4ed8", bordercolor="#bfdbfe")
+        style.map("Chip.TButton", background=[("active", "#dbeafe")])
+        
+        # Botones del Stepper superior
+        style.configure("Step.TButton", padding=(12, 6), font=("Segoe UI", 10),
+                        background="#e2e8f0", foreground="#475569", bordercolor="#cbd5e1")
+        style.map("Step.TButton", background=[("active", "#cbd5e1")])
+        
+        style.configure("ActiveStep.TButton", padding=(12, 6), font=("Segoe UI", 10, "bold"),
+                        background="#2563eb", foreground="white", bordercolor="#2563eb")
+        style.map("ActiveStep.TButton", background=[("active", "#1d4ed8")])
+
+        # Tarjetas y tipografía
+        style.configure("Card.TFrame", background=card_bg)
+        style.configure("Card.TLabel", background=card_bg, foreground="#475569", font=("Segoe UI", 10))
+        style.configure("CardHeader.TLabel", background=card_bg, foreground="#0f172a", font=("Segoe UI", 12, "bold"))
+        style.configure("Section.TLabel", font=("Segoe UI", 13, "bold"), foreground="#0f172a", background=bg_color)
+        style.configure("SubSection.TLabel", font=("Segoe UI", 10), foreground="#64748b", background=bg_color)
+        style.configure("MetricValue.TLabel", background=card_bg, font=("Segoe UI", 22, "bold"))
+        style.configure("MetricTitle.TLabel", background=card_bg, foreground="#64748b", font=("Segoe UI", 9))
+        
+        # Pestañas del Notebook
+        style.configure("TNotebook", background=bg_color, borderwidth=0)
+        style.configure("TNotebook.Tab", padding=(20, 10), font=("Segoe UI", 10, "bold"),
+                        background="#e2e8f0", foreground="#475569", borderwidth=0)
+        style.map("TNotebook.Tab", background=[("selected", card_bg)], foreground=[("selected", "#2563eb")])
+        
+        # Tabla Treeview
+        style.configure("Treeview", rowheight=28, font=("Segoe UI", 9), borderwidth=0, fieldbackground="white")
+        style.configure("Treeview.Heading", background="#f1f5f9", foreground="#0f172a", padding=8, font=("Segoe UI", 10, "bold"))
+        style.map("Treeview", background=[("selected", "#dbeafe")], foreground=[("selected", "#1e3a8a")])
+        
+        # --- ENCABEZADO SUPERIOR Y STEPPER VISUAL ---
+        top = ttk.Frame(root, padding=(22, 12))
         top.pack(fill="x")
-        ttk.Label(top, text="Envío Automático de Correos", font=("Segoe UI", 23, "bold")).pack(side="left")
-        ttk.Label(top, text="Contactos · Campañas · Envíos", foreground="#52647a").pack(side="right")
+        
+        header_left = ttk.Frame(top)
+        header_left.pack(side="left")
+        ttk.Label(header_left, text="✉️ MxCorreo", font=("Segoe UI", 20, "bold"), foreground="#0f172a").pack(side="left")
+        ttk.Label(header_left, text=" · Purga, Limpieza y Envío de Correos", font=("Segoe UI", 13), foreground="#64748b").pack(side="left", padx=6)
+        
+        # Stepper interactivo de 4 pasos
+        stepper_frame = ttk.Frame(top)
+        stepper_frame.pack(side="right")
+        
+        steps = [
+            ("1. 📋 Purgar Lista", 0),
+            ("2. ✍️ Redactar Mensaje", 1),
+            ("3. ⚙️ Conectar Correo", 2),
+            ("4. 🚀 Enviar y Resultados", 3)
+        ]
+        for title, idx in steps:
+            btn = ttk.Button(stepper_frame, text=title, style="Step.TButton", command=lambda i=idx: self.go_to_tab(i))
+            btn.pack(side="left", padx=3)
+            self.step_buttons.append(btn)
+
+        # Notebook principal
         self.book = ttk.Notebook(root)
-        self.book.pack(fill="both", expand=True, padx=18)
-        self.list_tab = self.tab("Listas y resultados")
-        self.message_tab = self.tab("Mensaje")
-        self.account_tab = self.tab("Cuenta de correo")
-        self.send_tab = self.tab("Envío autorizado")
+        self.book.pack(fill="both", expand=True, padx=18, pady=(0, 6))
+        self.book.bind("<<NotebookTabChanged>>", self.on_tab_changed)
+
+        self.list_tab = self.tab("1. 📋 Purgar Lista")
+        self.message_tab = self.tab("2. ✍️ Redactar Mensaje")
+        self.account_tab = self.tab("3. ⚙️ Conectar Correo")
+        self.send_tab = self.tab("4. 🚀 Enviar y Resultados")
+
         self.build_list()
         self.build_message()
         self.build_account()
         self.build_send()
+
+        # Barra inferior de estado y progreso
         bottom = ttk.Frame(root, padding=(18, 10))
         bottom.pack(fill="x")
-        self.status = tk.StringVar(value="Carga tus archivos para empezar. No necesitas configurar una cuenta para filtrar correos.")
-        ttk.Label(bottom, textvariable=self.status, wraplength=700).pack(side="left", fill="x", expand=True)
-        self.stop_button = ttk.Button(bottom, text="Detener", command=self.stop, state="disabled")
+        
+        self.status = tk.StringVar(value="Listo. Carga tus archivos de Excel, CSV o TXT en el Paso 1 para comenzar la purga.")
+        status_label = ttk.Label(bottom, textvariable=self.status, wraplength=780, font=("Segoe UI", 10))
+        status_label.pack(side="left", fill="x", expand=True)
+        
+        self.stop_button = ttk.Button(bottom, text="🛑 Detener operación", command=self.stop, state="disabled")
         self.stop_button.pack(side="right")
+        
         self.progress = ttk.Progressbar(root, mode="indeterminate")
-        self.progress.pack(fill="x", padx=18, pady=(0, 12))
+        self.progress.pack(fill="x", padx=18, pady=(0, 10))
+        
         self.load_initial()
-        if not (self.data_dir / 'configuracion.json').exists():
+        if not (self.data_dir / "configuracion.json").exists():
             self.gmail_preset()
-        session = self.data_dir / 'sesion.json'
+            
+        session = self.data_dir / "sesion.json"
         if session.exists():
             try:
-                saved = json.loads(session.read_text(encoding='utf-8'))
-                for key in ('lista', 'exclusiones', 'autorizados', 'audiencia'):
-                    if isinstance(saved.get(key), str):
+                saved = json.loads(session.read_text(encoding="utf-8"))
+                for key in ("lista", "exclusiones", "autorizados", "audiencia"):
+                    if isinstance(saved.get(key), str) and key in self.form:
                         self.form[key].set(saved[key])
-                if self.form['lista'].get() and Path(self.form['lista'].get()).exists():
-                    path = Path(self.form['lista'].get())
-                    root.after(200, lambda: self.local_task('imported', lambda: (path, load_import(path, self.stop_event), 'Última lista guardada'), 'Recuperando tus contactos…'))
+                if self.form.get("lista") and self.form["lista"].get() and Path(self.form["lista"].get()).exists():
+                    path = Path(self.form["lista"].get())
+                    root.after(200, lambda: self.local_task("imported", lambda: (path, load_import(path, self.stop_event), "Última lista guardada"), "Recuperando contactos…"))
             except (ValueError, OSError):
-                self.status.set('No se recuperó la sesión. Puedes volver a cargar tus archivos.')
+                self.status.set("No se recuperó la sesión anterior. Puedes cargar tus archivos nuevamente.")
+                
+        self.sync_stepper(0)
         root.after(100, self.poll)
+
+    def go_to_tab(self, index):
+        self.book.select(index)
+
+    def on_tab_changed(self, _event=None):
+        try:
+            current = self.book.index(self.book.select())
+            self.sync_stepper(current)
+        except Exception:
+            pass
+
+    def sync_stepper(self, active_index):
+        for idx, btn in enumerate(self.step_buttons):
+            if idx == active_index:
+                btn.configure(style="ActiveStep.TButton")
+            else:
+                btn.configure(style="Step.TButton")
 
     def tab(self, title):
         outer = ttk.Frame(self.book)
         self.book.add(outer, text=title)
-        canvas = tk.Canvas(outer, highlightthickness=0, background="#f5f7fa")
+        canvas = tk.Canvas(outer, highlightthickness=0, background="#f8fafc")
         scroll = ttk.Scrollbar(outer, orient="vertical", command=canvas.yview)
         scroll.pack(side="right", fill="y")
         canvas.pack(fill="both", expand=True)
         canvas.configure(yscrollcommand=scroll.set)
-        inner = ttk.Frame(canvas, padding=18)
+        inner = ttk.Frame(canvas, padding=20)
         window = canvas.create_window((0, 0), window=inner, anchor="nw")
         inner.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
         canvas.bind("<Configure>", lambda e: canvas.itemconfigure(window, width=e.width))
+
         def wheel(event):
             widget = event.widget
             if isinstance(widget, (ttk.Treeview, tk.Text, tk.Listbox, ttk.Combobox)):
                 return
             while widget is not None:
                 if widget == outer:
-                    canvas.yview_scroll(-int(event.delta / 120), 'units')
-                    return 'break'
-                widget = getattr(widget, 'master', None)
-        self.root.bind('<MouseWheel>', wheel, add='+')
+                    canvas.yview_scroll(-int(event.delta / 120), "units")
+                    return "break"
+                widget = getattr(widget, "master", None)
+        self.root.bind("<MouseWheel>", wheel, add="+")
         return inner
 
     def field(self, parent, key, label, value="", choices=None, browse=None, show=None):
         line = ttk.Frame(parent)
         line.pack(fill="x", pady=4)
-        ttk.Label(line, text=label, width=25).pack(side="left")
+        ttk.Label(line, text=label, width=26, font=("Segoe UI", 10)).pack(side="left")
         var = tk.StringVar(value=value)
         self.form[key] = var
         if choices:
-            widget = ttk.Combobox(line, textvariable=var, values=choices, state="readonly")
+            widget = ttk.Combobox(line, textvariable=var, values=choices, state="readonly", font=("Segoe UI", 10))
         else:
-            widget = ttk.Entry(line, textvariable=var, show=show or "")
+            widget = ttk.Entry(line, textvariable=var, show=show or "", font=("Segoe UI", 10))
         widget.pack(side="left", fill="x", expand=True)
         if browse:
             ttk.Button(line, text="Elegir…", command=lambda: self.choose_file(key, browse)).pack(side="left", padx=(8, 0))
         return var
 
-    def button(self, parent, text, command, primary=False):
-        item = ttk.Button(parent, text=text, command=command, style="Primary.TButton" if primary else "TButton")
-        item.pack(side="left", padx=(0, 8), pady=8)
+    def button(self, parent, text, command, primary=False, style=None):
+        btn_style = style or ("Primary.TButton" if primary else "TButton")
+        item = ttk.Button(parent, text=text, command=command, style=btn_style)
+        item.pack(side="left", padx=(0, 8), pady=4)
         self.action_buttons.append(item)
         return item
 
+    def insert_tag(self, tag):
+        self.body.insert("insert", tag)
+        self.body.focus_set()
+
+    # =========================================================================
+    # PASO 1: PURGAR LISTA Y RESULTADOS
+    # =========================================================================
     def build_list(self):
-        ttk.Label(self.list_tab, text="Tus listas, en un solo lugar", style='Section.TLabel').pack(anchor="w")
-        ttk.Label(self.list_tab, text="Carga Excel, CSV o TXT. Encontramos las columnas de correo y tú confirmas qué importar.").pack(anchor='w', pady=(4, 10))
-        imports = ttk.Frame(self.list_tab)
-        imports.pack(fill="x")
-        self.button(imports, "Cargar archivos…", self.auto_files, True)
-        self.button(imports, "Cargar carpeta…", self.auto_folder)
-        self.button(imports, "Pegar correos…", self.paste_contacts)
-        self.button(imports, 'Selección manual de Excel…', self.import_excel)
-        self.import_info = tk.StringVar(value="Puedes seleccionar varios archivos a la vez. Los originales no se modifican.")
-        ttk.Label(self.list_tab, textvariable=self.import_info, wraplength=900).pack(anchor="w", pady=3)
-        continuation = ttk.Frame(self.list_tab)
-        continuation.pack(fill='x')
-        self.button(continuation, 'Importar revisión anterior…', self.open_review)
-        self.button(continuation, 'Preparar mi oferta →', lambda: self.book.select(1))
-        self.form['lista'] = tk.StringVar()
-        self.form['columna'] = tk.StringVar(value='correo')
-        advanced = ttk.Frame(self.list_tab)
-        self.button(imports, 'Opciones', lambda: advanced.pack_forget() if advanced.winfo_manager() else advanced.pack(fill='x', before=buttons))
-        self.field(advanced, "exclusiones", "Bajas / exclusiones", browse=[("Texto", "*.txt")])
-        ttk.Button(advanced, text='Abrir una lista guardada…', command=self.saved_list).pack(anchor='w', pady=4)
+        # 1. Carga de contactos
+        card_load = ttk.Frame(self.list_tab, style="Card.TFrame", padding=16)
+        card_load.pack(fill="x", pady=(0, 12))
+        ttk.Label(card_load, text="1. Cargar Contactos", style="CardHeader.TLabel").pack(anchor="w")
+        ttk.Label(card_load, text="Selecciona tus archivos de Excel (.xlsx, .xls), CSV o TXT. El sistema extrae los correos sin alterar tus archivos originales.",
+                  style="Card.TLabel").pack(anchor="w", pady=(2, 10))
+        
+        btn_row = ttk.Frame(card_load, style="Card.TFrame")
+        btn_row.pack(fill="x", pady=2)
+        self.button(btn_row, "📂 Cargar archivos (Excel, CSV, TXT)…", self.auto_files, primary=True)
+        self.button(btn_row, "📁 Cargar carpeta completa…", self.auto_folder)
+        self.button(btn_row, "📋 Pegar correos…", self.paste_contacts)
+        self.button(btn_row, "🔍 Selección manual de Excel…", self.import_excel)
+        self.button(btn_row, "📂 Abrir revisión anterior…", self.open_review)
+        
+        self.import_info = tk.StringVar(value="Ningún archivo cargado aún. Haz clic en «Cargar archivos» para iniciar.")
+        ttk.Label(card_load, textvariable=self.import_info, font=("Segoe UI", 9, "italic"), foreground="#475569", background="white").pack(anchor="w", pady=(8, 0))
+
+        # 2. Acción destacada de purga
+        card_action = ttk.Frame(self.list_tab, style="Card.TFrame", padding=16)
+        card_action.pack(fill="x", pady=(0, 12))
+        
+        purge_left = ttk.Frame(card_action, style="Card.TFrame")
+        purge_left.pack(side="left", fill="x", expand=True)
+        ttk.Label(purge_left, text="2. Análisis y Purga de Correos", style="CardHeader.TLabel").pack(anchor="w")
+        ttk.Label(purge_left, text="Verifica la sintaxis, elimina duplicados y consulta en tiempo real si el servidor de cada dominio puede recibir correos.",
+                  style="Card.TLabel").pack(anchor="w", pady=(2, 0))
+        
+        self.button(card_action, "⚡ REVISAR Y PURGAR LISTA", lambda: self.launch("revisar"), style="BigPurge.TButton")
+
+        # 3. Métricas de purga
         cards = ttk.Frame(self.list_tab)
-        cards.pack(fill='x', pady=12)
+        cards.pack(fill="x", pady=(0, 12))
         self.metrics = {}
-        for i, (key, label, color) in enumerate([('total', 'Entradas', '#172d48'), ('APTO_DNS', 'Dominio apto', '#187757'), ('INVALIDO', 'Con problemas', '#b23b40'), ('pending', 'Por revisar', '#9a6516'), ('duplicates', 'Repetidas', '#6354a3')]):
-            cards.columnconfigure(i, weight=1, uniform='metrics')
-            card = ttk.Frame(cards, style='Card.TFrame', padding=12)
-            card.grid(row=0, column=i, sticky='ew', padx=(0, 8 if i < 4 else 0))
-            self.metrics[key] = tk.StringVar(value='0')
-            ttk.Label(card, textvariable=self.metrics[key], style='Metric.TLabel', foreground=color).pack(anchor='w')
-            ttk.Label(card, text=label, style='Card.TLabel').pack(anchor='w')
-        buttons = ttk.Frame(self.list_tab)
-        buttons.pack(fill="x")
-        self.button(buttons, "Revisar dominios", lambda: self.launch("revisar"), True)
-        self.button(buttons, 'Exportar listas CSV…', self.export_csv)
-        self.button(buttons, "Simular mensaje", lambda: self.launch("simular"))
-        self.button(buttons, "Ver un ejemplo", self.example)
-        self.summary = tk.StringVar(value="1. Carga tus archivos    2. Revisa los dominios    3. Exporta las listas")
-        ttk.Label(self.list_tab, textvariable=self.summary, wraplength=920).pack(anchor="w", pady=(6, 10))
-        filters = ttk.Frame(self.list_tab)
-        filters.pack(fill='x', pady=(0, 8))
-        ttk.Label(filters, text='Buscar').pack(side='left')
+        metric_configs = [
+            ("total", "Total de Entradas", "#1e293b"),
+            ("APTO_DNS", "✅ Aptos / Válidos", "#16a34a"),
+            ("INVALIDO", "⚠️ Con Problemas", "#dc2626"),
+            ("pending", "⏳ Por Revisar", "#d97706"),
+            ("duplicates", "🔄 Repetidas", "#7c3aed")
+        ]
+        for i, (key, label, color) in enumerate(metric_configs):
+            cards.columnconfigure(i, weight=1, uniform="metrics")
+            card = ttk.Frame(cards, style="Card.TFrame", padding=12)
+            card.grid(row=0, column=i, sticky="ew", padx=(0, 8 if i < 4 else 0))
+            self.metrics[key] = tk.StringVar(value="0")
+            ttk.Label(card, textvariable=self.metrics[key], style="MetricValue.TLabel", foreground=color).pack(anchor="w")
+            ttk.Label(card, text=label, style="MetricTitle.TLabel").pack(anchor="w")
+
+        # 4. Exportar y acciones de resultados
+        card_export = ttk.Frame(self.list_tab, style="Card.TFrame", padding=16)
+        card_export.pack(fill="x", pady=(0, 12))
+        
+        ttk.Label(card_export, text="3. Guardar y Exportar Listas Limpias", style="CardHeader.TLabel").pack(anchor="w")
+        self.summary = tk.StringVar(value="Carga tus archivos para ver el desglose y generar tus listas limpias en Excel/CSV.")
+        ttk.Label(card_export, textvariable=self.summary, style="Card.TLabel").pack(anchor="w", pady=(2, 8))
+        
+        export_row = ttk.Frame(card_export, style="Card.TFrame")
+        export_row.pack(fill="x")
+        self.button(export_row, "💾 Exportar Listas Limpias (.CSV)…", self.export_csv, style="Success.TButton")
+        self.button(export_row, "📊 Abrir informe visual (HTML)", lambda: self.open_result("informe.html"))
+        self.button(export_row, "📂 Abrir carpeta de resultados", self.open_results)
+        self.button(export_row, "👁️ Simular mensaje", lambda: self.launch("simular"))
+        self.button(export_row, "💡 Probar con ejemplo", self.example)
+
+        # 5. Explorador y filtros
+        card_table = ttk.Frame(self.list_tab, style="Card.TFrame", padding=16)
+        card_table.pack(fill="both", expand=True, pady=(0, 12))
+        
+        filter_row = ttk.Frame(card_table, style="Card.TFrame")
+        filter_row.pack(fill="x", pady=(0, 8))
+        ttk.Label(filter_row, text="Buscar contacto:", style="Card.TLabel", font=("Segoe UI", 10, "bold")).pack(side="left")
         self.search = tk.StringVar()
-        ttk.Entry(filters, textvariable=self.search, width=32).pack(side='left', padx=8)
-        self.category = tk.StringVar(value='Todos')
-        ttk.Combobox(filters, textvariable=self.category, values=FILTERS, state='readonly', width=20).pack(side='left')
-        self.search.trace_add('write', self.schedule_filter)
-        self.category.trace_add('write', self.schedule_filter)
-        tableframe = ttk.Frame(self.list_tab)
+        ttk.Entry(filter_row, textvariable=self.search, width=32, font=("Segoe UI", 10)).pack(side="left", padx=8)
+        ttk.Label(filter_row, text="Filtrar por:", style="Card.TLabel").pack(side="left", padx=(8, 4))
+        self.category = tk.StringVar(value="Todos")
+        ttk.Combobox(filter_row, textvariable=self.category, values=FILTERS, state="readonly", width=22, font=("Segoe UI", 10)).pack(side="left")
+        self.search.trace_add("write", self.schedule_filter)
+        self.category.trace_add("write", self.schedule_filter)
+
+        tableframe = ttk.Frame(card_table)
         tableframe.pack(fill="both", expand=True)
-        self.table = ttk.Treeview(tableframe, columns=("correo", "estado", "motivo"), show="headings", height=6)
-        for key, title, width in (("correo", "Correo", 270), ("estado", "Resultado DNS", 135), ("motivo", "Explicación", 460)):
+        self.table = ttk.Treeview(tableframe, columns=("correo", "estado", "motivo"), show="headings", height=8)
+        for key, title, width in (("correo", "Correo Electrónico", 280), ("estado", "Resultado DNS", 140), ("motivo", "Diagnóstico y Origen", 480)):
             self.table.heading(key, text=title)
-            self.table.column(key, width=width, minwidth=80)
+            self.table.column(key, width=width, minwidth=100)
         scrollbar = ttk.Scrollbar(tableframe, orient="vertical", command=self.table.yview)
         self.table.configure(yscrollcommand=scrollbar.set)
         scrollbar.pack(side="right", fill="y")
         self.table.pack(fill="both", expand=True)
         self.table.bind("<Double-1>", self.row_detail)
-        for state, color in [('', '#ffffff'), ('APTO_DNS', '#edf8f3'), ('INVALIDO', '#fff0f0'), ('REVISAR', '#fff7e7')]:
-            self.table.tag_configure(state or 'pending', background=color)
-        paging = ttk.Frame(self.list_tab)
-        paging.pack(fill='x', pady=6)
-        self.page_info = tk.StringVar(value='Sin entradas')
-        ttk.Label(paging, textvariable=self.page_info).pack(side='left')
-        ttk.Button(paging, text='Siguiente ›', command=lambda: self.change_page(1)).pack(side='right')
-        ttk.Button(paging, text='‹ Anterior', command=lambda: self.change_page(-1)).pack(side='right', padx=8)
-        ttk.Label(self.list_tab, text="Dominio apto no confirma que exista el buzón. Importar, revisar y exportar no envían mensajes.").pack(anchor="w", pady=6)
-        results = ttk.Frame(self.list_tab)
-        results.pack(fill="x")
-        ttk.Button(results, text="Abrir informe", command=lambda: self.open_result("informe.html")).pack(side="left", padx=(0, 8))
-        ttk.Button(results, text="Ver muestra del mensaje", command=lambda: self.open_result("vista_previa.txt")).pack(side="left", padx=(0, 8))
-        ttk.Button(results, text="Abrir carpeta de resultados", command=self.open_results).pack(side="left")
+        
+        # Colores suaves para la tabla
+        self.table.tag_configure("APTO_DNS", background="#edf8f3")
+        self.table.tag_configure("INVALIDO", background="#fef2f2")
+        self.table.tag_configure("REVISAR", background="#fffbeb")
+        self.table.tag_configure("pending", background="#ffffff")
+
+        paging = ttk.Frame(card_table, style="Card.TFrame")
+        paging.pack(fill="x", pady=(8, 0))
+        self.page_info = tk.StringVar(value="Sin entradas")
+        ttk.Label(paging, textvariable=self.page_info, style="Card.TLabel").pack(side="left")
+        ttk.Button(paging, text="Siguiente ›", command=lambda: self.change_page(1)).pack(side="right")
+        ttk.Button(paging, text="‹ Anterior", command=lambda: self.change_page(-1)).pack(side="right", padx=8)
+
+        # Barra de navegación inferior
+        nav_bottom = ttk.Frame(self.list_tab)
+        nav_bottom.pack(fill="x", pady=6)
+        ttk.Label(nav_bottom, text="¿Listo para enviar? Continúa al siguiente paso:").pack(side="left")
+        ttk.Button(nav_bottom, text="Siguiente: Redactar Mensaje ➜", style="Primary.TButton",
+                   command=lambda: self.go_to_tab(1)).pack(side="right")
+
         self.log = ScrolledText(self.list_tab, height=4, wrap="word", font=("Consolas", 9))
-        ttk.Button(results, text='Detalles técnicos', command=lambda: self.log.pack_forget() if self.log.winfo_manager() else self.log.pack(fill='x', pady=8)).pack(side='right')
         self.log.configure(state="disabled")
 
+        # Configuración interna de lista y columna
+        self.form["lista"] = tk.StringVar()
+        self.form["columna"] = tk.StringVar(value="correo")
+        self.form["exclusiones"] = tk.StringVar()
+
+    # =========================================================================
+    # PASO 2: REDACTAR MENSAJE
+    # =========================================================================
     def build_message(self):
-        ttk.Label(self.message_tab, text="Prepara el contenido que apruebe la empresa.", font=("Segoe UI", 12, "bold")).pack(anchor="w", pady=(0, 10))
-        self.field(self.message_tab, "campana_id", "Identificador del comunicado")
-        ttk.Label(self.message_tab, text="Mantén el mismo identificador para continuar un envío. Uno nuevo puede volver a escribir a todos.", wraplength=880).pack(anchor="w", pady=5)
-        self.field(self.message_tab, "asunto", "Asunto")
-        ttk.Label(self.message_tab, text="Mensaje de texto:").pack(anchor="w", pady=(10, 5))
-        self.body = ScrolledText(self.message_tab, height=10, wrap="word", font=("Segoe UI", 10))
-        self.body.pack(fill="both", expand=True)
-        ttk.Label(self.message_tab, text="Opcional: ${nombre}, ${correo} y ${empresa}. Nombre y empresa se toman del CSV o de las columnas elegidas al importar Excel.", wraplength=880).pack(anchor="w", pady=6)
-        self.field(self.message_tab, "html", "Archivo HTML (opcional)", browse=[("HTML", "*.html *.htm")])
-        ttk.Label(self.message_tab, text="Adjuntos (se enviarán completos a cada destinatario):").pack(anchor="w", pady=(8, 4))
-        self.attachment_list = tk.Listbox(self.message_tab, height=3, font=("Segoe UI", 9))
-        self.attachment_list.pack(fill="x")
-        buttons = ttk.Frame(self.message_tab)
-        buttons.pack(fill="x")
-        self.button(buttons, "Añadir adjuntos", self.add_attachments)
-        self.button(buttons, "Quitar de la lista", self.remove_attachment)
-        self.button(buttons, "Guardar configuración", self.save_settings)
-        self.button(buttons, 'Plantilla de servicios', self.offer_template)
-        self.field(self.message_tab, 'baja_correo', 'Correo para recibir bajas')
-        ttk.Label(self.message_tab, text='Se añade una instrucción de baja al texto y al HTML. Las solicitudes se atienden manualmente en «Bajas».', wraplength=850).pack(anchor='w', pady=6)
+        card_id = ttk.Frame(self.message_tab, style="Card.TFrame", padding=16)
+        card_id.pack(fill="x", pady=(0, 12))
+        ttk.Label(card_id, text="Identificación del Comunicado", style="CardHeader.TLabel").pack(anchor="w")
+        ttk.Label(card_id, text="El identificador asegura que ningún destinatario reciba el mismo mensaje dos veces.",
+                  style="Card.TLabel").pack(anchor="w", pady=(2, 8))
+        self.field(card_id, "campana_id", "Identificador de campaña")
+        self.field(card_id, "asunto", "Asunto del correo")
 
+        card_body = ttk.Frame(self.message_tab, style="Card.TFrame", padding=16)
+        card_body.pack(fill="both", expand=True, pady=(0, 12))
+        
+        body_top = ttk.Frame(card_body, style="Card.TFrame")
+        body_top.pack(fill="x", pady=(0, 8))
+        ttk.Label(body_top, text="Contenido del Mensaje", style="CardHeader.TLabel").pack(side="left")
+        
+        # Chips de inserción rápida
+        chip_bar = ttk.Frame(body_top, style="Card.TFrame")
+        chip_bar.pack(side="right")
+        ttk.Label(chip_bar, text="Insertar variable:", style="Card.TLabel").pack(side="left", padx=(0, 6))
+        ttk.Button(chip_bar, text="[ + Nombre ]", style="Chip.TButton", command=lambda: self.insert_tag("${nombre}")).pack(side="left", padx=2)
+        ttk.Button(chip_bar, text="[ + Empresa ]", style="Chip.TButton", command=lambda: self.insert_tag("${empresa}")).pack(side="left", padx=2)
+        ttk.Button(chip_bar, text="[ + Correo ]", style="Chip.TButton", command=lambda: self.insert_tag("${correo}")).pack(side="left", padx=2)
+        ttk.Button(chip_bar, text="✨ Plantilla de servicios", style="TButton", command=self.offer_template).pack(side="left", padx=(8, 0))
+
+        self.body = ScrolledText(card_body, height=12, wrap="word", font=("Segoe UI", 10))
+        self.body.pack(fill="both", expand=True, pady=6)
+        ttk.Label(card_body, text="Tip: Las variables ${nombre} y ${empresa} se reemplazan automáticamente con los datos del Excel/CSV de cada contacto.",
+                  font=("Segoe UI", 9, "italic"), foreground="#64748b", background="white").pack(anchor="w")
+
+        card_opts = ttk.Frame(self.message_tab, style="Card.TFrame", padding=16)
+        card_opts.pack(fill="x", pady=(0, 12))
+        ttk.Label(card_opts, text="Opciones Adicionales y Cumplimiento", style="CardHeader.TLabel").pack(anchor="w", pady=(0, 8))
+        
+        self.field(card_opts, "html", "Diseño HTML (opcional)", browse=[("HTML", "*.html *.htm")])
+        self.field(card_opts, "baja_correo", "Correo para recibir bajas")
+        ttk.Label(card_opts, text="Se añade automáticamente una instrucción de baja al pie de cada correo para cumplir buenas prácticas antispam.",
+                  style="Card.TLabel", font=("Segoe UI", 9)).pack(anchor="w", pady=(0, 10))
+
+        ttk.Label(card_opts, text="Archivos adjuntos (se envían a cada destinatario):", style="CardHeader.TLabel", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(4, 4))
+        self.attachment_list = tk.Listbox(card_opts, height=3, font=("Segoe UI", 9), relief="solid", borderwidth=1)
+        self.attachment_list.pack(fill="x", pady=4)
+        
+        att_bar = ttk.Frame(card_opts, style="Card.TFrame")
+        att_bar.pack(fill="x", pady=4)
+        self.button(att_bar, "➕ Añadir adjuntos…", self.add_attachments)
+        self.button(att_bar, "➖ Quitar seleccionado", self.remove_attachment)
+
+        # Navegación inferior
+        nav_msg = ttk.Frame(self.message_tab)
+        nav_msg.pack(fill="x", pady=6)
+        ttk.Button(nav_msg, text="⮜ Volver a Purgar Lista", command=lambda: self.go_to_tab(0)).pack(side="left")
+        ttk.Button(nav_msg, text="Siguiente: Conectar Correo ➜", style="Primary.TButton",
+                   command=lambda: self.go_to_tab(2)).pack(side="right")
+        self.button(nav_msg, "💾 Guardar mensaje", self.save_settings)
+
+    # =========================================================================
+    # PASO 3: CUENTA DE CORREO (SMTP)
+    # =========================================================================
     def build_account(self):
-        ttk.Label(self.account_tab, text="Estos datos debe confirmarlos el administrador del correo.", font=("Segoe UI", 12, "bold")).pack(anchor="w", pady=(0, 10))
-        ttk.Label(self.account_tab, text="Puedes revisar listas sin completar esta pestaña. El dominio propio no indica por sí solo el servidor de envío.", wraplength=880).pack(anchor="w", pady=(0, 10))
-        self.field(self.account_tab, "remitente", "Correo remitente")
-        self.field(self.account_tab, "nombre", "Nombre de la empresa")
-        self.field(self.account_tab, "responder_a", "Responder a (opcional)")
-        self.field(self.account_tab, "host", "Servidor SMTP")
-        self.field(self.account_tab, "puerto", "Puerto", "587")
-        self.field(self.account_tab, "seguridad", "Cifrado", "starttls", choices=("starttls", "ssl"))
-        self.field(self.account_tab, "autenticacion", "Autenticación", "password", choices=("password", "oauth2", "none"))
-        self.field(self.account_tab, "usuario", "Usuario SMTP")
-        ttk.Label(self.account_tab, text="La contraseña o token se pedirá en una ventana solo después de confirmar un envío. No se guarda.", wraplength=880, foreground="#1459ad").pack(anchor="w", pady=10)
-        ttk.Label(self.account_tab, text="password: credencial SMTP autorizada. oauth2: token ya emitido (sin renovación automática).\nnone: solo relay expresamente autorizado. Siempre se exige TLS.", wraplength=880).pack(anchor="w", pady=5)
-        actions = ttk.Frame(self.account_tab)
-        actions.pack(fill="x")
-        self.button(actions, "Guardar configuración", self.save_settings)
-        self.button(actions, "Cargar configuración JSON…", self.import_settings)
-        self.button(actions, 'Configurar Gmail', self.gmail_preset)
-        ttk.Label(self.account_tab, text='Gmail: usa una contraseña de aplicación, si el administrador la permite; no tu contraseña habitual.\nOAuth2 admite un token emitido por el administrador, sin inicio de sesión Google ni renovación automática.\nLos límites de Google incluyen también lo enviado fuera de esta aplicación. No hay envío ilimitado.', wraplength=850).pack(anchor='w', pady=8)
-        ttk.Label(self.account_tab, text="La copia portable no trae cuentas reales ni contraseñas. No desactives medidas de seguridad de la empresa.", wraplength=880).pack(anchor="w", pady=10)
+        card_presets = ttk.Frame(self.account_tab, style="Card.TFrame", padding=16)
+        card_presets.pack(fill="x", pady=(0, 12))
+        ttk.Label(card_presets, text="Configuración Rápida de Cuenta", style="CardHeader.TLabel").pack(anchor="w")
+        ttk.Label(card_presets, text="Selecciona tu proveedor para autocompletar el servidor y puerto de salida:",
+                  style="Card.TLabel").pack(anchor="w", pady=(2, 10))
+        
+        pre_row = ttk.Frame(card_presets, style="Card.TFrame")
+        pre_row.pack(fill="x")
+        self.button(pre_row, "🔴 Gmail / Google Workspace", self.gmail_preset, primary=True)
+        self.button(pre_row, "🔵 Outlook / Office 365", self.outlook_preset)
+        self.button(pre_row, "🌐 Servidor Propio / cPanel", self.custom_preset)
+        self.button(pre_row, "📂 Cargar JSON…", self.import_settings)
 
+        # Cuadro de ayuda amigable para Gmail
+        card_help = ttk.Frame(self.account_tab, style="Card.TFrame", padding=16)
+        card_help.pack(fill="x", pady=(0, 12))
+        ttk.Label(card_help, text="💡 ¿Cómo configurar Gmail fácilmente?", style="CardHeader.TLabel").pack(anchor="w")
+        guide_text = (
+            "1. En tu cuenta de Google, entra a Gestionar tu cuenta de Google > Seguridad.\n"
+            "2. Activa la «Verificación en dos pasos» si no la tienes activa.\n"
+            "3. En la barra de búsqueda de Seguridad escribe «Contraseñas de aplicaciones» y entra.\n"
+            "4. Crea una llamada «MxCorreo» y copia las 16 letras generadas.\n"
+            "5. Esa es la contraseña que la aplicación te pedirá al enviar (no tu contraseña normal)."
+        )
+        ttk.Label(card_help, text=guide_text, style="Card.TLabel", font=("Segoe UI", 9)).pack(anchor="w", pady=(4, 0))
+
+        # Campos SMTP
+        card_fields = ttk.Frame(self.account_tab, style="Card.TFrame", padding=16)
+        card_fields.pack(fill="x", pady=(0, 12))
+        ttk.Label(card_fields, text="Datos del Servidor de Envío (SMTP)", style="CardHeader.TLabel").pack(anchor="w", pady=(0, 8))
+        
+        self.field(card_fields, "remitente", "Correo remitente")
+        self.field(card_fields, "nombre", "Nombre visible del remitente")
+        self.field(card_fields, "responder_a", "Responder a (opcional)")
+        self.field(card_fields, "host", "Servidor SMTP")
+        self.field(card_fields, "puerto", "Puerto SMTP", "587")
+        self.field(card_fields, "seguridad", "Cifrado", "starttls", choices=("starttls", "ssl"))
+        self.field(card_fields, "autenticacion", "Autenticación", "password", choices=("password", "oauth2", "none"))
+        self.field(card_fields, "usuario", "Usuario SMTP (suele ser tu correo)")
+
+        # Reaseguro de seguridad
+        card_sec = ttk.Frame(self.account_tab, style="Card.TFrame", padding=14)
+        card_sec.pack(fill="x", pady=(0, 12))
+        ttk.Label(card_sec, text="🔒 Máxima Seguridad y Privacidad:", font=("Segoe UI", 10, "bold"), foreground="#15803d", background="white").pack(anchor="w")
+        ttk.Label(card_sec, text="Tu contraseña NUNCA se guarda en el disco. Solo se te solicita de forma segura y temporal al momento de autorizar un envío.",
+                  style="Card.TLabel", font=("Segoe UI", 9)).pack(anchor="w")
+
+        # Navegación inferior
+        nav_acc = ttk.Frame(self.account_tab)
+        nav_acc.pack(fill="x", pady=6)
+        ttk.Button(nav_acc, text="⮜ Volver a Redactar Mensaje", command=lambda: self.go_to_tab(1)).pack(side="left")
+        ttk.Button(nav_acc, text="Siguiente: Enviar y Resultados ➜", style="Primary.TButton",
+                   command=lambda: self.go_to_tab(3)).pack(side="right")
+        self.button(nav_acc, "💾 Guardar configuración", self.save_settings)
+
+    # =========================================================================
+    # PASO 4: ENVÍO AUTORIZADO Y RESULTADOS
+    # =========================================================================
     def build_send(self):
-        ttk.Label(self.send_tab, text="Solo después de revisar la lista y aprobar el mensaje.", font=("Segoe UI", 12, "bold")).pack(anchor="w", pady=(0, 10))
-        self.field(self.send_tab, 'audiencia', 'Destinatarios', 'Solo autorizados', choices=('Solo autorizados', 'Toda la lista autorizada'))
-        self.field(self.send_tab, 'autorizados', 'Archivo de autorizados', browse=[('Texto: un correo por línea', '*.txt')])
-        tools = ttk.Frame(self.send_tab)
-        tools.pack(fill='x')
-        self.button(tools, 'Editar autorizados', lambda: self.edit_addresses('autorizados', 'Destinatarios autorizados'))
-        self.button(tools, 'Bajas / no contactar', lambda: self.edit_addresses('exclusiones', 'Bajas y exclusiones'))
-        ttk.Label(self.send_tab, text='Una base recopilada no acredita permiso para recibir ofertas. Usa «Solo autorizados» para cruzarla con los contactos que sí lo tienen.', wraplength=860).pack(anchor='w', pady=6)
-        self.field(self.send_tab, "max_por_ejecucion", "Mensajes por lote", "50")
-        self.field(self.send_tab, 'max_24h', 'Máximo local en 24 h', '400')
-        ttk.Label(self.send_tab, text='El máximo cuenta intentos de todas las campañas en esta copia. No conoce los envíos desde Gmail, otras aplicaciones ni registros anteriores a esta versión.', wraplength=860).pack(anchor='w', pady=4)
-        self.field(self.send_tab, "intervalo_segundos", "Segundos entre mensajes", "2")
-        self.field(self.send_tab, "destino_prueba", "Mi dirección de prueba")
+        # Card 1: Prueba previa
+        card_test = ttk.Frame(self.send_tab, style="Card.TFrame", padding=16)
+        card_test.pack(fill="x", pady=(0, 12))
+        ttk.Label(card_test, text="🧪 Modo 1: Prueba Previa en Mi Correo (Recomendado)", style="CardHeader.TLabel").pack(anchor="w")
+        ttk.Label(card_test, text="Recibe un correo real en tu propia bandeja de entrada para asegurarte de que el formato, las variables y los adjuntos se vean perfectos antes de enviar a clientes.",
+                  style="Card.TLabel").pack(anchor="w", pady=(2, 8))
+        
+        self.field(card_test, "destino_prueba", "Mi correo de prueba")
+        test_bar = ttk.Frame(card_test, style="Card.TFrame")
+        test_bar.pack(fill="x", pady=(8, 0))
+        self.button(test_bar, "📨 Enviar correo de prueba a mi dirección", lambda: self.launch("prueba"), primary=True)
+
+        # Card 2: Envío masivo por lotes
+        card_batch = ttk.Frame(self.send_tab, style="Card.TFrame", padding=16)
+        card_batch.pack(fill="x", pady=(0, 12))
+        ttk.Label(card_batch, text="🚀 Modo 2: Envío Masivo por Lotes", style="CardHeader.TLabel").pack(anchor="w")
+        ttk.Label(card_batch, text="El envío se realiza en lotes controlados con pausas para cuidar la reputación de tu servidor y evitar bloqueos.",
+                  style="Card.TLabel").pack(anchor="w", pady=(2, 8))
+
+        self.field(card_batch, "audiencia", "Destinatarios", "Toda la lista autorizada", choices=("Toda la lista autorizada", "Solo autorizados"))
+        self.field(card_batch, "autorizados", "Archivo de autorizados (opcional)", browse=[("Texto", "*.txt")])
+        self.field(card_batch, "max_por_ejecucion", "Correos por lote", "50")
+        self.field(card_batch, "intervalo_segundos", "Pausa entre correos (segundos)", "2")
+        self.field(card_batch, "max_24h", "Máximo permitido en 24 h", "400")
+
+        # Lista de confirmación amigable
+        ttk.Label(card_batch, text="Lista de verificación de seguridad:", style="CardHeader.TLabel", font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(10, 4))
+        
         self.real_config = tk.BooleanVar(value=False)
-        ttk.Checkbutton(self.send_tab, text="Ya completé los datos reales; no estoy usando la configuración de ejemplo.", variable=self.real_config).pack(anchor="w", pady=8)
+        ttk.Checkbutton(card_batch, text="He configurado mis datos reales de envío (no estoy usando ejemplos).",
+                        variable=self.real_config).pack(anchor="w", pady=2)
+        
         labels = {
-            "remitente_autorizado": "La empresa autorizó esta cuenta remitente.",
-            "envio_aprobado": "La empresa aprobó el asunto, texto y adjuntos.",
-            "lista_revisada": "Confirmé que los destinatarios seleccionados aceptaron recibir estas ofertas.",
-            "exclusiones_revisadas": "Apliqué el archivo de bajas/exclusiones o confirmé que no hay ninguna.",
-            "limites_confirmados": "El administrador confirmó los límites y el ritmo de envío.",
+            "remitente_autorizado": "La empresa autorizó el uso de esta cuenta de correo.",
+            "envio_aprobado": "El asunto, mensaje y adjuntos están aprobados.",
+            "lista_revisada": "Confirmo que la lista de destinatarios está verificada y limpia.",
+            "exclusiones_revisadas": "Se aplicaron bajas o confirmo que no hay solicitudes pendientes.",
+            "limites_confirmados": "Confirmo los límites y el ritmo seguro de envío.",
         }
         for key, label in labels.items():
             self.approvals[key] = tk.BooleanVar(value=False)
-            ttk.Checkbutton(self.send_tab, text=label, variable=self.approvals[key]).pack(anchor="w", pady=3)
-        ttk.Label(self.send_tab, text="Una prueba real exige autorización del remitente y límites confirmados. El lote exige todas las casillas.\nSe pedirá una segunda confirmación con la lista exacta antes de conectarse al correo.", wraplength=870).pack(anchor="w", pady=12)
-        actions = ttk.Frame(self.send_tab)
-        actions.pack(fill="x")
-        self.button(actions, "Enviar a mi dirección de prueba", lambda: self.launch("prueba"))
-        self.button(actions, "Preparar envío del lote…", lambda: self.launch("enviar"))
-        self.button(actions, "Consultar registro", lambda: self.launch("estado"))
-        ttk.Label(self.send_tab, text="Conserva la carpeta «datos» al mover la aplicación: contiene el registro para no repetir envíos.\nNo ejecutes copias simultáneas en distintas computadoras para la misma campaña.", wraplength=870, foreground="#8a4b10").pack(anchor="w", pady=14)
-        ttk.Button(self.send_tab, text="Abrir guía de campañas", command=lambda: self.open_path(resources() / "Guía de campañas.txt")).pack(anchor="w")
+            ttk.Checkbutton(card_batch, text=label, variable=self.approvals[key]).pack(anchor="w", pady=2)
+
+        batch_bar = ttk.Frame(card_batch, style="Card.TFrame")
+        batch_bar.pack(fill="x", pady=(12, 0))
+        self.button(batch_bar, "👁️ Simular lote (Auditoría sin enviar)", lambda: self.launch("simular"))
+        self.button(batch_bar, "🚀 Iniciar Envío por Lotes…", lambda: self.launch("enviar"), primary=True)
+
+        # Card 3: Historial y auditoría
+        card_hist = ttk.Frame(self.send_tab, style="Card.TFrame", padding=16)
+        card_hist.pack(fill="x", pady=(0, 12))
+        ttk.Label(card_hist, text="📊 Historial y Auditoría", style="CardHeader.TLabel").pack(anchor="w", pady=(0, 8))
+        
+        hist_bar = ttk.Frame(card_hist, style="Card.TFrame")
+        hist_bar.pack(fill="x")
+        self.button(hist_bar, "📋 Consultar registro de envíos", lambda: self.launch("estado"))
+        self.button(hist_bar, "📂 Abrir carpeta de resultados", self.open_results)
+        self.button(hist_bar, "📖 Abrir guía de campañas", lambda: self.open_path(resources() / "Guía de campañas.txt"))
+
+        # Navegación inferior
+        nav_send = ttk.Frame(self.send_tab)
+        nav_send.pack(fill="x", pady=6)
+        ttk.Button(nav_send, text="⮜ Volver a Conectar Correo", command=lambda: self.go_to_tab(2)).pack(side="left")
+
+    # =========================================================================
+    # LÓGICA Y PRESETS
+    # =========================================================================
+    def gmail_preset(self):
+        for key, value in {"host": "smtp.gmail.com", "puerto": "587", "seguridad": "starttls", "autenticacion": "password"}.items():
+            if key in self.form:
+                self.form[key].set(value)
+        if "remitente" in self.form and "usuario" in self.form and not self.form["usuario"].get():
+            self.form["usuario"].set(self.form["remitente"].get())
+        self.status.set("Gmail configurado (smtp.gmail.com:587). Recuerda usar tu 'Contraseña de aplicación' de 16 letras.")
+
+    def outlook_preset(self):
+        for key, value in {"host": "smtp.office365.com", "puerto": "587", "seguridad": "starttls", "autenticacion": "password"}.items():
+            if key in self.form:
+                self.form[key].set(value)
+        if "remitente" in self.form and "usuario" in self.form and not self.form["usuario"].get():
+            self.form["usuario"].set(self.form["remitente"].get())
+        self.status.set("Outlook / Office 365 configurado (smtp.office365.com:587).")
+
+    def custom_preset(self):
+        for key, value in {"puerto": "587", "seguridad": "starttls", "autenticacion": "password"}.items():
+            if key in self.form:
+                self.form[key].set(value)
+        self.status.set("Servidor propio: completa el servidor SMTP y credenciales de tu hosting.")
 
     def load_initial(self):
         path = self.data_dir / "configuracion.json"
@@ -375,7 +672,7 @@ class App:
         try:
             self.apply_config(campana.load_config(path), path.parent)
         except Exception as exc:
-            messagebox.showwarning("No se cargó la configuración", f"Se abrirá el ejemplo. {type(exc).__name__}", parent=self.root)
+            messagebox.showwarning("Aviso de inicio", f"Se abrirá la plantilla base. {type(exc).__name__}", parent=self.root)
             self.apply_config(campana.load_config(resources() / "campana.ejemplo.json"), resources())
 
     def apply_config(self, cfg, base):
@@ -387,10 +684,10 @@ class App:
             if key in self.form:
                 self.form[key].set(str(value))
         self.real_config.set(not cfg["es_ejemplo"])
-        self.form['max_24h'].set(str(cfg['limites'].get('max_24h', 400)))
-        self.form['baja_correo'].set(cfg['mensaje'].get('baja_correo', ''))
+        self.form["max_24h"].set(str(cfg["limites"].get("max_24h", 400)))
+        self.form["baja_correo"].set(cfg["mensaje"].get("baja_correo", ""))
         for flag in self.approvals.values():
-            flag.set(False)  # Reconfirmación, esto mas que todo por que poner dos veces los correos literalmente buguea esto, y para evitarlo pues se me ocurrió
+            flag.set(False)
         self.body.delete("1.0", "end")
         self.body.insert("1.0", (base / cfg["mensaje"]["archivo_texto"]).read_text(encoding="utf-8-sig"))
         self.form["html"].set(str((base / cfg["mensaje"]["archivo_html"]).resolve()) if cfg["mensaje"]["archivo_html"] else "")
@@ -404,19 +701,17 @@ class App:
         cfg["es_ejemplo"] = not self.real_config.get()
         cfg["remitente"] = {"correo": self.form["remitente"].get().strip(), "nombre": self.form["nombre"].get(), "responder_a": self.form["responder_a"].get().strip()}
         cfg["mensaje"] = {"asunto": self.form["asunto"].get(), "archivo_texto": "mensaje.txt", "archivo_html": self.form["html"].get().strip(), "adjuntos": list(self.attachments)}
-        cfg['mensaje']['baja_correo'] = self.form['baja_correo'].get().strip()
+        cfg["mensaje"]["baja_correo"] = self.form["baja_correo"].get().strip()
         for key in ("host", "seguridad", "autenticacion", "usuario"):
             cfg["smtp"][key] = self.form[key].get().strip()
         cfg["smtp"]["puerto"] = int(self.form["puerto"].get())
         cfg["limites"]["max_por_ejecucion"] = int(self.form["max_por_ejecucion"].get())
-        cfg['limites']['max_24h'] = int(self.form['max_24h'].get())
+        cfg["limites"]["max_24h"] = int(self.form["max_24h"].get())
         cfg["limites"]["intervalo_segundos"] = float(self.form["intervalo_segundos"].get())
         cfg["autorizacion"] = {key: var.get() for key, var in self.approvals.items()}
         if remember:
             cfg["autorizacion"] = {key: False for key in cfg["autorizacion"]}
         text = self.body.get("1.0", "end-1c")
-        # El mensaje se nombra por contenido para no alterar la versión previa si falla el guardado, que si bien no ha pasado, no se sabe
-        # Esto por que ya tengo un prescendente de cuando lo hice allá en 1ro
         name = "mensaje_" + campana.hashlib.sha256(text.encode()).hexdigest()[:16] + ".txt"
         cfg["mensaje"]["archivo_texto"] = name
         message_path = folder / name
@@ -436,7 +731,8 @@ class App:
         try:
             self.collect_config(self.data_dir, remember=True)
             self.save_session()
-            self.status.set("Configuración guardada sin contraseñas. Las autorizaciones se reconfirman al abrir.")
+            self.status.set("Configuración guardada de forma segura (sin contraseñas).")
+            messagebox.showinfo("Guardado", "Configuración guardada correctamente.", parent=self.root)
         except Exception as exc:
             messagebox.showerror("Revisa la configuración", str(exc), parent=self.root)
 
@@ -449,35 +745,30 @@ class App:
                 messagebox.showerror("No se pudo cargar", str(exc), parent=self.root)
 
     def save_session(self):
-        save_json_atomic(self.data_dir / 'sesion.json', {key: self.form[key].get() for key in ('lista', 'exclusiones', 'autorizados', 'audiencia')})
-
-    def gmail_preset(self):
-        for key, value in {'host': 'smtp.gmail.com', 'puerto': '587', 'seguridad': 'starttls', 'autenticacion': 'password', 'usuario': self.form['remitente'].get()}.items():
-            self.form[key].set(value)
-        self.status.set('Gmail preparado. Completa tu remitente y usuario. La credencial solo se pide al confirmar una prueba o un lote.')
+        save_json_atomic(self.data_dir / "sesion.json", {key: self.form[key].get() for key in ("lista", "exclusiones", "autorizados", "audiencia") if key in self.form})
 
     def offer_template(self):
-        if not messagebox.askyesno('Plantilla de servicios', '¿Reemplazar el texto actual por una plantilla editable? No modifica los adjuntos.', parent=self.root):
+        if not messagebox.askyesno("Plantilla de presentación", "¿Deseas cargar una plantilla profesional de presentación de servicios?", parent=self.root):
             return
-        self.body.delete('1.0', 'end')
-        self.body.insert('1.0', OFFER_TEMPLATE)
-        self.form['asunto'].set('Presentación de nuestros servicios')
-        self.form['campana_id'].set('servicios-' + campana.uuid.uuid4().hex[:12])
-        self.status.set('Completa todos los campos entre corchetes antes de enviar. Revisa también el HTML si tienes uno.')
+        self.body.delete("1.0", "end")
+        self.body.insert("1.0", OFFER_TEMPLATE)
+        self.form["asunto"].set("Presentación de nuestros servicios profesionales")
+        self.form["campana_id"].set("servicios-" + campana.uuid.uuid4().hex[:10])
+        self.status.set("Plantilla cargada. Completa los campos entre corchetes con los datos de tu empresa.")
 
     def open_review(self):
         if self.busy:
             return
-        path = filedialog.askopenfilename(parent=self.root, title='Elige Detalle.json o informe.json', filetypes=[('Informe de revisión', '*.json')])
+        path = filedialog.askopenfilename(parent=self.root, title="Elige Detalle.json o informe.json", filetypes=[("Informe de revisión", "*.json")])
         if path:
-            self.local_task('review_imported', lambda: import_report(path, self.data_dir, self.stop_event), 'Integrando la revisión anterior…')
+            self.local_task("review_imported", lambda: import_report(path, self.data_dir, self.stop_event), "Integrando la revisión anterior…")
 
     def edit_addresses(self, key, title):
         if self.busy:
             return
-        path = Path(self.form[key].get()) if self.form[key].get() else self.data_dir / (key + '.txt')
+        path = Path(self.form[key].get()) if self.form[key].get() else self.data_dir / (key + ".txt")
         try:
-            existing = path.read_text(encoding='utf-8-sig') if path.exists() else ''
+            existing = path.read_text(encoding="utf-8-sig") if path.exists() else ""
         except OSError as exc:
             messagebox.showerror(title, str(exc), parent=self.root)
             return
@@ -485,25 +776,25 @@ class App:
         dialog.title(title)
         dialog.transient(self.root)
         dialog.grab_set()
-        ttk.Label(dialog, text='Un correo por línea. Las bajas prevalecen sobre cualquier autorización.').pack(padx=16, pady=12)
-        editor = ScrolledText(dialog, width=70, height=18)
+        ttk.Label(dialog, text="Un correo por línea. Las bajas prevalecen sobre cualquier autorización.").pack(padx=16, pady=12)
+        editor = ScrolledText(dialog, width=70, height=18, font=("Consolas", 10))
         editor.pack(padx=16, pady=8)
-        editor.insert('1.0', existing)
+        editor.insert("1.0", existing)
+
         def save():
             try:
-                values = sorted({campana.address(line).casefold() for line in editor.get('1.0', 'end').splitlines() if line.strip()})
-                # Guardar una copia propia: nunca sobrescribir la lista original elegida.
-                destination = self.data_dir / (key + '.txt')
-                with tempfile.NamedTemporaryFile('w', encoding='utf-8-sig', dir=self.data_dir, delete=False) as stream:
-                    stream.write('\n'.join(values) + ('\n' if values else ''))
+                values = sorted({campana.address(line).casefold() for line in editor.get("1.0", "end").splitlines() if line.strip()})
+                destination = self.data_dir / (key + ".txt")
+                with tempfile.NamedTemporaryFile("w", encoding="utf-8-sig", dir=self.data_dir, delete=False) as stream:
+                    stream.write("\n".join(values) + ("\n" if values else ""))
                 os.replace(stream.name, destination)
                 self.form[key].set(str(destination))
                 self.save_session()
                 dialog.destroy()
-                self.status.set(f'{title}: {len(values):,} direcciones guardadas. No se enviaron mensajes.')
+                self.status.set(f"{title}: {len(values):,} direcciones guardadas.")
             except (ValueError, OSError) as exc:
-                messagebox.showerror('Revisa las direcciones', str(exc), parent=dialog)
-        ttk.Button(dialog, text='Guardar lista', command=save).pack(pady=12)
+                messagebox.showerror("Revisa las direcciones", str(exc), parent=dialog)
+        ttk.Button(dialog, text="Guardar lista", style="Primary.TButton", command=save).pack(pady=12)
 
     def choose_file(self, key, filters):
         if self.busy:
@@ -518,10 +809,10 @@ class App:
     def set_busy(self, value):
         self.busy = value
         for button in self.action_buttons:
-            button.configure(state='disabled' if value else 'normal')
+            button.configure(state="disabled" if value else "normal")
         for index in (1, 2, 3):
-            self.book.tab(index, state='disabled' if value else 'normal')
-        self.stop_button.configure(state='normal' if value else 'disabled')
+            self.book.tab(index, state="disabled" if value else "normal")
+        self.stop_button.configure(state="normal" if value else "disabled")
         if value:
             self.stop_event.clear()
             self.progress.start(12)
@@ -533,60 +824,61 @@ class App:
             return
         self.set_busy(True)
         self.status.set(message)
+
         def task():
             try:
                 result = function()
-                self.events.put(('local_done', (kind, result, '')))
+                self.events.put(("local_done", (kind, result, "")))
             except Exception as exc:
-                self.events.put(('local_done', (kind, None, str(exc))))
+                self.events.put(("local_done", (kind, None, str(exc))))
         threading.Thread(target=task, daemon=True).start()
 
     def auto_files(self):
         if self.busy:
             return
-        paths = filedialog.askopenfilenames(parent=self.root, title='Selecciona uno o varios archivos',
-            filetypes=[('Listas de contactos', '*.xlsx *.xls *.csv *.txt')])
+        paths = filedialog.askopenfilenames(parent=self.root, title="Selecciona uno o varios archivos",
+                                            filetypes=[("Listas de contactos", "*.xlsx *.xls *.csv *.txt")])
         self.detect_files(paths)
 
     def auto_folder(self):
         if self.busy:
             return
-        folder = filedialog.askdirectory(parent=self.root, title='Selecciona la carpeta de bases')
+        folder = filedialog.askdirectory(parent=self.root, title="Selecciona la carpeta con tus archivos")
         if folder:
-            self.local_task('detected', lambda: scan_files(sorted(p for p in Path(folder).rglob('*')
-                if p.is_file() and p.suffix.lower() in EXTENSIONS and not p.name.startswith(('~$', '._'))),
-                self.stop_event, lambda message: self.events.put(('local_progress', message))), 'Buscando archivos de contactos…')
+            self.local_task("detected", lambda: scan_files(sorted(p for p in Path(folder).rglob("*")
+                if p.is_file() and p.suffix.lower() in EXTENSIONS and not p.name.startswith(("~$", "._"))),
+                self.stop_event, lambda message: self.events.put(("local_progress", message))), "Buscando archivos de contactos…")
 
     def detect_files(self, paths):
         if not paths or self.busy:
             return
-        self.local_task('detected', lambda: scan_files(paths, self.stop_event,
-            lambda message: self.events.put(('local_progress', message))), 'Buscando columnas de correo…')
+        self.local_task("detected", lambda: scan_files(paths, self.stop_event,
+            lambda message: self.events.put(("local_progress", message))), "Buscando columnas de correo…")
 
     def saved_list(self):
         if self.busy:
             return
-        path = filedialog.askopenfilename(parent=self.root, title='Continuar con una lista guardada', filetypes=[('Importaciones', '*.mxlista')])
+        path = filedialog.askopenfilename(parent=self.root, title="Continuar con una lista guardada", filetypes=[("Importaciones", "*.mxlista")])
         if path:
-            self.local_task('imported', lambda: (Path(path), load_import(Path(path), self.stop_event), 'Lista guardada'), 'Abriendo la lista…')
+            self.local_task("imported", lambda: (Path(path), load_import(Path(path), self.stop_event), "Lista guardada"), "Abriendo la lista…")
 
     def export_csv(self):
         if self.busy or not self.rows:
             if not self.busy:
-                messagebox.showinfo('Primero carga una lista', 'Carga tus archivos para poder exportarlos.', parent=self.root)
+                messagebox.showinfo("Primero carga una lista", "Carga tus archivos antes de exportar.", parent=self.root)
             return
-        if any(not row.get('estado') for row in self.rows):
-            if not messagebox.askyesno('Hay entradas sin revisar', 'La lista completa se puede exportar ahora, pero los correos sin revisar irán también a «Por revisar». ¿Continuar?', parent=self.root):
+        if any(not row.get("estado") for row in self.rows):
+            if not messagebox.askyesno("Hay entradas sin revisar", "Hay correos sin revisar. Se exportarán en la categoría «Por revisar». ¿Continuar?", parent=self.root):
                 return
-        folder = filedialog.askdirectory(parent=self.root, title='Dónde guardar las listas CSV')
+        folder = filedialog.askdirectory(parent=self.root, title="Dónde guardar las listas limpias en CSV")
         if folder:
             rows = self.rows
-            self.local_task('exported', lambda: export_lists(rows, folder), 'Guardando listas CSV…')
+            self.local_task("exported", lambda: export_lists(rows, folder), "Guardando listas limpias CSV…")
 
     def schedule_filter(self, *_):
         if self.search_job:
             self.root.after_cancel(self.search_job)
-        self.search_job = self.root.after(250, self.apply_filter)
+        self.search_job = self.root.after(200, self.apply_filter)
 
     def apply_filter(self):
         self.search_job = None
@@ -597,13 +889,13 @@ class App:
 
     def set_rows(self, rows):
         self.rows = rows
-        for key in ('APTO_DNS', 'INVALIDO'):
+        for key in ("APTO_DNS", "INVALIDO"):
             self.metrics[key].set(f"{sum(r.get('estado') == key for r in rows):,}")
-        self.metrics['total'].set(f'{len(rows):,}')
-        self.metrics['pending'].set(f"{sum(r.get('estado', '') in {'', 'REVISAR'} for r in rows):,}")
-        self.metrics['duplicates'].set(f"{sum(r.get('duplicado_de_linea') is not None for r in rows):,}")
-        self.category.set('Todos')
-        self.search.set('')
+        self.metrics["total"].set(f"{len(rows):,}")
+        self.metrics["pending"].set(f"{sum(r.get('estado', '') in {'', 'REVISAR'} for r in rows):,}")
+        self.metrics["duplicates"].set(f"{sum(r.get('duplicado_de_linea') is not None for r in rows):,}")
+        self.category.set("Todos")
+        self.search.set("")
         self.apply_filter()
 
     def change_page(self, delta):
@@ -616,17 +908,17 @@ class App:
         start = self.page * 200
         for i in self.filtered[start:start + 200]:
             row = self.rows[i]
-            reason = row.get('motivo') or 'Importado; pendiente de revisar dominios.'
-            origin = row.get('origen', {})
-            location = ' / '.join(str(v) for v in (origin.get('archivo'), origin.get('hoja'), row.get('celda_origen')) if v)
+            reason = row.get("motivo") or "Pendiente de revisar dominios."
+            origin = row.get("origen", {})
+            location = " / ".join(str(v) for v in (origin.get("archivo"), origin.get("hoja"), row.get("celda_origen")) if v)
             if location:
-                reason = location + ' · ' + reason
-            if row.get('duplicado_de_linea') is not None:
+                reason = location + " · " + reason
+            if row.get("duplicado_de_linea") is not None:
                 reason = f"Repetido de entrada {row['duplicado_de_linea']} · " + reason
-            state = row.get('estado', '')
-            self.table.insert('', 'end', iid=str(i), values=(row['original'], LABELS.get(state, state), reason), tags=(state or 'pending',))
+            state = row.get("estado", "")
+            self.table.insert("", "end", iid=str(i), values=(row["original"], LABELS.get(state, state), reason), tags=(state or "pending",))
         count = len(self.filtered)
-        self.page_info.set(f'{start + 1 if count else 0}–{min(start + 200, count)} de {count:,} entradas · La exportación incluye toda la lista, no solo esta página.')
+        self.page_info.set(f"{start + 1 if count else 0}–{min(start + 200, count)} de {count:,} entradas · La exportación incluye toda la lista.")
 
     def import_excel(self, path=None):
         if self.busy:
@@ -658,29 +950,29 @@ class App:
     def accept_import(self, contacts, source):
         def prepare():
             if self.stop_event.is_set():
-                raise ImportCancelled('Importación cancelada.')
+                raise ImportCancelled("Importación cancelada.")
             path = save_import(contacts, source, self.data_dir)
-            rows = load_import(path, self.stop_event, lambda number: self.events.put(('local_progress', f'Preparando {number:,} entradas…')))
+            rows = load_import(path, self.stop_event, lambda number: self.events.put(("local_progress", f"Preparando {number:,} entradas…")))
             if self.stop_event.is_set():
-                raise ImportCancelled('Importación cancelada. Se conserva la lista anterior.')
-            return path, rows, source['archivo']
-        self.local_task('imported', prepare, 'Preparando tu lista y detectando duplicados…')
+                raise ImportCancelled("Importación cancelada. Se conserva la lista anterior.")
+            return path, rows, source["archivo"]
+        self.local_task("imported", prepare, "Preparando tu lista y detectando duplicados…")
 
     def add_attachments(self):
-        for path in filedialog.askopenfilenames(parent=self.root, title="Selecciona los adjuntos aprobados"):
+        for path in filedialog.askopenfilenames(parent=self.root, title="Selecciona los adjuntos"):
             if path not in self.attachments:
                 self.attachments.append(path)
         self.refresh_attachments()
 
     def remove_attachment(self):
         for index in reversed(self.attachment_list.curselection()):
-            self.attachments.pop(index)  # Solo quita la referencia, no borra ningún archivo | NO CAMBIAR POR NADA DEL MUNDO
+            self.attachments.pop(index)
         self.refresh_attachments()
 
     def refresh_attachments(self):
         self.attachment_list.delete(0, "end")
         for path in self.attachments:
-            self.attachment_list.insert("end", path)
+            self.attachment_list.insert("end", Path(path).name + f" ({path})")
 
     def example(self):
         self.set_rows([])
@@ -691,31 +983,32 @@ class App:
         if self.busy:
             return
         try:
-            file = self.form["lista"].get().strip()
+            file = self.form["lista"].get().strip() if "lista" in self.form else ""
             if mode not in {"prueba", "estado"} and file and Path(file).suffix.lower() in EXCEL_EXTENSIONS:
                 self.import_excel(file)
                 file = self.form["lista"].get().strip()
                 if Path(file).suffix.lower() in EXCEL_EXTENSIONS:
                     return
             if mode not in {"prueba", "estado"} and not file:
-                raise ValueError("Elige tu archivo de correos o pulsa «Probar lista de ejemplo».")
-            authorized = self.form['autorizados'].get().strip() if self.form['audiencia'].get() == 'Solo autorizados' else ''
-            if mode in {'simular', 'enviar'} and self.form['audiencia'].get() == 'Solo autorizados' and not authorized:
-                raise ValueError('Añade los destinatarios en «Editar autorizados» o confirma que toda la lista tiene autorización en la pestaña de envío.')
-            if mode in {'enviar', 'prueba'}:
-                if not self.form['baja_correo'].get().strip():
-                    raise ValueError('Completa el correo para recibir bajas en la pestaña Mensaje.')
-                if any(token in self.body.get('1.0', 'end') for token in ('[TU NOMBRE', '[NOMBRE DE LA EMPRESA]', '[SERVICIO]', '[TIPO DE CLIENTE]', '[NECESIDAD CONCRETA]', '[EXPLICA', '[EMPRESA')):
-                    raise ValueError('Completa los campos entre corchetes de la plantilla antes de enviar.')
+                raise ValueError("Carga tus archivos en el Paso 1 o pulsa «Probar con ejemplo».")
+            authorized = self.form["autorizados"].get().strip() if self.form["audiencia"].get() == "Solo autorizados" else ""
+            if mode in {"simular", "enviar"} and self.form["audiencia"].get() == "Solo autorizados" and not authorized:
+                raise ValueError("Indica el archivo de autorizados o selecciona 'Toda la lista autorizada'.")
+            if mode in {"enviar", "prueba"}:
+                if not self.form["baja_correo"].get().strip():
+                    raise ValueError("Completa el correo para recibir bajas en la pestaña Mensaje.")
+                if any(token in self.body.get("1.0", "end") for token in ("[TU NOMBRE", "[NOMBRE DE LA EMPRESA]", "[SERVICIO]", "[TIPO DE CLIENTE]", "[NECESIDAD CONCRETA]", "[EXPLICA", "[EMPRESA")):
+                    raise ValueError("Completa los campos entre corchetes de la plantilla antes de enviar.")
             config_path = resources() / "campana.ejemplo.json"
             if mode != "revisar":
                 run_folder = Path(tempfile.mkdtemp(prefix="ejecucion_", dir=self.data_dir))
                 config_path = self.collect_config(run_folder)
-            args = argparse.Namespace(archivo=Path(file) if mode not in {"prueba", "estado"} else None,
+            args = argparse.Namespace(
+                archivo=Path(file) if mode not in {"prueba", "estado"} else None,
                 config=config_path, modo=mode, destino_prueba=self.form["destino_prueba"].get().strip() if mode == "prueba" else None,
-                exclusiones=Path(self.form["exclusiones"].get().strip()) if self.form["exclusiones"].get().strip() else None,
-                autorizados=Path(authorized) if authorized and mode in {'simular', 'enviar'} else None,
-                columna_correo=self.form["columna"].get().strip() or "correo", separador=None,
+                exclusiones=Path(self.form["exclusiones"].get().strip()) if self.form.get("exclusiones") and self.form["exclusiones"].get().strip() else None,
+                autorizados=Path(authorized) if authorized and mode in {"simular", "enviar"} else None,
+                columna_correo=self.form.get("columna", tk.StringVar(value="correo")).get().strip() or "correo", separador=None,
                 salida=self.data_dir / "resultados", registro=self.data_dir / "envios.sqlite3",
                 sin_dns=False, reintentar_temporales=False, workers=8, timeout=4, reintentos_dns=1)
             self.run_cfg = campana.load_config(config_path) if mode != "revisar" else None
@@ -729,10 +1022,11 @@ class App:
             button.configure(state="disabled")
         for index in (1, 2, 3):
             self.book.tab(index, state="disabled")
-        self.book.select(0)
+        if mode == "revisar":
+            self.book.select(0)
         self.stop_button.configure(state="normal")
         self.progress.start(12)
-        self.status.set("Trabajando. No cierres la aplicación ni retires la USB.")
+        self.status.set("Trabajando en segundo plano. No cierres la ventana.")
         self.log.configure(state="normal")
         self.log.delete("1.0", "end")
         self.log.configure(state="disabled")
@@ -748,18 +1042,19 @@ class App:
 
     def worker(self, args):
         code, error = 1, ""
+
         def connector(cfg):
-            secret = "" if cfg["smtp"]["autenticacion"] == "none" else self.ask_from_worker("secret", "Introduce la credencial SMTP o access token autorizado. No se guardará.")
+            secret = "" if cfg["smtp"]["autenticacion"] == "none" else self.ask_from_worker("secret", "Introduce la contraseña o contraseña de aplicación para conectar a tu correo. No se guardará en el disco.")
             if self.stop_event.is_set():
-                raise ValueError("Operación detenida antes de conectar a SMTP.")
+                raise ValueError("Operación detenida.")
             return campana.connect_smtp(cfg, secret=secret)
         try:
             with redirect_stdout(QueueWriter(self.events)):
                 code = campana.run(args, confirm=lambda prompt: self.ask_from_worker("confirm", prompt),
-                    connector=connector, stop_event=self.stop_event,
-                    on_output=lambda folder: self.events.put(("output", folder)))
+                                   connector=connector, stop_event=self.stop_event,
+                                   on_output=lambda folder: self.events.put(("output", folder)))
         except (smtplib.SMTPException, OSError) as exc:
-            error = f"{type(exc).__name__}: comprueba los archivos, la conexión y los datos SMTP con el administrador. Si hubo envío, consulta el registro antes de repetir."
+            error = f"{type(exc).__name__}: verifica la conexión a Internet y tus credenciales SMTP."
         except Exception as exc:
             error = str(exc)
         finally:
@@ -774,51 +1069,48 @@ class App:
                     self.log.insert("end", payload)
                     self.log.see("end")
                     self.log.configure(state="disabled")
-                elif kind == 'local_progress':
+                elif kind == "local_progress":
                     self.status.set(payload)
-                elif kind == 'local_done':
+                elif kind == "local_done":
                     operation, result, error = payload
                     stopped = self.stop_event.is_set()
                     self.set_busy(False)
                     if error:
                         self.status.set(error)
                         if not stopped:
-                            messagebox.showerror('No se pudo completar', error, parent=self.root)
-                    elif operation == 'detected':
+                            messagebox.showerror("No se pudo completar", error, parent=self.root)
+                    elif operation == "detected":
                         if stopped:
-                            self.status.set('Importación cancelada. Se conserva la lista anterior.')
+                            self.status.set("Importación cancelada.")
                             continue
                         groups, issues = result
                         if not groups:
-                            messagebox.showinfo('No se encontraron columnas', '\n'.join(issues) or 'No hay archivos admitidos en esa carpeta.', parent=self.root)
-                            self.status.set('Sin cambios. Prueba otra carpeta o la selección manual de Excel.')
+                            messagebox.showinfo("No se encontraron columnas", "\n".join(issues) or "No hay archivos válidos.", parent=self.root)
+                            self.status.set("Sin cambios. Prueba con otro archivo o carpeta.")
                             continue
-                        self.status.set('Confirma qué columnas quieres importar.')
+                        self.status.set("Confirma las columnas a importar.")
                         dialog = DetectionDialog(self.root, groups, issues)
                         if dialog.result:
-                            files = len({c['archivo_origen'] for c in dialog.result})
-                            self.accept_import(dialog.result, {'tipo': 'deteccion automatica', 'archivo': f'{files} archivos'})
+                            files = len({c["archivo_origen"] for c in dialog.result})
+                            self.accept_import(dialog.result, {"tipo": "deteccion automatica", "archivo": f"{files} archivos"})
                         else:
-                            self.status.set('Importación cancelada. Se conserva la lista anterior.')
-                    elif operation in {'imported', 'review_imported'}:
+                            self.status.set("Importación cancelada.")
+                    elif operation in {"imported", "review_imported"}:
                         if stopped:
-                            self.status.set('Importación cancelada. Se conserva la lista anterior.')
+                            self.status.set("Importación cancelada.")
                             continue
                         path, rows, label = result
-                        self.form['lista'].set(str(path))
+                        self.form["lista"].set(str(path))
                         self.save_session()
                         self.last_folder = None
                         self.set_rows(rows)
-                        self.import_info.set(f'{label} · {len(rows):,} entradas importadas. Originales intactos.')
-                        self.summary.set('Lista preparada. Pulsa «Revisar dominios» para comprobar su configuración de correo.')
-                        self.status.set('Importación terminada. Aún no se ha consultado DNS ni enviado mensajes.')
-                        if operation == 'review_imported':
-                            self.summary.set('Resultados históricos importados. Antes de preparar cada lote se vuelve a consultar DNS.')
-                            self.status.set('Revisión integrada. No se enviaron mensajes; el estado anterior no acredita permiso ni existencia del buzón.')
-                    elif operation == 'exported':
+                        self.import_info.set(f"✅ {label} · {len(rows):,} contactos cargados. Archivos originales intactos.")
+                        self.summary.set(f"Lista cargada ({len(rows):,} contactos). Pulsa «REVISAR Y PURGAR LISTA» para verificar los correos.")
+                        self.status.set("Contactos cargados. Listo para purgar.")
+                    elif operation == "exported":
                         folder, counts = result
-                        self.status.set(f'CSV guardados en {folder}')
-                        messagebox.showinfo('Listas exportadas', '\n'.join(f'{name}: {count:,}' for name, count in counts.items()) + f'\n\n{folder}\n\nDominio apto no confirma que el buzón exista.', parent=self.root)
+                        self.status.set(f"Listas guardadas en: {folder}")
+                        messagebox.showinfo("Listas exportadas con éxito", "\n".join(f"{name}: {count:,}" for name, count in counts.items()) + f"\n\nGuardado en:\n{folder}", parent=self.root)
                 elif kind == "output":
                     self.last_folder = payload
                     self.show_results()
@@ -829,7 +1121,7 @@ class App:
                             dialog = ConfirmSend(self.root, payload["prompt"], detail)
                             payload["answer"] = dialog.result
                         else:
-                            payload["answer"] = simpledialog.askstring("Credencial de envío", payload["prompt"], show="*", parent=self.root)
+                            payload["answer"] = simpledialog.askstring("Contraseña de correo", payload["prompt"], show="*", parent=self.root)
                     payload["event"].set()
                 elif kind == "done":
                     code, error = payload
@@ -840,59 +1132,64 @@ class App:
                         button.configure(state="normal")
                     for index in (1, 2, 3):
                         self.book.tab(index, state="normal")
-                    self.status.set("Revisa el aviso: la operación no terminó." if error else "Operación detenida; revisa el registro." if code in {2, 130} else "Terminado. Los detalles aparecen abajo y en la carpeta de resultados.")
-                    result = self.last_folder / 'envio.json' if self.last_folder else None
+                    self.status.set("Operación terminada." if not error else f"Aviso: {error}")
+                    result = self.last_folder / "envio.json" if self.last_folder else None
                     if result and result.exists():
-                        delivery = json.loads(result.read_text(encoding='utf-8'))
-                        self.summary.set('Resultado del lote: ' + ', '.join(f'{key}: {value:,}' for key, value in delivery['lote'].items()) + '. Aceptado por SMTP no significa entregado.')
-                        if delivery['lote'].get('LIMITE_LOCAL_24H'):
-                            self.status.set('Lote detenido por el máximo local de 24 horas. Conserva la campaña para continuar cuando haya cupo; comprueba también los límites de Google.')
+                        delivery = json.loads(result.read_text(encoding="utf-8"))
+                        self.summary.set("Resultado del envío: " + ", ".join(f"{k}: {v:,}" for k, v in delivery["lote"].items()))
                     if error:
-                        messagebox.showerror("No se pudo completar", error, parent=self.root)
+                        messagebox.showerror("Aviso de ejecución", error, parent=self.root)
+                    else:
+                        if self.last_folder and (self.last_folder / "informe.json").exists():
+                            messagebox.showinfo("Purga completada", "La revisión y purga de correos ha terminado. Revisa las métricas y exporta tus listas limpias.", parent=self.root)
         except queue.Empty:
             pass
         self.root.after(100, self.poll)
 
     def confirmation_detail(self):
         cfg = self.run_cfg
-        intro = f"Servidor: {cfg['smtp']['host']}:{cfg['smtp']['puerto']}\nRemitente: {cfg['remitente']['correo']}\n\n"
+        intro = f"Servidor SMTP: {cfg['smtp']['host']}:{cfg['smtp']['puerto']}\nRemitente: {cfg['remitente']['correo']}\n\n"
         if self.last_folder:
-            sample = (self.last_folder / "vista_previa.txt").read_text(encoding="utf-8")
-            audit = json.loads((self.last_folder / "seleccion.json").read_text(encoding="utf-8"))
-            recipients = [item["correo"] for item in audit["decisiones"] if item["decision"] == "SELECCIONADO"]
+            sample_path = self.last_folder / "vista_previa.txt"
+            audit_path = self.last_folder / "seleccion.json"
+            sample = sample_path.read_text(encoding="utf-8") if sample_path.exists() else ""
+            recipients = []
+            if audit_path.exists():
+                audit = json.loads(audit_path.read_text(encoding="utf-8"))
+                recipients = [item["correo"] for item in audit.get("decisiones", []) if item.get("decision") == "SELECCIONADO"]
             return intro + sample + "\nDESTINATARIOS EXACTOS DE ESTE LOTE:\n" + "\n".join(recipients)
         return intro
 
     def show_results(self):
         path = self.last_folder / "informe.json"
         if not path.exists():
-            history = self.last_folder / 'estado_envios.json'
+            history = self.last_folder / "estado_envios.json"
             if history.exists():
-                entries = json.loads(history.read_text(encoding='utf-8'))['envios']
-                counts = campana.Counter(row['status'] for row in entries)
-                self.summary.set('Registro: ' + (', '.join(f'{key}: {value:,}' for key, value in counts.items()) or 'Todavía no hay envíos.') + ' · CSV disponible en la carpeta de resultados.')
+                entries = json.loads(history.read_text(encoding="utf-8"))["envios"]
+                counts = campana.Counter(row["status"] for row in entries)
+                self.summary.set("Historial de envíos: " + (", ".join(f"{k}: {v:,}" for k, v in counts.items()) or "Sin envíos registrados."))
             return
         report = json.loads(path.read_text(encoding="utf-8"))
-        self.set_rows(report['resultados'])
-        self.summary.set(f"Revisión disponible · {report['total']:,} entradas · Exporta los grupos a CSV para Excel.")
+        self.set_rows(report["resultados"])
+        self.summary.set(f"Purga lista · {report['total']:,} revisados · Haz clic en «Exportar Listas Limpias» para guardarlas.")
 
     def row_detail(self, _event=None):
         selection = self.table.selection()
         if selection:
             values = self.table.item(selection[0], "values")
-            messagebox.showinfo("Detalle de revisión", "\n\n".join(values), parent=self.root)
+            messagebox.showinfo("Detalle del contacto", "\n\n".join(values), parent=self.root)
 
     def open_path(self, path):
         try:
             open_local_path(path)
         except (OSError, subprocess.SubprocessError):
-            messagebox.showinfo("Abrir archivo", f"Abre esta ruta con el Explorador o un editor de texto:\n{path.resolve()}", parent=self.root)
+            messagebox.showinfo("Ruta del archivo", f"Abre la siguiente ruta en tu explorador:\n{path.resolve()}", parent=self.root)
 
     def open_result(self, name):
         if self.last_folder and (self.last_folder / name).exists():
             self.open_path(self.last_folder / name)
         else:
-            messagebox.showinfo("Todavía no está disponible", "Primero revisa la lista. Para ver un mensaje, ejecuta «Simular el mensaje» con destinatarios aptos.", parent=self.root)
+            messagebox.showinfo("Aún no generado", "Realiza la purga o simulación primero para generar este archivo.", parent=self.root)
 
     def open_results(self):
         folder = self.last_folder or self.data_dir
@@ -900,26 +1197,26 @@ class App:
 
     def stop(self):
         self.stop_event.set()
-        self.status.set("Deteniendo de forma segura. Espera a que termine la consulta o mensaje actual.")
+        self.status.set("Deteniendo de forma segura. Espera un momento…")
 
     def close(self):
         if self.busy:
             self.stop()
-            messagebox.showinfo("Espera un momento", "Solicité detener la operación. Espera a que termine antes de cerrar o retirar la USB.", parent=self.root)
+            messagebox.showinfo("Espera un momento", "Deteniendo la operación antes de cerrar…", parent=self.root)
             return
         self.root.destroy()
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--datos", type=Path, default=None, help="Carpeta de datos alternativa, para pruebas o uso administrado")
+    parser.add_argument("--datos", type=Path, default=None, help="Carpeta de datos alternativa")
     args = parser.parse_args()
     root = tk.Tk()
     try:
         App(root, args.datos or default_data_dir())
     except Exception as exc:
         root.withdraw()
-        messagebox.showerror("MxCorreo no pudo abrirse", f"{type(exc).__name__}: copia la carpeta completa a una ubicación donde puedas guardar archivos, como Documentos. No la abras dentro del ZIP.", parent=root)
+        messagebox.showerror("No se pudo iniciar", f"{type(exc).__name__}: {exc}", parent=root)
         root.destroy()
         return 1
     root.mainloop()

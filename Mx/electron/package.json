@@ -1,0 +1,71 @@
+{
+  "name": "mxcorreo",
+  "version": "2.0.0",
+  "description": "MxCorreo — Purga, Limpieza y Envío de Correos — Actuariosa",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-builder --win --x64",
+    "build:dir": "electron-builder --win --x64 --dir"
+  },
+  "build": {
+    "appId": "com.actuariosa.mxcorreo",
+    "productName": "MxCorreo",
+    "copyright": "Actuariosa",
+    "forceCodeSigning": false,
+    "directories": {
+      "output": "../entrega"
+    },
+    "win": {
+      "icon": "renderer/assets/icon.ico",
+      "target": [
+        {
+          "target": "dir",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "signingHashAlgorithms": null,
+      "sign": null
+    },
+    "extraResources": [
+      {
+        "from": "../",
+        "to": "backend",
+        "filter": [
+          "campana.py",
+          "campana.ejemplo.json",
+          "mensaje.ejemplo.txt",
+          "ejemplo.txt",
+          "verificar_correos.py",
+          "importar_contactos.py",
+          "importacion_automatica.py",
+          "resultados_interfaz.py",
+          "centro_campanas.py",
+          "dialogos_importacion.py",
+          "etapas.py",
+          "abrir_archivo.py",
+          "mxcorreo_server.py",
+          "GUIA_CAMPANA.md",
+          "LEEME_WINDOWS.txt"
+        ]
+      },
+      {
+        "from": "../.venv",
+        "to": "pythonenv"
+      },
+      {
+        "from": "renderer/assets/icons",
+        "to": "icons"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "allowScripts": {
+    "electron@33.4.11": true
+  }
+}
