@@ -23,7 +23,7 @@ except ImportError:
 BASE_DIR = Path(__file__).resolve().parent
 RESULTADOS_DIR = BASE_DIR / "resultados"
 
-DEFAULT_PANEL_URL = os.environ.get("PANEL_URL", "http://localhost:3000/api/sync")
+DEFAULT_PANEL_URL = os.environ.get("PANEL_URL", "https://panel-web-six-plum.vercel.app/api/sync")
 DEFAULT_API_KEY = os.environ.get("SYNC_API_KEY", "actuariosa-telemetry-key-2026")
 
 

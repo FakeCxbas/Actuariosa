@@ -4,6 +4,6 @@
   "channel": "stable",
   "build": 200,
   "release_date": "2026-09-20",
-  "update_url": "http://localhost:3000/api/updates",
-  "last_updated": "2026-09-21T15:54:44.133928"
+  "update_url": "https://panel-web-six-plum.vercel.app/api/updates",
+  "last_updated": "2026-09-21T16:28:04.638558"
 }

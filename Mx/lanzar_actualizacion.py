@@ -14,7 +14,7 @@ import urllib.request
 import urllib.error
 from datetime import datetime
 
-DEFAULT_URL = "http://localhost:3000/api/updates"
+DEFAULT_URL = "https://panel-web-six-plum.vercel.app/api/updates"
 
 def parse_args():
     parser = argparse.ArgumentParser(

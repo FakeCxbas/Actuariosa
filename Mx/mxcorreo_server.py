@@ -773,7 +773,7 @@ def cmd_verificar_actualizacion(params, req_id):
     try:
         import urllib.request
         import urllib.parse
-        url = params.get("url") or "http://localhost:3000/api/updates"
+        url = params.get("url") or "https://panel-web-six-plum.vercel.app/api/updates"
         ver_file = BASE_DIR / "version.json"
         current_version = "2.0.0"
         if ver_file.exists():

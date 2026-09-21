@@ -227,7 +227,7 @@ function getLocalVersionInfo() {
       version: ver,
       name: "MxCorreo",
       channel: "stable",
-      update_url: "http://localhost:3000/api/updates",
+      update_url: "https://panel-web-six-plum.vercel.app/api/updates",
     },
     path: path.join(__dirname, "..", "version.json"),
   };
@@ -242,7 +242,7 @@ ipcMain.handle("check-updates", async (_event, customUrl) => {
   try {
     const { data: localData } = getLocalVersionInfo();
     const currentVersion = localData.version || "2.0.0";
-    const updateUrl = customUrl || localData.update_url || "http://localhost:3000/api/updates";
+    const updateUrl = customUrl || localData.update_url || "https://panel-web-six-plum.vercel.app/api/updates";
 
     const separator = updateUrl.includes("?") ? "&" : "?";
     const targetUrl = `${updateUrl}${separator}current_version=${encodeURIComponent(currentVersion)}`;
