@@ -87,9 +87,9 @@ export const initialTelemetryData: TelemetriaActuariosa = {
     otros_genericos: 85649,
     correos_con_error_formato: 563,
     duplicados_eliminados: 141437,
-    total_enviados_campanas: 9116,
-    total_errores_envio: 84,
-    tasa_entrega: 99.1,
+    total_enviados_campanas: 0,
+    total_errores_envio: 0,
+    tasa_entrega: 0.0,
   },
   distribucion_provincias: {
     "GUAYAS": 11236,
@@ -125,112 +125,8 @@ export const initialTelemetryData: TelemetriaActuariosa = {
     "yahoo.es": 4019,
     "outlook.com": 1437,
   },
-  campanas: [
-    {
-      id: "CAMP-003",
-      nombre: "Campaña Corporativa Guayas — NIC 19",
-      fecha: "2026-09-20 14:30",
-      total: 4500,
-      enviados: 4462,
-      errores: 38,
-      asunto: "Actualización y Valoración Actuarial de Pasivos Laborales (NIC 19)",
-      remitente: "contacto@actuariosa.com",
-    },
-    {
-      id: "CAMP-002",
-      nombre: "Prospección Jubilación Patronal y Desahucio",
-      fecha: "2026-09-18 11:15",
-      total: 3200,
-      enviados: 3176,
-      errores: 24,
-      asunto: "Estudios Actuariales Obligatorios 2026 — Actuariosa S.A.",
-      remitente: "gerencia@actuariosa.com",
-    },
-    {
-      id: "CAMP-001",
-      nombre: "Presentación de Servicios Actuariales B2B",
-      fecha: "2026-09-15 09:40",
-      total: 1500,
-      enviados: 1478,
-      errores: 22,
-      asunto: "Propuesta de Consultoría Actuarial y Financiera — Actuariosa S.A.",
-      remitente: "contacto@actuariosa.com",
-    },
-  ],
-  leads_respuestas: [
-    {
-      id: "LEAD-101",
-      empresa: "AGROEXPORTADORA DEL LITORAL S.A.",
-      correo: "gerencia.financiera@agrolitoral.com.ec",
-      ruc: "0992384912001",
-      provincia: "GUAYAS",
-      fecha_contacto: "2026-09-18",
-      fecha_respuesta: "2026-09-19",
-      estado: "Cotización Solicitada",
-      servicio_interes: "Jubilación Patronal / NIC 19",
-      notas: "Requieren valoración actuarial para cierre de estados financieros de 85 colaboradores.",
-    },
-    {
-      id: "LEAD-102",
-      empresa: "CONSORCIO INDUSTRIAL ECUATORIANO C.A.",
-      correo: "talento.humano@ciecuador.com",
-      ruc: "0991827364001",
-      provincia: "GUAYAS",
-      fecha_contacto: "2026-09-18",
-      fecha_respuesta: "2026-09-20",
-      estado: "En Negociación",
-      servicio_interes: "Estudio Actuarial Completo",
-      notas: "Reunión agendada para el jueves 10:00 AM vía Zoom con el Director Financiero.",
-    },
-    {
-      id: "LEAD-103",
-      empresa: "LOGÍSTICA & CARGA MARÍTIMA TRANSPORTS S.A.",
-      correo: "operaciones@logistimarec.com",
-      ruc: "0992918231001",
-      provincia: "GUAYAS",
-      fecha_contacto: "2026-09-20",
-      fecha_respuesta: "2026-09-21",
-      estado: "Positivo / Interesado",
-      servicio_interes: "Desahucio y Pasivos Laborales",
-      notas: "Respondieron solicitando el brochure corporativo y tabla referencial de honorarios.",
-    },
-    {
-      id: "LEAD-104",
-      empresa: "FARMACÉUTICA & DISTRIBUCIONES QUITO S.A.",
-      correo: "administracion@farmadist.ec",
-      ruc: "1792837461001",
-      provincia: "PICHINCHA",
-      fecha_contacto: "2026-09-15",
-      fecha_respuesta: "2026-09-17",
-      estado: "Cerrado / Cliente",
-      servicio_interes: "Jubilación Patronal / NIC 19",
-      notas: "Estudio contratado y nómina cargada en sistema. Certificación entregada.",
-    },
-    {
-      id: "LEAD-105",
-      empresa: "TEXTILES Y CONFECCIONES DEL AUSTRO CIA. LTDA.",
-      correo: "contabilidad@textilesaustro.com",
-      ruc: "0192837462001",
-      provincia: "AZUAY",
-      fecha_contacto: "2026-09-15",
-      fecha_respuesta: "2026-09-16",
-      estado: "Positivo / Interesado",
-      servicio_interes: "Jubilación Patronal / NIC 19",
-      notas: "Piden llamada de consulta sobre implicaciones de la reforma laboral.",
-    },
-    {
-      id: "LEAD-106",
-      empresa: "SERVICIOS DE CATERING Y ALIMENTACIÓN CORPORATIVA",
-      correo: "info@cateringcorp.com.ec",
-      ruc: "0792837461001",
-      provincia: "EL ORO",
-      fecha_contacto: "2026-09-20",
-      fecha_respuesta: "2026-09-21",
-      estado: "No Interesado",
-      servicio_interes: "Consultoría Financiera",
-      notas: "Indican que ya cuentan con perito actuario externo para este ejercicio.",
-    },
-  ],
+  campanas: [],
+  leads_respuestas: [],
   version_actual_cliente: {
     version: "2.1.0",
     title: "Actualización v2.1.0 — Motor Masivo & Telemetría en la Nube",
@@ -293,7 +189,7 @@ export async function getGlobalStore(): Promise<TelemetriaActuariosa> {
 
     if (teleRes.data) {
       const tele = teleRes.data;
-      const campanas: CampanaRegistro[] = (campanasRes.data && campanasRes.data.length > 0)
+      const campanas: CampanaRegistro[] = campanasRes.data
         ? campanasRes.data.map((c: any) => ({
             id: c.id,
             nombre: c.nombre,
@@ -304,9 +200,9 @@ export async function getGlobalStore(): Promise<TelemetriaActuariosa> {
             asunto: c.asunto || "",
             remitente: c.remitente || "",
           }))
-        : globalStore.campanas;
+        : [];
 
-      const leads: LeadRespuesta[] = (leadsRes.data && leadsRes.data.length > 0)
+      const leads: LeadRespuesta[] = leadsRes.data
         ? leadsRes.data.map((l: any) => ({
             id: l.id,
             empresa: l.empresa,
@@ -319,7 +215,7 @@ export async function getGlobalStore(): Promise<TelemetriaActuariosa> {
             servicio_interes: l.servicio_interes,
             notas: l.notas || "",
           }))
-        : globalStore.leads_respuestas;
+        : [];
 
       const releases: VersionRelease[] = (releasesRes.data && releasesRes.data.length > 0)
         ? releasesRes.data.map((r: any) => ({

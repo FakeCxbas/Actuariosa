@@ -665,10 +665,17 @@ export default function DashboardGerencial() {
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
                     <span className="text-slate-300">4. Contactadas en Campañas de Email B2B (NIC 19 / Jubilación)</span>
-                    <span className="font-mono text-slate-400">9,116 (21.4% de base funcional)</span>
+                    <span className="font-mono text-slate-400">
+                      {kpis.total_enviados_campanas.toLocaleString("es-EC")} ({kpis.total_negocios_unicos > 0 ? ((kpis.total_enviados_campanas / kpis.total_negocios_unicos) * 100).toFixed(1) : "0.0"}% de base funcional)
+                    </span>
                   </div>
                   <div className="h-4 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-teal-500 rounded-full" style={{ width: "9.1%" }}></div>
+                    <div
+                      className="h-full bg-teal-500 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min(100, Math.max(kpis.total_enviados_campanas > 0 ? 2 : 0, (kpis.total_enviados_campanas / (kpis.total_negocios_unicos || 1)) * 100))}%`,
+                      }}
+                    ></div>
                   </div>
                 </div>
 
@@ -679,7 +686,12 @@ export default function DashboardGerencial() {
                     <span className="font-mono text-emerald-400 font-bold">{conteoRespuestas.positivos} empresas interesadas</span>
                   </div>
                   <div className="h-4 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-400 rounded-full" style={{ width: "3.8%" }}></div>
+                    <div
+                      className="h-full bg-emerald-400 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min(100, Math.max(conteoRespuestas.positivos > 0 ? 2 : 0, (conteoRespuestas.positivos / (kpis.total_enviados_campanas || 1)) * 100))}%`,
+                      }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -790,6 +802,13 @@ export default function DashboardGerencial() {
                         </tr>
                       );
                     })}
+                    {data.campanas.length === 0 && (
+                      <tr>
+                        <td colSpan={6} className="py-8 text-center text-slate-500">
+                          No hay campañas registradas todavía. Las campañas que se envíen desde MxCorreo aparecerán aquí automáticamente en tiempo real.
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
