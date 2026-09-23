@@ -1,12 +1,27 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Actuariosa — Panel de Monitoreo Gerencial",
   description:
-    "Supervisión ejecutiva en tiempo real del inventario de correos, depuración de empresas Supercias, rendimiento de campañas B2B y prospectos positivos.",
+    "Supervisión ejecutiva en tiempo real del inventario de correos, depuración de empresas Supercias, rendimiento de campañas B2B y prospectos comerciales.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
   },
 };
 
@@ -16,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className="dark">
-      <body className="bg-[#070a12] text-slate-100 antialiased min-h-screen selection:bg-indigo-500/30 selection:text-indigo-200">
+    <html lang="es" className={`dark ${plusJakarta.variable} ${spaceGrotesk.variable}`}>
+      <body className="bg-[#050b14] text-slate-100 antialiased min-h-screen selection:bg-[#d4af37]/30 selection:text-[#fdf4dc] font-sans">
         {children}
       </body>
     </html>

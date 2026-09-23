@@ -405,23 +405,32 @@ export default function DashboardGerencial() {
       )}
 
       {/* ── TOP EXECUTIVE BAR ─────────────────────────────────────── */}
-      <header className="border-b border-white/[0.08] bg-[#0c1120]/80 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-white/[0.08] bg-[#080e1c]/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center shadow-lg shadow-indigo-600/30 ring-1 ring-white/20">
-              <Building2 className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 rounded-2xl bg-[#0a1322] border border-[#d4af37]/30 flex items-center justify-center shadow-lg shadow-[#d4af37]/15 ring-1 ring-white/10 overflow-hidden shrink-0">
+              <img
+                src="/avatar-humano-navy-oro.png"
+                alt="Emblema Actuariosa"
+                className="w-10 h-10 object-contain"
+              />
             </div>
             <div>
-              <div className="flex items-center gap-2.5">
-                <h1 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-                  Actuariosa <span className="text-indigo-400 font-semibold text-sm px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20">PANEL GERENCIAL</span>
-                </h1>
+              <div className="flex items-center gap-3 flex-wrap">
+                <img
+                  src="/actuariosa-gold.svg"
+                  alt="Actuariosa"
+                  className="h-7 w-auto object-contain brightness-110"
+                />
+                <span className="text-[#d4af37] font-semibold text-xs px-2.5 py-0.5 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 font-mono tracking-wide">
+                  PANEL GERENCIAL
+                </span>
                 <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${isRealtimeActive ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-amber-500/10 text-amber-400 border border-amber-500/20"}`} title="Conexión WebSocket en tiempo real directa con Supabase. Cero recargas o consultas periódicas.">
                   <span className={`w-2 h-2 rounded-full ${isRealtimeActive ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`}></span>
                   {isRealtimeActive ? "⚡ Tiempo Real • WebSockets" : "Conectando Tiempo Real…"}
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-400 mt-1">
                 Supervisión del flujo de datos, depuración Supercias y prospección comercial B2B
               </p>
             </div>
@@ -430,7 +439,7 @@ export default function DashboardGerencial() {
           <div className="flex items-center gap-3">
             <div className="hidden md:flex flex-col text-right text-xs">
               <span className="text-slate-400 flex items-center gap-1 justify-end">
-                <Clock className="w-3.5 h-3.5 text-emerald-400" /> Sincronización en vivo:
+                <Clock className="w-3.5 h-3.5 text-[#d4af37]" /> Sincronización en vivo:
               </span>
               <span className="text-slate-200 font-mono font-medium">{lastSyncTime || "En vivo"}</span>
             </div>
@@ -441,14 +450,14 @@ export default function DashboardGerencial() {
               className="p-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-slate-300 hover:text-white transition-all disabled:opacity-50"
               title="Refrescar métricas de la nube"
             >
-              <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-indigo-400" : ""}`} />
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-[#d4af37]" : ""}`} />
             </button>
 
             <button
               onClick={() => setShowUploadModal(true)}
-              className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] text-slate-200 hover:text-white transition-all"
+              className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#d4af37]/10 hover:bg-[#d4af37]/20 border border-[#d4af37]/30 text-[#fdf4dc] hover:text-white transition-all"
             >
-              <UploadCloud className="w-4 h-4 text-indigo-400" />
+              <UploadCloud className="w-4 h-4 text-[#d4af37]" />
               <span>Cargar Reporte JSON</span>
             </button>
           </div>
@@ -460,11 +469,11 @@ export default function DashboardGerencial() {
             onClick={() => setActiveTab("general")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "general"
-                ? "border-indigo-500 text-indigo-400 bg-indigo-500/[0.04]"
+                ? "border-[#d4af37] text-[#d4af37] bg-[#d4af37]/[0.06] font-semibold"
                 : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
             }`}
           >
-            <BarChart3 className="w-4 h-4" />
+            <BarChart3 className="w-4 h-4 text-[#d4af37]" />
             <span>Visión Ejecutiva</span>
           </button>
 
@@ -487,7 +496,7 @@ export default function DashboardGerencial() {
             onClick={() => setActiveTab("flujo")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "flujo"
-                ? "border-blue-500 text-blue-400 bg-blue-500/[0.04]"
+                ? "border-sky-400 text-sky-400 bg-sky-500/[0.05]"
                 : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
             }`}
           >
@@ -499,7 +508,7 @@ export default function DashboardGerencial() {
             onClick={() => setActiveTab("empresas")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "empresas"
-                ? "border-amber-500 text-amber-400 bg-amber-500/[0.04]"
+                ? "border-[#d4af37] text-[#d4af37] bg-[#d4af37]/[0.05]"
                 : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
             }`}
           >
@@ -550,19 +559,19 @@ export default function DashboardGerencial() {
               </div>
 
               {/* Card 2: Negocios Depurados 100% Funcionales */}
-              <div className="glass-card p-6 relative overflow-hidden group border-indigo-500/30">
-                <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-indigo-500 to-emerald-500"></div>
+              <div className="glass-card p-6 relative overflow-hidden group border-[#d4af37]/35 bg-gradient-to-br from-[#0a1322] to-[#121c2c] shadow-lg shadow-[#d4af37]/5">
+                <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-[#d4af37] via-[#f3d982] to-[#b89628]"></div>
                 <div className="flex items-center justify-between text-slate-400 mb-3">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-indigo-300">Empresas 100% Funcionales</span>
-                  <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-400">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#d4af37]">Empresas 100% Funcionales</span>
+                  <div className="p-2 rounded-lg bg-[#d4af37]/15 text-[#d4af37]">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-3xl font-extrabold text-emerald-400 font-mono tracking-tight">
-                  {kpis.total_negocios_unicos.toLocaleString("es-EC")}
+                <div className="text-3xl font-extrabold text-white font-mono tracking-tight flex items-baseline gap-2">
+                  <span className="text-[#fdf4dc]">{kpis.total_negocios_unicos.toLocaleString("es-EC")}</span>
                 </div>
                 <div className="mt-3 text-xs text-slate-400 flex items-center justify-between">
-                  <span className="text-emerald-400 font-semibold">{kpis.supercias_activas_con_ruc.toLocaleString("es-EC")} Supercias RUC</span>
+                  <span className="text-[#d4af37] font-semibold">{kpis.supercias_activas_con_ruc.toLocaleString("es-EC")} Supercias RUC</span>
                   <span>{kpis.negocios_corporativos.toLocaleString("es-EC")} corporativos</span>
                 </div>
               </div>
@@ -614,14 +623,14 @@ export default function DashboardGerencial() {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-indigo-400" />
+                    <TrendingUp className="w-5 h-5 text-[#d4af37]" />
                     Embudo de Depuración y Rendimiento Comercial
                   </h3>
                   <p className="text-xs text-slate-400 mt-1">
                     Visualiza el flujo de filtrado desde la recolección cruda hasta las respuestas de contratación actuarial.
                   </p>
                 </div>
-                <span className="text-xs px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-semibold">
+                <span className="text-xs px-3 py-1 rounded-lg bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/30 font-semibold font-mono">
                   Eficiencia de Purga: 82.8%
                 </span>
               </div>
@@ -646,18 +655,18 @@ export default function DashboardGerencial() {
                     <span className="font-mono text-slate-400">136,602 (55.1%)</span>
                   </div>
                   <div className="h-4 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-blue-600 rounded-full" style={{ width: "55.1%" }}></div>
+                    <div className="h-full bg-sky-600 rounded-full" style={{ width: "55.1%" }}></div>
                   </div>
                 </div>
 
                 {/* Etapa 3 */}
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-indigo-300 font-semibold">3. Empresas Activas en Supercias y Dominios Corporativos (100% Funcionales)</span>
-                    <span className="font-mono text-emerald-400 font-bold">42,648 (17.2%)</span>
+                    <span className="text-[#d4af37] font-semibold">3. Empresas Activas en Supercias y Dominios Corporativos (100% Funcionales)</span>
+                    <span className="font-mono text-[#d4af37] font-bold">42,648 (17.2%)</span>
                   </div>
                   <div className="h-4 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-indigo-500 rounded-full" style={{ width: "17.2%" }}></div>
+                    <div className="h-full bg-gradient-to-r from-[#d4af37] to-[#f3d982] rounded-full" style={{ width: "17.2%" }}></div>
                   </div>
                 </div>
 
