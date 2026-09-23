@@ -74,9 +74,6 @@ export default function DashboardGerencial() {
 
   // Direct Drag & Drop upload status
   const [uploadStatus, setUploadStatus] = useState<string>("");
-
-  // PIN / Auth state
-  const [isAdminUnlocked, setIsAdminUnlocked] = useState<boolean>(true);
   const [toastMsg, setToastMsg] = useState<{ text: string; type: "ok" | "err" } | null>(null);
 
   const showToast = (text: string, type: "ok" | "err" = "ok") => {
@@ -84,7 +81,7 @@ export default function DashboardGerencial() {
     setTimeout(() => setToastMsg(null), 3500);
   };
 
-  // Cargar datos del servidor (con soporte para auto-polling silencioso)
+  // Cargar datos del servidor
   const fetchTelemetry = async (silent: boolean = false) => {
     if (!silent) setIsRefreshing(true);
     try {
@@ -96,7 +93,7 @@ export default function DashboardGerencial() {
           setLeads(json.data.leads_respuestas);
         }
         setLastSyncTime(new Date().toLocaleTimeString("es-EC"));
-        if (!silent) showToast("Panel actualizado con la nube.", "ok");
+        if (!silent) showToast("Panel sincronizado con la nube.", "ok");
       }
     } catch (e) {
       if (!silent) console.warn("Usando datos locales consolidados:", e);
@@ -138,13 +135,13 @@ export default function DashboardGerencial() {
       const json = await res.json();
       if (json.ok && json.release) {
         setReleaseData(json.release);
-        showToast(`¡Versión v${json.release.version} publicada exitosamente a clientes!`, "ok");
+        showToast(`Versión v${targetVersion} publicada en producción.`, "ok");
       } else {
-        showToast(json.error || "Error al publicar actualización", "err");
+        throw new Error(json.error || "Error al publicar");
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      showToast(`Error de conexión: ${msg}`, "err");
+      showToast(msg, "err");
     } finally {
       setIsPublishing(false);
     }
@@ -153,22 +150,26 @@ export default function DashboardGerencial() {
   useEffect(() => {
     fetchTelemetry(true);
     fetchUpdates();
-    setLastSyncTime(new Date().toLocaleTimeString("es-EC"));
 
-    // Conexión WebSockets nativa con Supabase Realtime (cero polling, sincronización instantánea)
     const supabase = getSupabaseBrowserClient();
-    let channel: any = null;
+    let channel: ReturnType<NonNullable<typeof supabase>["channel"]> | null = null;
 
     if (supabase) {
       channel = supabase
-        .channel("actuariosa-realtime-web")
+        .channel("panel-web-realtime")
         .on(
           "postgres_changes",
           { event: "*", schema: "public", table: "actuariosa_telemetria" },
-          () => {
-            fetchTelemetry(true);
-            setLastSyncTime(new Date().toLocaleTimeString("es-EC"));
-            showToast("⚡ Telemetría actualizada en tiempo real vía WebSockets", "ok");
+          (payload) => {
+            if (payload.new && (payload.new as { data?: TelemetriaActuariosa }).data) {
+              const freshData = (payload.new as { data: TelemetriaActuariosa }).data;
+              setData(freshData);
+              if (freshData.leads_respuestas) {
+                setLeads(freshData.leads_respuestas);
+              }
+              setLastSyncTime(new Date().toLocaleTimeString("es-EC"));
+              showToast("⚡ Métricas actualizadas en tiempo real", "ok");
+            }
           }
         )
         .on(
@@ -176,17 +177,7 @@ export default function DashboardGerencial() {
           { event: "*", schema: "public", table: "actuariosa_leads" },
           () => {
             fetchTelemetry(true);
-            setLastSyncTime(new Date().toLocaleTimeString("es-EC"));
-            showToast("⚡ CRM de Leads actualizado en tiempo real", "ok");
-          }
-        )
-        .on(
-          "postgres_changes",
-          { event: "*", schema: "public", table: "actuariosa_campanas" },
-          () => {
-            fetchTelemetry(true);
-            setLastSyncTime(new Date().toLocaleTimeString("es-EC"));
-            showToast("⚡ Campaña de envíos actualizada en tiempo real", "ok");
+            showToast("⚡ Nueva respuesta de empresa recibida", "ok");
           }
         )
         .on(
@@ -333,7 +324,6 @@ export default function DashboardGerencial() {
         const text = event.target?.result as string;
         const parsed = JSON.parse(text);
 
-        // Validar si es un Resumen_Depuracion_Supercias
         if (parsed.segmentos || parsed.total_entrada_20_septiembre) {
           const resGeneral = {
             total_recopilados_brutos: data.resumen_general.total_recopilados_brutos,
@@ -351,30 +341,30 @@ export default function DashboardGerencial() {
             tasa_entrega: data.resumen_general.tasa_entrega,
           };
 
-          const payloadSync = {
-            fuente: `Carga manual: ${file.name}`,
+          const payload = {
             resumen_general: resGeneral,
-            distribucion_provincias: parsed.top_provincias_supercias_activas || data.distribucion_provincias,
+            distribucion_provincias: parsed.distribucion_geografica_supercias || data.distribucion_provincias,
             top_dominios: parsed.top_dominios_corporativos || data.top_dominios,
+            timestamp: new Date().toISOString(),
           };
 
           const res = await fetch("/api/sync", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payloadSync),
+            body: JSON.stringify(payload),
           });
+
           const json = await res.json();
           if (json.ok) {
-            setData((prev) => ({
-              ...prev,
-              resumen_general: resGeneral,
-              distribucion_provincias: payloadSync.distribucion_provincias,
-              top_dominios: payloadSync.top_dominios,
-              ultima_actualizacion: new Date().toISOString(),
-            }));
-            setUploadStatus("¡Datos sincronizados exitosamente!");
-            showToast("Reporte importado y métricas actualizadas.", "ok");
-            setTimeout(() => setShowUploadModal(false), 1200);
+            setData((prev) => ({ ...prev, ...payload }));
+            setUploadStatus("¡Datos actualizados y guardados en la nube con éxito!");
+            showToast("Reporte local subido a la nube.", "ok");
+            setTimeout(() => {
+              setShowUploadModal(false);
+              setUploadStatus("");
+            }, 1200);
+          } else {
+            setUploadStatus("Error al guardar en la nube.");
           }
         } else {
           setUploadStatus("Formato de JSON no reconocido como reporte de depuración.");
@@ -389,48 +379,55 @@ export default function DashboardGerencial() {
   const { resumen_general: kpis } = data;
 
   return (
-    <div className="min-h-screen bg-[#070a12] text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col">
       {/* Toast Notification */}
       {toastMsg && (
         <div
-          className={`fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 border text-sm font-medium transition-all transform animate-bounce ${
+          className={`fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 border text-sm font-medium transition-all ${
             toastMsg.type === "ok"
-              ? "bg-emerald-950/90 border-emerald-500/40 text-emerald-200"
-              : "bg-rose-950/90 border-rose-500/40 text-rose-200"
+              ? "bg-white border-emerald-300 text-emerald-800 shadow-emerald-500/10"
+              : "bg-white border-rose-300 text-rose-800 shadow-rose-500/10"
           }`}
         >
-          {toastMsg.type === "ok" ? <CheckCircle2 className="w-5 h-5 text-emerald-400" /> : <AlertCircle className="w-5 h-5 text-rose-400" />}
+          {toastMsg.type === "ok" ? <CheckCircle2 className="w-5 h-5 text-emerald-600" /> : <AlertCircle className="w-5 h-5 text-rose-600" />}
           <span>{toastMsg.text}</span>
         </div>
       )}
 
-      {/* ── TOP EXECUTIVE BAR ─────────────────────────────────────── */}
-      <header className="border-b border-white/[0.08] bg-[#080e1c]/90 backdrop-blur-md sticky top-0 z-40">
+      {/* ── TOP EXECUTIVE BAR (WHITE & CLEAN) ────────────────────────── */}
+      <header className="border-b border-slate-200/90 bg-white sticky top-0 z-40 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#0a1322] border border-[#d4af37]/30 flex items-center justify-center shadow-lg shadow-[#d4af37]/15 ring-1 ring-white/10 overflow-hidden shrink-0">
+            <div className="w-11 h-11 rounded-xl bg-white border border-slate-200/90 flex items-center justify-center shadow-xs overflow-hidden shrink-0">
               <img
-                src="/avatar-humano-navy-oro.png"
+                src="/avatar-humano-azul-oficial.svg"
                 alt="Emblema Actuariosa"
-                className="w-10 h-10 object-contain"
+                className="w-9 h-9 object-contain"
               />
             </div>
             <div>
               <div className="flex items-center gap-3 flex-wrap">
                 <img
-                  src="/actuariosa-gold.svg"
+                  src="/actuariosa.svg"
                   alt="Actuariosa"
-                  className="h-7 w-auto object-contain brightness-110"
+                  className="h-7 w-auto object-contain"
                 />
-                <span className="text-[#d4af37] font-semibold text-xs px-2.5 py-0.5 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 font-mono tracking-wide">
+                <span className="text-[#262478] font-bold text-xs px-2.5 py-0.5 rounded-full bg-blue-50 border border-blue-200/70 font-mono tracking-wide">
                   PANEL GERENCIAL
                 </span>
-                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${isRealtimeActive ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-amber-500/10 text-amber-400 border border-amber-500/20"}`} title="Conexión WebSocket en tiempo real directa con Supabase. Cero recargas o consultas periódicas.">
-                  <span className={`w-2 h-2 rounded-full ${isRealtimeActive ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`}></span>
-                  {isRealtimeActive ? "⚡ Tiempo Real • WebSockets" : "Conectando Tiempo Real…"}
+                <span
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                    isRealtimeActive
+                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                      : "bg-amber-50 text-amber-700 border border-amber-200"
+                  }`}
+                  title="Conexión WebSocket directa con Supabase. Cero recargas o consultas periódicas."
+                >
+                  <span className={`w-2 h-2 rounded-full ${isRealtimeActive ? "bg-emerald-500 animate-pulse" : "bg-amber-500"}`}></span>
+                  {isRealtimeActive ? "Tiempo Real • WebSockets" : "Conectando Tiempo Real…"}
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 Supervisión del flujo de datos, depuración Supercias y prospección comercial B2B
               </p>
             </div>
@@ -438,42 +435,42 @@ export default function DashboardGerencial() {
 
           <div className="flex items-center gap-3">
             <div className="hidden md:flex flex-col text-right text-xs">
-              <span className="text-slate-400 flex items-center gap-1 justify-end">
-                <Clock className="w-3.5 h-3.5 text-[#d4af37]" /> Sincronización en vivo:
+              <span className="text-slate-500 flex items-center gap-1 justify-end">
+                <Clock className="w-3.5 h-3.5 text-[#262478]" /> Sincronización en vivo:
               </span>
-              <span className="text-slate-200 font-mono font-medium">{lastSyncTime || "En vivo"}</span>
+              <span className="text-slate-700 font-mono font-medium">{lastSyncTime || "En vivo"}</span>
             </div>
 
             <button
               onClick={() => fetchTelemetry(false)}
               disabled={isRefreshing}
-              className="p-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-slate-300 hover:text-white transition-all disabled:opacity-50"
+              className="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 transition-all disabled:opacity-50 shadow-xs"
               title="Refrescar métricas de la nube"
             >
-              <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-[#d4af37]" : ""}`} />
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-[#262478]" : ""}`} />
             </button>
 
             <button
               onClick={() => setShowUploadModal(true)}
-              className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#d4af37]/10 hover:bg-[#d4af37]/20 border border-[#d4af37]/30 text-[#fdf4dc] hover:text-white transition-all"
+              className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#262478] hover:bg-[#1e1d61] text-white shadow-xs transition-all"
             >
-              <UploadCloud className="w-4 h-4 text-[#d4af37]" />
+              <UploadCloud className="w-4 h-4 text-white" />
               <span>Cargar Reporte JSON</span>
             </button>
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1 border-t border-white/[0.04]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1 border-t border-slate-100">
           <button
             onClick={() => setActiveTab("general")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "general"
-                ? "border-[#d4af37] text-[#d4af37] bg-[#d4af37]/[0.06] font-semibold"
-                : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
+                ? "border-[#262478] text-[#262478] bg-blue-50/50 font-semibold"
+                : "border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300"
             }`}
           >
-            <BarChart3 className="w-4 h-4 text-[#d4af37]" />
+            <BarChart3 className="w-4 h-4 text-[#262478]" />
             <span>Visión Ejecutiva</span>
           </button>
 
@@ -481,13 +478,13 @@ export default function DashboardGerencial() {
             onClick={() => setActiveTab("respuestas")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "respuestas"
-                ? "border-emerald-500 text-emerald-400 bg-emerald-500/[0.04]"
-                : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
+                ? "border-emerald-600 text-emerald-700 bg-emerald-50/50 font-semibold"
+                : "border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300"
             }`}
           >
             <CheckCircle2 className="w-4 h-4" />
             <span>Respuestas & Prospectos</span>
-            <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold">
+            <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-800 font-bold">
               {conteoRespuestas.positivos}
             </span>
           </button>
@@ -496,8 +493,8 @@ export default function DashboardGerencial() {
             onClick={() => setActiveTab("flujo")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "flujo"
-                ? "border-sky-400 text-sky-400 bg-sky-500/[0.05]"
-                : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
+                ? "border-blue-600 text-blue-700 bg-blue-50/50 font-semibold"
+                : "border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300"
             }`}
           >
             <Layers className="w-4 h-4" />
@@ -508,8 +505,8 @@ export default function DashboardGerencial() {
             onClick={() => setActiveTab("empresas")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "empresas"
-                ? "border-[#d4af37] text-[#d4af37] bg-[#d4af37]/[0.05]"
-                : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
+                ? "border-[#262478] text-[#262478] bg-blue-50/50 font-semibold"
+                : "border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300"
             }`}
           >
             <Building2 className="w-4 h-4" />
@@ -520,13 +517,13 @@ export default function DashboardGerencial() {
             onClick={() => setActiveTab("actualizaciones")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "actualizaciones"
-                ? "border-purple-500 text-purple-400 bg-purple-500/[0.04]"
-                : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
+                ? "border-purple-600 text-purple-700 bg-purple-50/50 font-semibold"
+                : "border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300"
             }`}
           >
             <Rocket className="w-4 h-4" />
             <span>Lanzar Actualizaciones</span>
-            <span className="ml-1 px-1.5 py-0.5 rounded-full text-[10px] bg-purple-500/20 text-purple-300 font-bold font-mono">
+            <span className="ml-1 px-1.5 py-0.5 rounded-full text-[10px] bg-purple-100 text-purple-800 font-bold font-mono">
               v{releaseData?.version || "2.1.0"}
             </span>
           </button>
@@ -542,78 +539,76 @@ export default function DashboardGerencial() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {/* Card 1: Total Recopilados */}
               <div className="glass-card p-6 relative overflow-hidden group">
-                <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-blue-500 to-indigo-500"></div>
-                <div className="flex items-center justify-between text-slate-400 mb-3">
+                <div className="absolute top-0 left-0 h-1 w-full bg-blue-600"></div>
+                <div className="flex items-center justify-between text-slate-500 mb-3">
                   <span className="text-xs font-semibold uppercase tracking-wider">Inventario Bruto Total</span>
-                  <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400">
+                  <div className="p-2 rounded-lg bg-blue-50 text-blue-700">
                     <Database className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-3xl font-extrabold text-white font-mono tracking-tight">
+                <div className="text-3xl font-extrabold text-slate-900 font-mono tracking-tight">
                   {kpis.total_recopilados_brutos.toLocaleString("es-EC")}
                 </div>
-                <div className="mt-3 text-xs text-slate-400 flex items-center justify-between">
+                <div className="mt-3 text-xs text-slate-500 flex items-center justify-between">
                   <span>69 archivos recopilados</span>
-                  <span className="text-blue-400 font-semibold">{kpis.total_base_activa.toLocaleString("es-EC")} activos 2026</span>
+                  <span className="text-blue-700 font-semibold">{kpis.total_base_activa.toLocaleString("es-EC")} activos 2026</span>
                 </div>
               </div>
 
               {/* Card 2: Negocios Depurados 100% Funcionales */}
-              <div className="glass-card p-6 relative overflow-hidden group border-[#d4af37]/35 bg-gradient-to-br from-[#0a1322] to-[#121c2c] shadow-lg shadow-[#d4af37]/5">
-                <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-[#d4af37] via-[#f3d982] to-[#b89628]"></div>
-                <div className="flex items-center justify-between text-slate-400 mb-3">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#d4af37]">Empresas 100% Funcionales</span>
-                  <div className="p-2 rounded-lg bg-[#d4af37]/15 text-[#d4af37]">
+              <div className="glass-card p-6 relative overflow-hidden group border-l-4 border-l-[#262478]">
+                <div className="flex items-center justify-between text-slate-500 mb-3">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#262478]">Empresas 100% Funcionales</span>
+                  <div className="p-2 rounded-lg bg-blue-50 text-[#262478]">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-3xl font-extrabold text-white font-mono tracking-tight flex items-baseline gap-2">
-                  <span className="text-[#fdf4dc]">{kpis.total_negocios_unicos.toLocaleString("es-EC")}</span>
+                <div className="text-3xl font-extrabold text-[#262478] font-mono tracking-tight flex items-baseline gap-2">
+                  <span>{kpis.total_negocios_unicos.toLocaleString("es-EC")}</span>
                 </div>
-                <div className="mt-3 text-xs text-slate-400 flex items-center justify-between">
-                  <span className="text-[#d4af37] font-semibold">{kpis.supercias_activas_con_ruc.toLocaleString("es-EC")} Supercias RUC</span>
+                <div className="mt-3 text-xs text-slate-500 flex items-center justify-between">
+                  <span className="text-[#262478] font-semibold">{kpis.supercias_activas_con_ruc.toLocaleString("es-EC")} Supercias RUC</span>
                   <span>{kpis.negocios_corporativos.toLocaleString("es-EC")} corporativos</span>
                 </div>
               </div>
 
               {/* Card 3: Correos Enviados y Entrega */}
               <div className="glass-card p-6 relative overflow-hidden group">
-                <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-emerald-500 to-teal-500"></div>
-                <div className="flex items-center justify-between text-slate-400 mb-3">
+                <div className="absolute top-0 left-0 h-1 w-full bg-slate-300"></div>
+                <div className="flex items-center justify-between text-slate-500 mb-3">
                   <span className="text-xs font-semibold uppercase tracking-wider">Correos Enviados</span>
-                  <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
+                  <div className="p-2 rounded-lg bg-slate-100 text-slate-700">
                     <Send className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-3xl font-extrabold text-white font-mono tracking-tight">
+                <div className="text-3xl font-extrabold text-slate-900 font-mono tracking-tight">
                   {kpis.total_enviados_campanas.toLocaleString("es-EC")}
                 </div>
-                <div className="mt-3 text-xs text-slate-400 flex items-center justify-between">
-                  <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                <div className="mt-3 text-xs text-slate-500 flex items-center justify-between">
+                  <span className="text-emerald-600 font-semibold flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" /> {kpis.tasa_entrega}% entrega
                   </span>
-                  <span className="text-slate-400">{kpis.total_errores_envio} errores evitados</span>
+                  <span>{kpis.total_errores_envio} errores evitados</span>
                 </div>
               </div>
 
               {/* Card 4: Respuestas Positivas y Oportunidades */}
-              <div className="glass-card p-6 relative overflow-hidden group border-emerald-500/30 bg-gradient-to-br from-[#131b31] to-[#0d2222]">
-                <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-teal-400 to-emerald-400"></div>
-                <div className="flex items-center justify-between text-slate-400 mb-3">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-emerald-300">Empresas Interesadas (Positivos)</span>
-                  <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-300">
+              <div className="glass-card p-6 relative overflow-hidden group border-l-4 border-l-emerald-600">
+                <div className="flex items-center justify-between text-slate-500 mb-3">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-emerald-700">Empresas Interesadas (Positivos)</span>
+                  <div className="p-2 rounded-lg bg-emerald-50 text-emerald-700">
                     <TrendingUp className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-3xl font-extrabold text-white font-mono tracking-tight flex items-baseline gap-2">
+                <div className="text-3xl font-extrabold text-slate-900 font-mono tracking-tight flex items-baseline gap-2">
                   <span>{conteoRespuestas.positivos}</span>
-                  <span className="text-xs text-emerald-400 font-sans font-normal">
+                  <span className="text-xs text-emerald-600 font-sans font-normal">
                     ({((conteoRespuestas.positivos / (kpis.total_enviados_campanas || 1)) * 100).toFixed(1)}% respuesta)
                   </span>
                 </div>
-                <div className="mt-3 text-xs text-slate-300 flex items-center justify-between">
-                  <span className="font-semibold text-emerald-400">{conteoRespuestas.cotizaciones} cotizaciones pedidas</span>
-                  <span className="text-teal-300">{conteoRespuestas.cerrados} contratadas</span>
+                <div className="mt-3 text-xs text-slate-500 flex items-center justify-between">
+                  <span className="font-semibold text-emerald-600">{conteoRespuestas.cotizaciones} cotizaciones pedidas</span>
+                  <span className="text-emerald-700">{conteoRespuestas.cerrados} contratadas</span>
                 </div>
               </div>
             </div>
@@ -622,15 +617,15 @@ export default function DashboardGerencial() {
             <div className="glass-card p-6">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-[#d4af37]" />
+                  <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-[#262478]" />
                     Embudo de Depuración y Rendimiento Comercial
                   </h3>
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="text-xs text-slate-500 mt-1">
                     Visualiza el flujo de filtrado desde la recolección cruda hasta las respuestas de contratación actuarial.
                   </p>
                 </div>
-                <span className="text-xs px-3 py-1 rounded-lg bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/30 font-semibold font-mono">
+                <span className="text-xs px-3 py-1 rounded-lg bg-blue-50 text-[#262478] border border-blue-200/80 font-semibold font-mono">
                   Eficiencia de Purga: 82.8%
                 </span>
               </div>
@@ -640,47 +635,47 @@ export default function DashboardGerencial() {
                 {/* Etapa 1 */}
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-slate-300">1. Recolección Cruda de Correos (Histórico + Pendrives)</span>
-                    <span className="font-mono text-slate-400">247,997 (100%)</span>
+                    <span className="text-slate-700">1. Recolección Cruda de Correos (Histórico + Pendrives)</span>
+                    <span className="font-mono text-slate-500">247,997 (100%)</span>
                   </div>
-                  <div className="h-4 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-slate-500 rounded-full" style={{ width: "100%" }}></div>
+                  <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-slate-400 rounded-full" style={{ width: "100%" }}></div>
                   </div>
                 </div>
 
                 {/* Etapa 2 */}
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-slate-300">2. Normalización, Sintaxis Limpia y Unicidad</span>
-                    <span className="font-mono text-slate-400">136,602 (55.1%)</span>
+                    <span className="text-slate-700">2. Normalización, Sintaxis Limpia y Unicidad</span>
+                    <span className="font-mono text-slate-500">136,602 (55.1%)</span>
                   </div>
-                  <div className="h-4 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-sky-600 rounded-full" style={{ width: "55.1%" }}></div>
+                  <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-sky-500 rounded-full" style={{ width: "55.1%" }}></div>
                   </div>
                 </div>
 
                 {/* Etapa 3 */}
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-[#d4af37] font-semibold">3. Empresas Activas en Supercias y Dominios Corporativos (100% Funcionales)</span>
-                    <span className="font-mono text-[#d4af37] font-bold">42,648 (17.2%)</span>
+                    <span className="text-[#262478] font-bold">3. Empresas Activas en Supercias y Dominios Corporativos (100% Funcionales)</span>
+                    <span className="font-mono text-[#262478] font-bold">42,648 (17.2%)</span>
                   </div>
-                  <div className="h-4 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-[#d4af37] to-[#f3d982] rounded-full" style={{ width: "17.2%" }}></div>
+                  <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#262478] rounded-full" style={{ width: "17.2%" }}></div>
                   </div>
                 </div>
 
                 {/* Etapa 4 */}
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-slate-300">4. Contactadas en Campañas de Email B2B (NIC 19 / Jubilación)</span>
-                    <span className="font-mono text-slate-400">
+                    <span className="text-slate-700">4. Contactadas en Campañas de Email B2B (NIC 19 / Jubilación)</span>
+                    <span className="font-mono text-slate-500">
                       {kpis.total_enviados_campanas.toLocaleString("es-EC")} ({kpis.total_negocios_unicos > 0 ? ((kpis.total_enviados_campanas / kpis.total_negocios_unicos) * 100).toFixed(1) : "0.0"}% de base funcional)
                     </span>
                   </div>
-                  <div className="h-4 w-full bg-slate-800 rounded-full overflow-hidden">
+                  <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-teal-500 rounded-full transition-all duration-500"
+                      className="h-full bg-indigo-500 rounded-full transition-all duration-500"
                       style={{
                         width: `${Math.min(100, Math.max(kpis.total_enviados_campanas > 0 ? 2 : 0, (kpis.total_enviados_campanas / (kpis.total_negocios_unicos || 1)) * 100))}%`,
                       }}
@@ -691,12 +686,12 @@ export default function DashboardGerencial() {
                 {/* Etapa 5 */}
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-emerald-400 font-semibold">5. Respuestas Comerciales Positivas y Solicitudes de Cotización</span>
-                    <span className="font-mono text-emerald-400 font-bold">{conteoRespuestas.positivos} empresas interesadas</span>
+                    <span className="text-emerald-700 font-semibold">5. Respuestas Comerciales Positivas y Solicitudes de Cotización</span>
+                    <span className="font-mono text-emerald-700 font-bold">{conteoRespuestas.positivos} empresas interesadas</span>
                   </div>
-                  <div className="h-4 w-full bg-slate-800 rounded-full overflow-hidden">
+                  <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-emerald-400 rounded-full transition-all duration-500"
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
                       style={{
                         width: `${Math.min(100, Math.max(conteoRespuestas.positivos > 0 ? 2 : 0, (conteoRespuestas.positivos / (kpis.total_enviados_campanas || 1)) * 100))}%`,
                       }}
@@ -711,11 +706,11 @@ export default function DashboardGerencial() {
               {/* Provincias */}
               <div className="glass-card p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-rose-400" />
+                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-rose-500" />
                     Empresas Supercias por Provincia (Ecuador)
                   </h3>
-                  <span className="text-xs text-slate-400 font-mono">11,779 con RUC</span>
+                  <span className="text-xs text-slate-500 font-mono">11,779 con RUC</span>
                 </div>
 
                 <div className="space-y-3 mt-4">
@@ -725,12 +720,12 @@ export default function DashboardGerencial() {
                     return (
                       <div key={prov}>
                         <div className="flex justify-between text-xs font-medium mb-1">
-                          <span className="text-slate-300">{prov}</span>
-                          <span className="font-mono text-slate-400">{cant.toLocaleString("es-EC")}</span>
+                          <span className="text-slate-700">{prov}</span>
+                          <span className="font-mono text-slate-500">{cant.toLocaleString("es-EC")}</span>
                         </div>
-                        <div className="h-2 w-full bg-white/[0.05] rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-gradient-to-r from-indigo-500 to-blue-500 rounded-full"
+                            className="h-full bg-[#262478] rounded-full"
                             style={{ width: `${pct}%` }}
                           ></div>
                         </div>
@@ -743,28 +738,28 @@ export default function DashboardGerencial() {
               {/* Dominios Corporativos Top */}
               <div className="glass-card p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-indigo-400" />
+                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    <Building2 className="w-4 h-4 text-[#262478]" />
                     Top Dominios y Proveedores de Empresas
                   </h3>
-                  <span className="text-xs text-slate-400">Redes corporativas EC</span>
+                  <span className="text-xs text-slate-500">Redes corporativas EC</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mt-2">
                   {Object.entries(data.top_dominios).slice(0, 10).map(([dom, cant]) => (
-                    <div key={dom} className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05] flex justify-between items-center">
-                      <span className="text-xs font-mono text-slate-300 truncate max-w-[130px]" title={dom}>
+                    <div key={dom} className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex justify-between items-center">
+                      <span className="text-xs font-mono text-slate-700 truncate max-w-[130px]" title={dom}>
                         {dom}
                       </span>
-                      <span className="text-xs font-bold text-indigo-400 font-mono">
+                      <span className="text-xs font-bold text-[#262478] font-mono">
                         {cant.toLocaleString("es-EC")}
                       </span>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-5 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200/90 flex items-start gap-2.5">
-                  <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                <div className="mt-5 p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2.5">
+                  <ShieldCheck className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                   <span>
                     <strong>Protección de Reputación:</strong> Se eliminaron 3,496 empresas con estado "Disolución" o "Inactiva" en la Superintendencia de Compañías para evitar bloqueos del servidor SMTP.
                   </span>
@@ -775,45 +770,45 @@ export default function DashboardGerencial() {
             {/* ── HISTORIAL DE CAMPAÑAS ──────────────────────────────── */}
             <div className="glass-card p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Send className="w-4 h-4 text-emerald-400" />
+                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <Send className="w-4 h-4 text-emerald-600" />
                   Campañas Recientes de Envío a Empresas
                 </h3>
-                <span className="text-xs text-slate-400">Registrado por MxCorreo</span>
+                <span className="text-xs text-slate-500">Registrado por MxCorreo</span>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="text-slate-400 border-b border-white/[0.08] font-semibold">
+                  <thead className="bg-slate-50 text-slate-600 border-b border-slate-200 font-semibold">
                     <tr>
-                      <th className="pb-3">Campaña / Asunto</th>
-                      <th className="pb-3">Fecha</th>
-                      <th className="pb-3 text-center">Total Lote</th>
-                      <th className="pb-3 text-center">Enviados OK</th>
-                      <th className="pb-3 text-center">Errores</th>
-                      <th className="pb-3 text-right">Efectividad</th>
+                      <th className="py-2.5 px-3">Campaña / Asunto</th>
+                      <th className="py-2.5 px-3">Fecha</th>
+                      <th className="py-2.5 px-3 text-center">Total Lote</th>
+                      <th className="py-2.5 px-3 text-center">Enviados OK</th>
+                      <th className="py-2.5 px-3 text-center">Errores</th>
+                      <th className="py-2.5 px-3 text-right">Efectividad</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/[0.04] text-slate-300">
+                  <tbody className="divide-y divide-slate-100 text-slate-700">
                     {data.campanas.map((c) => {
                       const eff = c.total > 0 ? (((c.enviados) / c.total) * 100).toFixed(1) : "100";
                       return (
-                        <tr key={c.id} className="hover:bg-white/[0.02]">
-                          <td className="py-3.5">
-                            <div className="font-semibold text-white">{c.nombre}</div>
-                            <div className="text-[11px] text-slate-400 truncate max-w-md">{c.asunto}</div>
+                        <tr key={c.id} className="hover:bg-slate-50/60">
+                          <td className="py-3 px-3">
+                            <div className="font-semibold text-slate-900">{c.nombre}</div>
+                            <div className="text-[11px] text-slate-500 truncate max-w-md">{c.asunto}</div>
                           </td>
-                          <td className="py-3.5 font-mono text-slate-400">{c.fecha}</td>
-                          <td className="py-3.5 text-center font-mono font-semibold">{c.total.toLocaleString("es-EC")}</td>
-                          <td className="py-3.5 text-center font-mono text-emerald-400 font-semibold">{c.enviados.toLocaleString("es-EC")}</td>
-                          <td className="py-3.5 text-center font-mono text-rose-400">{c.errores}</td>
-                          <td className="py-3.5 text-right font-mono font-bold text-emerald-400">{eff}%</td>
+                          <td className="py-3 px-3 font-mono text-slate-500">{c.fecha}</td>
+                          <td className="py-3 px-3 text-center font-mono font-semibold text-slate-800">{c.total.toLocaleString("es-EC")}</td>
+                          <td className="py-3 px-3 text-center font-mono text-emerald-600 font-semibold">{c.enviados.toLocaleString("es-EC")}</td>
+                          <td className="py-3 px-3 text-center font-mono text-rose-600">{c.errores}</td>
+                          <td className="py-3 px-3 text-right font-mono font-bold text-emerald-600">{eff}%</td>
                         </tr>
                       );
                     })}
                     {data.campanas.length === 0 && (
                       <tr>
-                        <td colSpan={6} className="py-8 text-center text-slate-500">
+                        <td colSpan={6} className="py-8 text-center text-slate-400">
                           No hay campañas registradas todavía. Las campañas que se envíen desde MxCorreo aparecerán aquí automáticamente en tiempo real.
                         </td>
                       </tr>
@@ -831,11 +826,11 @@ export default function DashboardGerencial() {
             {/* Header del CRM */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-card p-6">
               <div>
-                <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                   Control de Respuestas y Oportunidades Comerciales
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-500 mt-1">
                   Monitorea cuántas empresas responden a las propuestas y clasifica los prospectos que avanzan a cotización de estudios actuariales.
                 </p>
               </div>
@@ -843,14 +838,14 @@ export default function DashboardGerencial() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={exportarLeadsCSV}
-                  className="px-4 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-xs font-semibold text-slate-200 hover:text-white transition-all flex items-center gap-2"
+                  className="px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 transition-all flex items-center gap-2 shadow-xs"
                 >
-                  <Download className="w-4 h-4 text-indigo-400" />
+                  <Download className="w-4 h-4 text-[#262478]" />
                   <span>Exportar CSV</span>
                 </button>
                 <button
                   onClick={() => setShowAddLeadModal(true)}
-                  className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition-all shadow-lg shadow-emerald-600/30 flex items-center gap-2"
+                  className="px-4 py-2.5 rounded-xl bg-[#262478] hover:bg-[#1e1d61] text-xs font-bold text-white transition-all shadow-xs flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Registrar Respuesta de Empresa</span>
@@ -861,20 +856,20 @@ export default function DashboardGerencial() {
             {/* Metricas rápidas de respuestas */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="glass-card p-4 text-center">
-                <span className="text-xs text-slate-400">Total Contactadas</span>
-                <div className="text-2xl font-extrabold text-white font-mono mt-1">{kpis.total_enviados_campanas.toLocaleString("es-EC")}</div>
+                <span className="text-xs text-slate-500">Total Contactadas</span>
+                <div className="text-2xl font-extrabold text-slate-900 font-mono mt-1">{kpis.total_enviados_campanas.toLocaleString("es-EC")}</div>
               </div>
-              <div className="glass-card p-4 text-center border-emerald-500/20">
-                <span className="text-xs text-emerald-400">Respuestas Positivas</span>
-                <div className="text-2xl font-extrabold text-emerald-400 font-mono mt-1">{conteoRespuestas.positivos}</div>
+              <div className="glass-card p-4 text-center border-l-4 border-l-emerald-500">
+                <span className="text-xs text-emerald-700 font-semibold">Respuestas Positivas</span>
+                <div className="text-2xl font-extrabold text-emerald-600 font-mono mt-1">{conteoRespuestas.positivos}</div>
               </div>
-              <div className="glass-card p-4 text-center border-indigo-500/20">
-                <span className="text-xs text-indigo-400">Cotizaciones Solicitadas</span>
-                <div className="text-2xl font-extrabold text-indigo-400 font-mono mt-1">{conteoRespuestas.cotizaciones}</div>
+              <div className="glass-card p-4 text-center border-l-4 border-l-[#262478]">
+                <span className="text-xs text-[#262478] font-semibold">Cotizaciones Solicitadas</span>
+                <div className="text-2xl font-extrabold text-[#262478] font-mono mt-1">{conteoRespuestas.cotizaciones}</div>
               </div>
-              <div className="glass-card p-4 text-center border-teal-500/20">
-                <span className="text-xs text-teal-300">Contratos Cerrados</span>
-                <div className="text-2xl font-extrabold text-teal-300 font-mono mt-1">{conteoRespuestas.cerrados}</div>
+              <div className="glass-card p-4 text-center border-l-4 border-l-teal-500">
+                <span className="text-xs text-teal-700 font-semibold">Contratos Cerrados</span>
+                <div className="text-2xl font-extrabold text-teal-600 font-mono mt-1">{conteoRespuestas.cerrados}</div>
               </div>
             </div>
 
@@ -887,7 +882,7 @@ export default function DashboardGerencial() {
                   placeholder="Buscar empresa, correo o RUC…"
                   value={busquedaLead}
                   onChange={(e) => setBusquedaLead(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-white/[0.04] border border-white/[0.08] rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                  className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#262478] focus:bg-white"
                 />
               </div>
 
@@ -898,8 +893,8 @@ export default function DashboardGerencial() {
                     onClick={() => setFiltroEstado(st)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                       filtroEstado === st
-                        ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                        : "bg-white/[0.04] text-slate-400 hover:text-white"
+                        ? "bg-[#262478] text-white shadow-xs"
+                        : "bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200"
                     }`}
                   >
                     {st}
@@ -912,52 +907,52 @@ export default function DashboardGerencial() {
             <div className="glass-card overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-white/[0.03] text-slate-400 border-b border-white/[0.08] font-semibold">
+                  <thead className="bg-slate-50 text-slate-600 border-b border-slate-200 font-semibold">
                     <tr>
-                      <th className="py-3.5 px-4">Empresa / RUC</th>
-                      <th className="py-3.5 px-4">Correo Electrónico</th>
-                      <th className="py-3.5 px-4">Servicio de Interés</th>
-                      <th className="py-3.5 px-4">Estado Actual</th>
-                      <th className="py-3.5 px-4">Notas de la Respuesta</th>
-                      <th className="py-3.5 px-4 text-right">Acción Rápida</th>
+                      <th className="py-3 px-4">Empresa / RUC</th>
+                      <th className="py-3 px-4">Correo Electrónico</th>
+                      <th className="py-3 px-4">Servicio de Interés</th>
+                      <th className="py-3 px-4">Estado Actual</th>
+                      <th className="py-3 px-4">Notas de la Respuesta</th>
+                      <th className="py-3 px-4 text-right">Acción Rápida</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/[0.04] text-slate-300">
+                  <tbody className="divide-y divide-slate-100 text-slate-700">
                     {leadsFiltrados.map((l) => (
-                      <tr key={l.id} className="hover:bg-white/[0.02] transition-colors">
-                        <td className="py-3.5 px-4">
-                          <div className="font-bold text-white">{l.empresa}</div>
-                          <div className="text-[11px] font-mono text-slate-400">
+                      <tr key={l.id} className="hover:bg-slate-50/70 transition-colors">
+                        <td className="py-3 px-4">
+                          <div className="font-bold text-slate-900">{l.empresa}</div>
+                          <div className="text-[11px] font-mono text-slate-500">
                             {l.ruc ? `RUC: ${l.ruc}` : "Sin RUC"} • {l.provincia || "EC"}
                           </div>
                         </td>
-                        <td className="py-3.5 px-4 font-mono text-indigo-300">{l.correo}</td>
-                        <td className="py-3.5 px-4 text-slate-300">{l.servicio_interes}</td>
-                        <td className="py-3.5 px-4">
+                        <td className="py-3 px-4 font-mono text-[#262478] font-medium">{l.correo}</td>
+                        <td className="py-3 px-4 text-slate-700">{l.servicio_interes}</td>
+                        <td className="py-3 px-4">
                           <span
                             className={`inline-flex px-2.5 py-1 rounded-full text-[11px] font-semibold ${
                               l.estado === "Cerrado / Cliente"
-                                ? "bg-teal-500/20 text-teal-300 border border-teal-500/30"
+                                ? "bg-teal-50 text-teal-800 border border-teal-200"
                                 : l.estado === "Cotización Solicitada"
-                                ? "bg-indigo-500/20 text-indigo-300 border border-indigo-500/30"
+                                ? "bg-blue-50 text-blue-800 border border-blue-200"
                                 : l.estado === "En Negociación"
-                                ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
+                                ? "bg-amber-50 text-amber-800 border border-amber-200"
                                 : l.estado === "No Interesado"
-                                ? "bg-rose-500/20 text-rose-300 border border-rose-500/30"
-                                : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                                ? "bg-rose-50 text-rose-800 border border-rose-200"
+                                : "bg-emerald-50 text-emerald-800 border border-emerald-200"
                             }`}
                           >
                             {l.estado}
                           </span>
                         </td>
-                        <td className="py-3.5 px-4 text-slate-400 max-w-xs truncate" title={l.notas}>
+                        <td className="py-3 px-4 text-slate-500 max-w-xs truncate" title={l.notas}>
                           {l.notas || "—"}
                         </td>
-                        <td className="py-3.5 px-4 text-right">
+                        <td className="py-3 px-4 text-right">
                           <select
                             value={l.estado}
                             onChange={(e) => handleUpdateStatus(l.id, e.target.value as LeadRespuesta["estado"])}
-                            className="bg-white/[0.06] border border-white/[0.1] text-[11px] text-slate-200 rounded-lg px-2 py-1 focus:outline-none"
+                            className="bg-slate-50 border border-slate-200 text-[11px] text-slate-800 rounded-lg px-2 py-1 focus:outline-none focus:border-[#262478]"
                           >
                             <option value="Positivo / Interesado">Positivo / Interesado</option>
                             <option value="Cotización Solicitada">Cotización Solicitada</option>
@@ -970,7 +965,7 @@ export default function DashboardGerencial() {
                     ))}
                     {leadsFiltrados.length === 0 && (
                       <tr>
-                        <td colSpan={6} className="py-8 text-center text-slate-500">
+                        <td colSpan={6} className="py-8 text-center text-slate-400">
                           No se encontraron empresas con el filtro seleccionado.
                         </td>
                       </tr>
@@ -985,91 +980,86 @@ export default function DashboardGerencial() {
         {/* ════ TAB 3: FLUJO DE DATOS & ARQUITECTURA ════ */}
         {activeTab === "flujo" && (
           <div className="space-y-6 animate-fadeIn">
-            {/* Header del Flujo */}
             <div className="glass-card p-6">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <Layers className="w-5 h-5 text-blue-400" />
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <Layers className="w-5 h-5 text-[#262478]" />
                 Arquitectura de Transmisión y Flujo de Datos
               </h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Cómo viajan los datos desde tus herramientas de depuración locales hacia la nube en Vercel para que el jefe supervise en tiempo real.
+              <p className="text-xs text-slate-500 mt-1">
+                Cómo viajan los datos desde tus herramientas de depuración locales hacia la nube en Vercel y Supabase para supervisión en tiempo real.
               </p>
 
               {/* Diagrama Visual */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8 relative">
-                {/* Paso 1 */}
-                <div className="glass-card p-5 border-blue-500/30 relative">
-                  <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs mb-3">
+                <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/60">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 text-[#262478] flex items-center justify-center font-bold text-xs mb-3">
                     1
                   </div>
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">Depuración Local</h4>
-                  <p className="text-xs text-slate-400 mt-1.5">
+                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Depuración Local</h4>
+                  <p className="text-xs text-slate-600 mt-1.5">
                     <code>depurar_correos_supercias.py</code> cruza 136k correos con las bases de la Superintendencia de Compañías.
                   </p>
-                  <div className="mt-3 text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded">
+                  <div className="mt-3 text-[11px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded">
                     42,648 empresas activas
                   </div>
                 </div>
 
-                {/* Paso 2 */}
-                <div className="glass-card p-5 border-indigo-500/30 relative">
-                  <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs mb-3">
+                <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/60">
+                  <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs mb-3">
                     2
                   </div>
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">MxCorreo Desktop</h4>
-                  <p className="text-xs text-slate-400 mt-1.5">
+                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">MxCorreo Desktop</h4>
+                  <p className="text-xs text-slate-600 mt-1.5">
                     Lanza campañas B2B con pausas anti-spam y genera bitácora de correos enviados, fallidos y respuestas.
                   </p>
-                  <div className="mt-3 text-[11px] font-mono text-indigo-300 bg-indigo-500/10 px-2 py-1 rounded">
+                  <div className="mt-3 text-[11px] font-mono text-[#262478] bg-blue-50 border border-blue-200 px-2 py-1 rounded">
                     sync_telemetria.py
                   </div>
                 </div>
 
-                {/* Paso 3 */}
-                <div className="glass-card p-5 border-teal-500/30 relative">
-                  <div className="w-8 h-8 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold text-xs mb-3">
+                <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/60">
+                  <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-xs mb-3">
                     3
                   </div>
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">Endpoint Vercel</h4>
-                  <p className="text-xs text-slate-400 mt-1.5">
-                    Ruta Serverless <code>/api/sync</code> autenticada con clave Bearer que recibe y unifica la telemetría.
+                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Endpoint Vercel & Supabase</h4>
+                  <p className="text-xs text-slate-600 mt-1.5">
+                    Ruta Serverless <code>/api/sync</code> autenticada que persiste datos y emite eventos WebSocket en tiempo real.
                   </p>
-                  <div className="mt-3 text-[11px] font-mono text-teal-300 bg-teal-500/10 px-2 py-1 rounded">
-                    HTTPS / JSON-RPC
+                  <div className="mt-3 text-[11px] font-mono text-teal-800 bg-teal-50 border border-teal-200 px-2 py-1 rounded">
+                    WebSockets Realtime
                   </div>
                 </div>
 
-                {/* Paso 4 */}
-                <div className="glass-card p-5 border-emerald-500/30 relative">
-                  <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs mb-3">
+                <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/60">
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs mb-3">
                     4
                   </div>
-                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">Panel Gerencial</h4>
-                  <p className="text-xs text-slate-400 mt-1.5">
+                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Panel Gerencial</h4>
+                  <p className="text-xs text-slate-600 mt-1.5">
                     El jefe abre el enlace de Vercel y consulta los indicadores clave de negocio sin tocar código ni terminales.
                   </p>
-                  <div className="mt-3 text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded">
+                  <div className="mt-3 text-[11px] font-mono text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded">
                     Dashboard 24/7
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Código de Sincronización para el Operador */}
+            {/* Código de Sincronización */}
             <div className="glass-card p-6">
-              <h3 className="text-sm font-bold text-white mb-2">Comando para Sincronizar desde tu Computadora</h3>
-              <p className="text-xs text-slate-400 mb-4">
+              <h3 className="text-sm font-bold text-slate-900 mb-2">Comando para Sincronizar desde tu Computadora</h3>
+              <p className="text-xs text-slate-500 mb-4">
                 Puedes ejecutar este comando en la carpeta <code>Mx/</code> en cualquier momento para actualizar los números del jefe:
               </p>
 
-              <div className="p-4 rounded-xl bg-black/50 border border-white/[0.08] font-mono text-xs text-emerald-400 flex items-center justify-between">
-                <span>python sync_telemetria.py --url https://tu-panel.vercel.app/api/sync</span>
+              <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs text-emerald-400 flex items-center justify-between">
+                <span>python sync_telemetria.py --url https://panel-web-six-plum.vercel.app/api/sync</span>
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText("python sync_telemetria.py");
                     showToast("Comando copiado al portapapeles.", "ok");
                   }}
-                  className="px-3 py-1 rounded-lg bg-white/[0.1] hover:bg-white/[0.2] text-white text-[11px]"
+                  className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px]"
                 >
                   Copiar
                 </button>
@@ -1082,51 +1072,51 @@ export default function DashboardGerencial() {
         {activeTab === "empresas" && (
           <div className="space-y-6 animate-fadeIn">
             <div className="glass-card p-6">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-amber-400" />
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-[#262478]" />
                 Desglose Estructurado de las Bases Depuradas
               </h2>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 Estructura exacta de archivos generados en <code>Mx/resultados/depuracion_supercias_2026/</code> y organizados en Google Drive.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                <div className="p-4 rounded-xl bg-white/[0.03] border border-emerald-500/30">
+                <div className="p-5 rounded-xl bg-white border-l-4 border-l-emerald-600 border border-slate-200 shadow-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-white text-sm">1. Supercias Activas con RUC</span>
-                    <span className="font-mono text-emerald-400 font-bold text-sm">11,779</span>
+                    <span className="font-bold text-slate-900 text-sm">1. Supercias Activas con RUC</span>
+                    <span className="font-mono text-emerald-700 font-bold text-sm">11,779</span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-2">
+                  <p className="text-xs text-slate-600 mt-2">
                     Empresas con razón social, RUC y estado legal activo validado ante la Superintendencia de Compañías. Ideales para auditorías y estudios de jubilación patronal NIC 19.
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-white/[0.03] border border-indigo-500/30">
+                <div className="p-5 rounded-xl bg-white border-l-4 border-l-[#262478] border border-slate-200 shadow-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-white text-sm">2. Negocios Corporativos Activos</span>
-                    <span className="font-mono text-indigo-400 font-bold text-sm">30,869</span>
+                    <span className="font-bold text-slate-900 text-sm">2. Negocios Corporativos Activos</span>
+                    <span className="font-mono text-[#262478] font-bold text-sm">30,869</span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-2">
+                  <p className="text-xs text-slate-600 mt-2">
                     Correos alojados en dominios empresariales propios y redes de telecomunicaciones (Satnet, Andinanet, Telconet, etc.) con servidores MX operativos.
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-white/[0.03] border border-rose-500/30">
+                <div className="p-5 rounded-xl bg-white border-l-4 border-l-rose-500 border border-slate-200 shadow-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-white text-sm">3. Descartados (Disolución / Inactivas)</span>
-                    <span className="font-mono text-rose-400 font-bold text-sm">3,496</span>
+                    <span className="font-bold text-slate-900 text-sm">3. Descartados (Disolución / Inactivas)</span>
+                    <span className="font-mono text-rose-600 font-bold text-sm">3,496</span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-2">
+                  <p className="text-xs text-slate-600 mt-2">
                     Sociedades en liquidación, cancelación o disolución según catastro oficial. Se apartaron en carpeta de descarte para evitar rebotar correos.
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-white/[0.03] border border-blue-500/30">
+                <div className="p-5 rounded-xl bg-white border-l-4 border-l-blue-500 border border-slate-200 shadow-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-white text-sm">4. Instituciones Educativas y Colegios</span>
-                    <span className="font-mono text-blue-400 font-bold text-sm">4,809</span>
+                    <span className="font-bold text-slate-900 text-sm">4. Instituciones Educativas y Colegios</span>
+                    <span className="font-mono text-blue-700 font-bold text-sm">4,809</span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-2">
+                  <p className="text-xs text-slate-600 mt-2">
                     Unidades educativas fiscales y particulares clasificadas por separado para propuestas especiales de docencia o exención actuarial.
                   </p>
                 </div>
@@ -1141,15 +1131,15 @@ export default function DashboardGerencial() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    <Rocket className="w-5 h-5 text-purple-400" />
+                  <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                    <Rocket className="w-5 h-5 text-purple-600" />
                     Centro de Lanzamiento de Actualizaciones
                   </h2>
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-200">
                     Versión Activa: v{releaseData?.version || "2.1.0"}
                   </span>
                 </div>
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-slate-500 mt-1">
                   Gestiona y publica las versiones oficiales de la aplicación de escritorio MxCorreo. Los clientes conectados detectarán inmediatamente si están desactualizados.
                 </p>
               </div>
@@ -1157,9 +1147,9 @@ export default function DashboardGerencial() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={fetchUpdates}
-                  className="px-3 py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-xs font-semibold text-slate-300 hover:text-white transition-all flex items-center gap-2"
+                  className="px-3 py-2 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-700 transition-all flex items-center gap-2 shadow-xs"
                 >
-                  <RefreshCw className="w-3.5 h-3.5 text-purple-400" />
+                  <RefreshCw className="w-3.5 h-3.5 text-purple-600" />
                   <span>Comprobar Estado</span>
                 </button>
               </div>
@@ -1168,18 +1158,18 @@ export default function DashboardGerencial() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Columna Izquierda: Formulario de Lanzamiento */}
               <div className="lg:col-span-7 glass-card p-6">
-                <h3 className="text-sm font-bold text-white mb-1 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-amber-400" />
+                <h3 className="text-sm font-bold text-slate-900 mb-1 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-purple-600" />
                   Publicar Nueva Versión a Usuarios
                 </h3>
-                <p className="text-xs text-slate-400 mb-5">
+                <p className="text-xs text-slate-500 mb-5">
                   Al pulsar publicar, cualquier usuario que abra la app con una versión inferior recibirá el aviso de <strong>"Desactualizada"</strong> y podrá auto-instalarla.
                 </p>
 
                 <form onSubmit={handlePublishUpdate} className="space-y-4 text-xs">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-slate-300 font-semibold mb-1">
+                      <label className="block text-slate-700 font-semibold mb-1">
                         Número de Versión (SemVer) *
                       </label>
                       <input
@@ -1188,17 +1178,17 @@ export default function DashboardGerencial() {
                         value={targetVersion}
                         onChange={(e) => setTargetVersion(e.target.value)}
                         placeholder="Ej: 2.1.0 o 2.2.0"
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white font-mono placeholder:text-slate-500 focus:outline-none focus:border-purple-500 transition-all"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 font-mono placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-all"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-slate-300 font-semibold mb-1">
+                      <label className="block text-slate-700 font-semibold mb-1">
                         Canal de Distribución
                       </label>
                       <select
                         disabled
-                        className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-slate-300 focus:outline-none"
+                        className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 focus:outline-none"
                       >
                         <option>Producción Oficial (Stable)</option>
                       </select>
@@ -1206,7 +1196,7 @@ export default function DashboardGerencial() {
                   </div>
 
                   <div>
-                    <label className="block text-slate-300 font-semibold mb-1">
+                    <label className="block text-slate-700 font-semibold mb-1">
                       Título Descriptivo del Parche *
                     </label>
                     <input
@@ -1215,12 +1205,12 @@ export default function DashboardGerencial() {
                       value={targetTitle}
                       onChange={(e) => setTargetTitle(e.target.value)}
                       placeholder="Ej: Actualización v2.1.0 — Motor Masivo & Telemetría"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500 transition-all"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-slate-300 font-semibold mb-1">
+                    <label className="block text-slate-700 font-semibold mb-1">
                       Notas de la Versión (Changelog) *
                     </label>
                     <textarea
@@ -1229,23 +1219,23 @@ export default function DashboardGerencial() {
                       value={targetChangelog}
                       onChange={(e) => setTargetChangelog(e.target.value)}
                       placeholder="Escribe cada novedad en una línea separada..."
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500 transition-all font-mono text-xs leading-relaxed"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white transition-all font-mono text-xs leading-relaxed"
                     />
                     <span className="text-[11px] text-slate-500 mt-1 block">
                       Estas notas aparecerán directamente dentro de la ventana de actualización en la pantalla del usuario.
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-purple-500/10 border border-purple-500/20">
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-purple-50 border border-purple-200">
                     <input
                       type="checkbox"
                       id="chk-mandatory"
                       checked={isMandatory}
                       onChange={(e) => setIsMandatory(e.target.checked)}
-                      className="w-4 h-4 rounded text-purple-600 focus:ring-purple-500 border-white/20 bg-black/40"
+                      className="w-4 h-4 rounded text-purple-600 focus:ring-purple-500 border-slate-300 bg-white"
                     />
-                    <label htmlFor="chk-mandatory" className="text-xs text-slate-300 cursor-pointer">
-                      <span className="font-semibold text-purple-300">Actualización Obligatoria:</span> Exigir al usuario actualizar antes de permitir envíos masivos.
+                    <label htmlFor="chk-mandatory" className="text-xs text-slate-700 cursor-pointer">
+                      <span className="font-semibold text-purple-800">Actualización Obligatoria:</span> Exigir al usuario actualizar antes de permitir envíos masivos.
                     </label>
                   </div>
 
@@ -1253,10 +1243,10 @@ export default function DashboardGerencial() {
                     <button
                       type="submit"
                       disabled={isPublishing}
-                      className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold shadow-lg shadow-purple-500/25 flex items-center justify-center gap-2 transition-all disabled:opacity-50 text-sm"
+                      className="w-full py-3 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold shadow-xs flex items-center justify-center gap-2 transition-all disabled:opacity-50 text-sm"
                     >
                       <Rocket className={`w-4 h-4 ${isPublishing ? "animate-bounce" : ""}`} />
-                      <span>{isPublishing ? "Lanzando Versión a Servidores…" : `🚀 Publicar Versión v${targetVersion} a Clientes`}</span>
+                      <span>{isPublishing ? "Lanzando Versión a Servidores…" : `Publicar Versión v${targetVersion} a Clientes`}</span>
                     </button>
                   </div>
                 </form>
@@ -1264,73 +1254,71 @@ export default function DashboardGerencial() {
 
               {/* Columna Derecha: Estado Actual y Diagnóstico */}
               <div className="lg:col-span-5 space-y-5">
-                {/* Tarjeta de Versión Vigente */}
-                <div className="glass-card p-6 border-purple-500/30">
+                <div className="glass-card p-6 border-purple-200">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
                       Versión Transmitida en Vivo
                     </span>
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                       <span className="live-pulse"></span>
                       En Producción
                     </span>
                   </div>
 
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-3xl font-extrabold text-white font-mono">
+                    <span className="text-3xl font-extrabold text-slate-900 font-mono">
                       v{releaseData?.version || "2.1.0"}
                     </span>
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-slate-500">
                       (Publicada: {releaseData?.release_date || "2026-09-21"})
                     </span>
                   </div>
 
-                  <div className="text-xs font-semibold text-purple-300 mb-3">
+                  <div className="text-xs font-semibold text-purple-800 mb-3">
                     {releaseData?.title}
                   </div>
 
-                  <div className="p-3 rounded-xl bg-black/40 border border-white/5 space-y-1.5 mb-4">
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 mb-4">
+                    <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
                       Novedades incluidas en el paquete:
                     </span>
                     {(releaseData?.changelog || []).map((item, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs text-slate-300">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                      <div key={idx} className="flex items-start gap-2 text-xs text-slate-700">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                         <span>{item}</span>
                       </div>
                     ))}
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 text-xs">
-                    <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/5">
-                      <span className="text-slate-400 block text-[10px]">Paquete Incremental</span>
-                      <span className="text-slate-200 font-mono font-medium">{releaseData?.package_size || "3.8 MB"}</span>
+                    <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                      <span className="text-slate-500 block text-[10px]">Paquete Incremental</span>
+                      <span className="text-slate-800 font-mono font-medium">{releaseData?.package_size || "3.8 MB"}</span>
                     </div>
-                    <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/5">
-                      <span className="text-slate-400 block text-[10px]">Tipo de Parche</span>
-                      <span className="text-emerald-400 font-medium">Reinicio Autónomo</span>
+                    <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+                      <span className="text-slate-500 block text-[10px]">Tipo de Parche</span>
+                      <span className="text-emerald-700 font-medium">Reinicio Autónomo</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Tarjeta de Instrucción Técnica */}
-                <div className="glass-card p-5 border-blue-500/20">
-                  <h4 className="text-xs font-bold text-blue-300 mb-2 flex items-center gap-1.5">
+                <div className="glass-card p-5 border-blue-200">
+                  <h4 className="text-xs font-bold text-[#262478] mb-2 flex items-center gap-1.5">
                     <Layers className="w-4 h-4" />
                     ¿Cómo Funciona para el Usuario?
                   </h4>
-                  <ol className="text-xs text-slate-300 space-y-2 list-decimal list-inside leading-relaxed">
+                  <ol className="text-xs text-slate-600 space-y-2 list-decimal list-inside leading-relaxed">
                     <li>
-                      El usuario abre <strong>MxCorreo</strong> (versión v2.0.0).
+                      El usuario abre <strong>MxCorreo</strong>.
                     </li>
                     <li>
                       La app consulta automáticamente la API de Vercel (<code>/api/updates</code>).
                     </li>
                     <li>
-                      Al detectar <strong>v2.1.0 &gt; v2.0.0</strong>, aparece la pantalla animada de <strong>"Aplicación Desactualizada"</strong>.
+                      Al detectar versión superior, aparece la pantalla de <strong>"Aplicación Desactualizada"</strong>.
                     </li>
                     <li>
-                      Al dar clic en <strong>"Actualizar Ahora"</strong>, la app ejecuta la animación con barra de brillo, descarga e instala los parches en segundo plano.
+                      Al dar clic en <strong>"Actualizar Ahora"</strong>, descarga e instala los parches en segundo plano.
                     </li>
                     <li>
                       Muestra <strong>"¡Actualizada con Éxito!"</strong> y se reinicia sola en 3 segundos.
@@ -1345,60 +1333,60 @@ export default function DashboardGerencial() {
 
       {/* ── MODAL: REGISTRAR RESPUESTA DE EMPRESA ─────────────────── */}
       {showAddLeadModal && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="glass-card max-w-lg w-full p-6 border-indigo-500/40 relative">
-            <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 border border-slate-200 shadow-xl relative text-slate-900">
+            <h3 className="text-lg font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600" />
               Registrar Respuesta de Empresa
             </h3>
-            <p className="text-xs text-slate-400 mb-5">
+            <p className="text-xs text-slate-500 mb-5">
               Anota la empresa que respondió a la propuesta para sumarla al embudo del jefe.
             </p>
 
             <form onSubmit={handleCreateLead} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Nombre de la Empresa / Razón Social *</label>
+                <label className="block text-slate-700 font-semibold mb-1">Nombre de la Empresa / Razón Social *</label>
                 <input
                   type="text"
                   required
                   placeholder="Ej: PESQUERA INDUSTRIAL DEL PACÍFICO S.A."
                   value={newEmpresa}
                   onChange={(e) => setNewEmpresa(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-white/[0.05] border border-white/[0.1] text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-[#262478] focus:bg-white"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Correo de Contacto *</label>
+                  <label className="block text-slate-700 font-semibold mb-1">Correo de Contacto *</label>
                   <input
                     type="email"
                     required
                     placeholder="gerencia@pesquera.com.ec"
                     value={newCorreo}
                     onChange={(e) => setNewCorreo(e.target.value)}
-                    className="w-full p-2.5 rounded-xl bg-white/[0.05] border border-white/[0.1] text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-[#262478] focus:bg-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">RUC (opcional)</label>
+                  <label className="block text-slate-700 font-semibold mb-1">RUC (opcional)</label>
                   <input
                     type="text"
                     placeholder="0992384912001"
                     value={newRuc}
                     onChange={(e) => setNewRuc(e.target.value)}
-                    className="w-full p-2.5 rounded-xl bg-white/[0.05] border border-white/[0.1] text-white focus:outline-none focus:border-indigo-500"
+                    className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-[#262478] focus:bg-white"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Estado de Respuesta</label>
+                  <label className="block text-slate-700 font-semibold mb-1">Estado de Respuesta</label>
                   <select
                     value={newEstado}
                     onChange={(e) => setNewEstado(e.target.value as LeadRespuesta["estado"])}
-                    className="w-full p-2.5 rounded-xl bg-white/[0.05] border border-white/[0.1] text-white focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-[#262478]"
                   >
                     <option value="Positivo / Interesado">Positivo / Interesado</option>
                     <option value="Cotización Solicitada">Cotización Solicitada</option>
@@ -1408,11 +1396,11 @@ export default function DashboardGerencial() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-300 font-semibold mb-1">Servicio de Interés</label>
+                  <label className="block text-slate-700 font-semibold mb-1">Servicio de Interés</label>
                   <select
                     value={newServicio}
                     onChange={(e) => setNewServicio(e.target.value as LeadRespuesta["servicio_interes"])}
-                    className="w-full p-2.5 rounded-xl bg-white/[0.05] border border-white/[0.1] text-white focus:outline-none"
+                    className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-[#262478]"
                   >
                     <option value="Jubilación Patronal / NIC 19">Jubilación Patronal / NIC 19</option>
                     <option value="Desahucio y Pasivos Laborales">Desahucio y Pasivos Laborales</option>
@@ -1423,27 +1411,27 @@ export default function DashboardGerencial() {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Notas / Detalle de la Conversación</label>
+                <label className="block text-slate-700 font-semibold mb-1">Notas / Detalle de la Conversación</label>
                 <textarea
                   rows={3}
                   placeholder="Detalles de la llamada o lo que respondieron en el correo…"
                   value={newNotas}
                   onChange={(e) => setNewNotas(e.target.value)}
-                  className="w-full p-2.5 rounded-xl bg-white/[0.05] border border-white/[0.1] text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full p-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 focus:outline-none focus:border-[#262478] focus:bg-white"
                 ></textarea>
               </div>
 
-              <div className="flex justify-end gap-3 pt-3 border-t border-white/[0.08]">
+              <div className="flex justify-end gap-3 pt-3 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setShowAddLeadModal(false)}
-                  className="px-4 py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-slate-300"
+                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-white shadow-lg shadow-emerald-600/30"
+                  className="px-5 py-2 rounded-xl bg-[#262478] hover:bg-[#1e1d61] font-bold text-white shadow-xs"
                 >
                   Guardar Respuesta
                 </button>
@@ -1455,13 +1443,13 @@ export default function DashboardGerencial() {
 
       {/* ── MODAL: CARGAR REPORTE JSON ───────────────────────────── */}
       {showUploadModal && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="glass-card max-w-md w-full p-6 border-white/[0.1] relative">
-            <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
-              <UploadCloud className="w-5 h-5 text-indigo-400" />
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 border border-slate-200 shadow-xl relative text-slate-900">
+            <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <UploadCloud className="w-5 h-5 text-[#262478]" />
               Cargar Reporte JSON al Panel
             </h3>
-            <p className="text-xs text-slate-400 mb-4">
+            <p className="text-xs text-slate-500 mb-4">
               Arrastra el archivo <code>Resumen_Depuracion_Supercias.json</code> generado en tu computadora para actualizar el panel de inmediato.
             </p>
 
@@ -1472,7 +1460,7 @@ export default function DashboardGerencial() {
                 const file = e.dataTransfer.files[0];
                 if (file) handleFileUpload(file);
               }}
-              className="border-2 border-dashed border-white/[0.15] hover:border-indigo-500 rounded-2xl p-8 text-center bg-white/[0.02] cursor-pointer transition-colors"
+              className="border-2 border-dashed border-slate-300 hover:border-[#262478] rounded-2xl p-8 text-center bg-slate-50 hover:bg-blue-50/30 cursor-pointer transition-colors"
               onClick={() => {
                 const input = document.createElement("input");
                 input.type = "file";
@@ -1486,8 +1474,8 @@ export default function DashboardGerencial() {
                 input.click();
               }}
             >
-              <FileSpreadsheet className="w-8 h-8 text-indigo-400 mx-auto mb-2" />
-              <span className="text-xs text-slate-300 font-semibold block">
+              <FileSpreadsheet className="w-8 h-8 text-[#262478] mx-auto mb-2" />
+              <span className="text-xs text-slate-800 font-semibold block">
                 Haz clic o arrastra un archivo .json aquí
               </span>
               <span className="text-[11px] text-slate-500 block mt-1">
@@ -1496,17 +1484,17 @@ export default function DashboardGerencial() {
             </div>
 
             {uploadStatus && (
-              <p className="text-xs font-semibold text-center text-indigo-300 mt-3">{uploadStatus}</p>
+              <p className="text-xs font-semibold text-center text-[#262478] mt-3">{uploadStatus}</p>
             )}
 
-            <div className="flex justify-end mt-5 pt-3 border-t border-white/[0.08]">
+            <div className="flex justify-end mt-5 pt-3 border-t border-slate-200">
               <button
                 type="button"
                 onClick={() => {
                   setShowUploadModal(false);
                   setUploadStatus("");
                 }}
-                className="px-4 py-2 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-xs text-slate-300"
+                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs text-slate-700 font-medium"
               >
                 Cerrar
               </button>

@@ -31,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`dark ${plusJakarta.variable} ${spaceGrotesk.variable}`}>
-      <body className="bg-[#050b14] text-slate-100 antialiased min-h-screen selection:bg-[#d4af37]/30 selection:text-[#fdf4dc] font-sans">
+    <html lang="es" className={`light ${plusJakarta.variable} ${spaceGrotesk.variable}`}>
+      <body className="bg-[#f8fafc] text-slate-900 antialiased min-h-screen selection:bg-[#262478]/15 selection:text-[#262478] font-sans">
         {children}
       </body>
     </html>
