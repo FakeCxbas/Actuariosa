@@ -37,12 +37,14 @@ import {
   VersionRelease,
   initialTelemetryData,
 } from "@/lib/data-store";
+import { getSupabaseBrowserClient } from "@/lib/supabase";
 
 export default function DashboardGerencial() {
   const [data, setData] = useState<TelemetriaActuariosa>(initialTelemetryData);
   const [activeTab, setActiveTab] = useState<"general" | "flujo" | "respuestas" | "empresas" | "actualizaciones">("general");
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [lastSyncTime, setLastSyncTime] = useState<string>("");
+  const [isRealtimeActive, setIsRealtimeActive] = useState<boolean>(false);
 
   // Version Release / Updates state
   const [releaseData, setReleaseData] = useState<VersionRelease>(initialTelemetryData.version_actual_cliente!);
@@ -153,12 +155,62 @@ export default function DashboardGerencial() {
     fetchUpdates();
     setLastSyncTime(new Date().toLocaleTimeString("es-EC"));
 
-    // Auto-polling inteligente cada 20 segundos para el jefe (100% automático, sin F5)
-    const liveTimer = setInterval(() => {
-      fetchTelemetry(true);
-    }, 20000);
+    // Conexión WebSockets nativa con Supabase Realtime (cero polling, sincronización instantánea)
+    const supabase = getSupabaseBrowserClient();
+    let channel: any = null;
 
-    return () => clearInterval(liveTimer);
+    if (supabase) {
+      channel = supabase
+        .channel("actuariosa-realtime-web")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "actuariosa_telemetria" },
+          () => {
+            fetchTelemetry(true);
+            setLastSyncTime(new Date().toLocaleTimeString("es-EC"));
+            showToast("⚡ Telemetría actualizada en tiempo real vía WebSockets", "ok");
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "actuariosa_leads" },
+          () => {
+            fetchTelemetry(true);
+            setLastSyncTime(new Date().toLocaleTimeString("es-EC"));
+            showToast("⚡ CRM de Leads actualizado en tiempo real", "ok");
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "actuariosa_campanas" },
+          () => {
+            fetchTelemetry(true);
+            setLastSyncTime(new Date().toLocaleTimeString("es-EC"));
+            showToast("⚡ Campaña de envíos actualizada en tiempo real", "ok");
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "actuariosa_releases" },
+          () => {
+            fetchUpdates();
+            showToast("⚡ Nueva versión del software publicada", "ok");
+          }
+        )
+        .subscribe((status) => {
+          if (status === "SUBSCRIBED") {
+            setIsRealtimeActive(true);
+          } else if (status === "CLOSED" || status === "CHANNEL_ERROR") {
+            setIsRealtimeActive(false);
+          }
+        });
+    }
+
+    return () => {
+      if (supabase && channel) {
+        supabase.removeChannel(channel);
+      }
+    };
   }, []);
 
   // Filtrado de leads / respuestas
@@ -364,9 +416,9 @@ export default function DashboardGerencial() {
                 <h1 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
                   Actuariosa <span className="text-indigo-400 font-semibold text-sm px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20">PANEL GERENCIAL</span>
                 </h1>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" title="El panel se actualiza automáticamente solo cada 20 segundos sin necesidad de recargar la página">
-                  <span className="live-pulse"></span>
-                  En Vivo • Auto-Sync
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${isRealtimeActive ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-amber-500/10 text-amber-400 border border-amber-500/20"}`} title="Conexión WebSocket en tiempo real directa con Supabase. Cero recargas o consultas periódicas.">
+                  <span className={`w-2 h-2 rounded-full ${isRealtimeActive ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`}></span>
+                  {isRealtimeActive ? "⚡ Tiempo Real • WebSockets" : "Conectando Tiempo Real…"}
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
@@ -378,7 +430,7 @@ export default function DashboardGerencial() {
           <div className="flex items-center gap-3">
             <div className="hidden md:flex flex-col text-right text-xs">
               <span className="text-slate-400 flex items-center gap-1 justify-end">
-                <Clock className="w-3.5 h-3.5 text-emerald-400" /> Auto-Sincronizado:
+                <Clock className="w-3.5 h-3.5 text-emerald-400" /> Sincronización en vivo:
               </span>
               <span className="text-slate-200 font-mono font-medium">{lastSyncTime || "En vivo"}</span>
             </div>
