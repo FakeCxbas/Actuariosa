@@ -19,9 +19,9 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const clientVersion = searchParams.get("client_version") || searchParams.get("current_version") || "2.0.0";
-    const release = getLatestRelease();
+    const release = await getLatestRelease();
     const isOutdated = compareSemver(release.version, clientVersion) > 0;
-    const store = getGlobalStore();
+    const store = await getGlobalStore();
 
     return NextResponse.json({
       ok: true,
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
       ? body.changelog.split("\n").map((s: string) => s.trim()).filter(Boolean)
       : ["Actualización general de estabilidad y nuevas funciones."];
 
-    const release = publishNewRelease({
+    const release = await publishNewRelease({
       version: body.version.trim(),
       title: body.title || `Actualización v${body.version.trim()}`,
       release_date: body.release_date || new Date().toISOString().slice(0, 10),

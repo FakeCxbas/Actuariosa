@@ -3,6 +3,8 @@
  * Estado y almacenamiento centralizado de telemetría de Actuariosa S.A.
  * Pre-poblado con los datos reales consolidados de las depuraciones 2026.
  */
+import { getSupabaseServerClient } from "@/lib/supabase";
+
 
 export interface ResumenGeneral {
   total_recopilados_brutos: number;
@@ -272,14 +274,116 @@ export const initialTelemetryData: TelemetriaActuariosa = {
   ],
 };
 
-// Singleton en memoria para Vercel Serverless runtime
+// Singleton en memoria para Vercel Serverless runtime (y fallback ante desconexión)
 let globalStore: TelemetriaActuariosa = { ...initialTelemetryData };
 
-export function getGlobalStore(): TelemetriaActuariosa {
+export async function getGlobalStore(): Promise<TelemetriaActuariosa> {
+  const supabase = getSupabaseServerClient();
+  if (!supabase) {
+    return globalStore;
+  }
+
+  try {
+    const [teleRes, campanasRes, leadsRes, releasesRes] = await Promise.all([
+      supabase.from("actuariosa_telemetria").select("*").eq("id", "current").maybeSingle(),
+      supabase.from("actuariosa_campanas").select("*").order("created_at", { ascending: false }),
+      supabase.from("actuariosa_leads").select("*").order("created_at", { ascending: false }),
+      supabase.from("actuariosa_releases").select("*").order("created_at", { ascending: false }),
+    ]);
+
+    if (teleRes.data) {
+      const tele = teleRes.data;
+      const campanas: CampanaRegistro[] = (campanasRes.data && campanasRes.data.length > 0)
+        ? campanasRes.data.map((c: any) => ({
+            id: c.id,
+            nombre: c.nombre,
+            fecha: c.fecha,
+            total: c.total,
+            enviados: c.enviados,
+            errores: c.errores,
+            asunto: c.asunto || "",
+            remitente: c.remitente || "",
+          }))
+        : globalStore.campanas;
+
+      const leads: LeadRespuesta[] = (leadsRes.data && leadsRes.data.length > 0)
+        ? leadsRes.data.map((l: any) => ({
+            id: l.id,
+            empresa: l.empresa,
+            correo: l.correo,
+            ruc: l.ruc || "",
+            provincia: l.provincia || "GUAYAS",
+            fecha_contacto: l.fecha_contacto,
+            fecha_respuesta: l.fecha_respuesta,
+            estado: l.estado,
+            servicio_interes: l.servicio_interes,
+            notas: l.notas || "",
+          }))
+        : globalStore.leads_respuestas;
+
+      const releases: VersionRelease[] = (releasesRes.data && releasesRes.data.length > 0)
+        ? releasesRes.data.map((r: any) => ({
+            version: r.version,
+            title: r.title,
+            release_date: r.release_date,
+            mandatory: r.mandatory,
+            min_version: r.min_version,
+            changelog: Array.isArray(r.changelog) ? r.changelog : [],
+            download_url: r.download_url,
+            package_size: r.package_size,
+            sha256: r.sha256,
+          }))
+        : globalStore.historial_versiones || [];
+
+      globalStore = {
+        fuente: tele.fuente || globalStore.fuente,
+        ultima_actualizacion: tele.ultima_actualizacion || new Date().toISOString(),
+        version_sistema: tele.version_sistema || globalStore.version_sistema,
+        resumen_general: tele.resumen_general || globalStore.resumen_general,
+        distribucion_provincias: tele.distribucion_provincias || globalStore.distribucion_provincias,
+        top_dominios: tele.top_dominios || globalStore.top_dominios,
+        campanas,
+        leads_respuestas: leads,
+        version_actual_cliente: releases[0] || globalStore.version_actual_cliente,
+        historial_versiones: releases,
+      };
+    }
+  } catch (err) {
+    console.error("[DataStore] Error sincronizando con Supabase, usando memoria local:", err);
+  }
+
   return globalStore;
 }
 
-export function getLatestRelease(): VersionRelease {
+export async function getLatestRelease(): Promise<VersionRelease> {
+  const supabase = getSupabaseServerClient();
+  if (supabase) {
+    try {
+      const { data } = await supabase
+        .from("actuariosa_releases")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (data) {
+        return {
+          version: data.version,
+          title: data.title,
+          release_date: data.release_date,
+          mandatory: Boolean(data.mandatory),
+          min_version: data.min_version,
+          changelog: Array.isArray(data.changelog) ? data.changelog : [],
+          download_url: data.download_url,
+          package_size: data.package_size,
+          sha256: data.sha256,
+        };
+      }
+    } catch (err) {
+      console.error("[DataStore] Error obteniendo latest release de Supabase:", err);
+    }
+  }
+
   return (
     globalStore.version_actual_cliente || {
       version: "2.1.0",
@@ -292,7 +396,7 @@ export function getLatestRelease(): VersionRelease {
   );
 }
 
-export function publishNewRelease(rel: Partial<VersionRelease> & { version: string }): VersionRelease {
+export async function publishNewRelease(rel: Partial<VersionRelease> & { version: string }): Promise<VersionRelease> {
   const newRelease: VersionRelease = {
     version: rel.version,
     title: rel.title || `Actualización v${rel.version}`,
@@ -310,10 +414,29 @@ export function publishNewRelease(rel: Partial<VersionRelease> & { version: stri
   globalStore.historial_versiones.unshift(newRelease);
   globalStore.ultima_actualizacion = new Date().toISOString();
 
+  const supabase = getSupabaseServerClient();
+  if (supabase) {
+    try {
+      await supabase.from("actuariosa_releases").upsert({
+        version: newRelease.version,
+        title: newRelease.title,
+        release_date: newRelease.release_date,
+        mandatory: newRelease.mandatory,
+        min_version: newRelease.min_version,
+        changelog: newRelease.changelog,
+        download_url: newRelease.download_url,
+        package_size: newRelease.package_size,
+        sha256: newRelease.sha256,
+      });
+    } catch (err) {
+      console.error("[DataStore] Error guardando release en Supabase:", err);
+    }
+  }
+
   return newRelease;
 }
 
-export function updateGlobalStore(partial: Partial<TelemetriaActuariosa>): TelemetriaActuariosa {
+export async function updateGlobalStore(partial: Partial<TelemetriaActuariosa>): Promise<TelemetriaActuariosa> {
   globalStore = {
     ...globalStore,
     ...partial,
@@ -345,25 +468,93 @@ export function updateGlobalStore(partial: Partial<TelemetriaActuariosa>): Telem
     globalStore.resumen_general.tasa_entrega = Number((((tot - err) / tot) * 100).toFixed(1));
   }
 
+  const supabase = getSupabaseServerClient();
+  if (supabase) {
+    try {
+      await supabase.from("actuariosa_telemetria").upsert({
+        id: "current",
+        fuente: globalStore.fuente,
+        version_sistema: globalStore.version_sistema,
+        ultima_actualizacion: globalStore.ultima_actualizacion,
+        resumen_general: globalStore.resumen_general,
+        distribucion_provincias: globalStore.distribucion_provincias,
+        top_dominios: globalStore.top_dominios,
+      });
+
+      if (partial.campanas && partial.campanas.length > 0) {
+        for (const c of partial.campanas) {
+          await supabase.from("actuariosa_campanas").upsert({
+            id: c.id || `CAMP-${Date.now()}`,
+            nombre: c.nombre,
+            fecha: c.fecha,
+            total: c.total || 0,
+            enviados: c.enviados || 0,
+            errores: c.errores || 0,
+            asunto: c.asunto || "",
+            remitente: c.remitente || "",
+          });
+        }
+      }
+    } catch (err) {
+      console.error("[DataStore] Error persistiendo telemetría en Supabase:", err);
+    }
+  }
+
   return globalStore;
 }
 
-export function addLeadToStore(lead: Omit<LeadRespuesta, "id" | "fecha_respuesta">): LeadRespuesta {
+export async function addLeadToStore(lead: Omit<LeadRespuesta, "id" | "fecha_respuesta">): Promise<LeadRespuesta> {
   const newLead: LeadRespuesta = {
     ...lead,
     id: `LEAD-${Date.now().toString().slice(-4)}`,
     fecha_respuesta: new Date().toISOString().slice(0, 10),
   };
   globalStore.leads_respuestas.unshift(newLead);
+
+  const supabase = getSupabaseServerClient();
+  if (supabase) {
+    try {
+      await supabase.from("actuariosa_leads").insert({
+        id: newLead.id,
+        empresa: newLead.empresa,
+        correo: newLead.correo,
+        ruc: newLead.ruc || "",
+        provincia: newLead.provincia || "GUAYAS",
+        fecha_contacto: newLead.fecha_contacto,
+        fecha_respuesta: newLead.fecha_respuesta,
+        estado: newLead.estado,
+        servicio_interes: newLead.servicio_interes,
+        notas: newLead.notas || "",
+      });
+    } catch (err) {
+      console.error("[DataStore] Error insertando lead en Supabase:", err);
+    }
+  }
+
   return newLead;
 }
 
-export function updateLeadStatus(id: string, nuevoEstado: LeadRespuesta["estado"], notas?: string): boolean {
+export async function updateLeadStatus(id: string, nuevoEstado: LeadRespuesta["estado"], notas?: string): Promise<boolean> {
   const item = globalStore.leads_respuestas.find((l) => l.id === id);
   if (item) {
     item.estado = nuevoEstado;
     if (notas !== undefined) item.notas = notas;
-    return true;
   }
-  return false;
+
+  const supabase = getSupabaseServerClient();
+  if (supabase) {
+    try {
+      const updateData: Record<string, any> = { estado: nuevoEstado };
+      if (notas !== undefined) updateData.notas = notas;
+      const { error } = await supabase.from("actuariosa_leads").update(updateData).eq("id", id);
+      if (error) {
+        console.error("[DataStore] Error actualizando lead en Supabase:", error);
+      }
+    } catch (err) {
+      console.error("[DataStore] Excepción actualizando lead en Supabase:", err);
+    }
+  }
+
+  return Boolean(item);
 }
+

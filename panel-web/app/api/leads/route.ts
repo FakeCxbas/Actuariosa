@@ -4,7 +4,7 @@ import { getGlobalStore, addLeadToStore, updateLeadStatus } from "@/lib/data-sto
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const store = getGlobalStore();
+  const store = await getGlobalStore();
   return NextResponse.json({
     ok: true,
     leads: store.leads_respuestas,
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const created = addLeadToStore({
+    const created = await addLeadToStore({
       empresa: body.empresa,
       correo: body.correo,
       ruc: body.ruc || "",
@@ -57,7 +57,7 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const ok = updateLeadStatus(body.id, body.estado, body.notas);
+    const ok = await updateLeadStatus(body.id, body.estado, body.notas);
     if (!ok) {
       return NextResponse.json(
         { ok: false, error: "Lead no encontrado." },

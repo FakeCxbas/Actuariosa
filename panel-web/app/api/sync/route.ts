@@ -4,7 +4,7 @@ import { getGlobalStore, updateGlobalStore } from "@/lib/data-store";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const data = getGlobalStore();
+  const data = await getGlobalStore();
   return NextResponse.json({
     ok: true,
     data,
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const updated = updateGlobalStore({
+    const updated = await updateGlobalStore({
       fuente: body.fuente || "Sincronización Externa",
       resumen_general: body.resumen_general,
       distribucion_provincias: body.distribucion_provincias,
