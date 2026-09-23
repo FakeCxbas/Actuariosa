@@ -165,7 +165,7 @@ export default function DashboardGerencial() {
   const { resumen_general: kpis } = data;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-900 flex flex-col">
+    <div className="min-h-screen bg-[#f4f6fa] text-[#20264a] flex flex-col font-sans">
       {/* Toast Notification */}
       {toastMsg && (
         <div
@@ -180,25 +180,19 @@ export default function DashboardGerencial() {
         </div>
       )}
 
-      {/* ── TOP EXECUTIVE BAR (WHITE & CLEAN MONITORING) ───────────── */}
-      <header className="border-b border-slate-200/90 bg-white sticky top-0 z-40 shadow-xs">
+      {/* ── TOP EXECUTIVE BAR (ACTUARIOSA OFFICIAL WEBSITE PALETTE) ───────────── */}
+      <header className="border-b border-[#dce1eb] bg-white sticky top-0 z-40 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-11 h-11 rounded-xl bg-white border border-slate-200/90 flex items-center justify-center shadow-xs overflow-hidden shrink-0">
-              <img
-                src="/avatar-humano-azul-oficial.svg"
-                alt="Emblema Actuariosa"
-                className="w-9 h-9 object-contain"
-              />
-            </div>
+            <img
+              src="/actuariosa.svg"
+              alt="Actuariosa · Actuarios del Ecuador"
+              className="h-9 w-auto object-contain"
+            />
+            <div className="h-6 w-px bg-[#dce1eb] hidden sm:block"></div>
             <div>
-              <div className="flex items-center gap-3 flex-wrap">
-                <img
-                  src="/actuariosa.svg"
-                  alt="Actuariosa"
-                  className="h-7 w-auto object-contain"
-                />
-                <span className="text-[#262478] font-bold text-xs px-2.5 py-0.5 rounded-full bg-blue-50 border border-blue-200/70 font-mono tracking-wide">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span className="text-[#0755ae] font-bold text-xs px-2.5 py-0.5 rounded-full bg-blue-50/80 border border-blue-200/80 font-mono tracking-wide">
                   PANEL DE MONITOREO
                 </span>
                 <span
@@ -213,7 +207,7 @@ export default function DashboardGerencial() {
                   {isRealtimeActive ? "Tiempo Real • WebSockets" : "Conectando Tiempo Real…"}
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-[#626c7b] mt-1">
                 Supervisión del flujo de datos, depuración Supercias y prospección comercial B2B
               </p>
             </div>
@@ -221,34 +215,34 @@ export default function DashboardGerencial() {
 
           <div className="flex items-center gap-4">
             <div className="hidden md:flex flex-col text-right text-xs">
-              <span className="text-slate-500 flex items-center gap-1 justify-end">
-                <Clock className="w-3.5 h-3.5 text-[#262478]" /> Sincronización en vivo:
+              <span className="text-[#626c7b] flex items-center gap-1 justify-end">
+                <Clock className="w-3.5 h-3.5 text-[#0755ae]" /> Sincronización en vivo:
               </span>
-              <span className="text-slate-700 font-mono font-medium">{lastSyncTime || "En vivo"}</span>
+              <span className="text-[#20264a] font-mono font-medium">{lastSyncTime || "En vivo"}</span>
             </div>
 
             <button
               onClick={() => fetchTelemetry(false)}
               disabled={isRefreshing}
-              className="p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 transition-all disabled:opacity-50 shadow-xs"
+              className="p-2.5 rounded-xl bg-[#f4f6fa] hover:bg-white border border-[#dce1eb] text-[#20264a] hover:border-[#a7bde3] transition-all disabled:opacity-50 shadow-xs"
               title="Refrescar métricas de la nube"
             >
-              <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-[#262478]" : ""}`} />
+              <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-[#0755ae]" : ""}`} />
             </button>
           </div>
         </div>
 
         {/* Navigation Tabs (Solo Monitoreo) */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1 border-t border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1 border-t border-[#dce1eb]/60">
           <button
             onClick={() => setActiveTab("general")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "general"
-                ? "border-[#262478] text-[#262478] bg-blue-50/50 font-semibold"
-                : "border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300"
+                ? "border-[#0755ae] text-[#0755ae] bg-blue-50/60 font-semibold"
+                : "border-transparent text-[#626c7b] hover:text-[#20264a] hover:border-[#dce1eb]"
             }`}
           >
-            <BarChart3 className="w-4 h-4 text-[#262478]" />
+            <BarChart3 className="w-4 h-4 text-[#0755ae]" />
             <span>Visión Ejecutiva</span>
           </button>
 
@@ -256,11 +250,11 @@ export default function DashboardGerencial() {
             onClick={() => setActiveTab("respuestas")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "respuestas"
-                ? "border-emerald-600 text-emerald-700 bg-emerald-50/50 font-semibold"
-                : "border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300"
+                ? "border-emerald-600 text-emerald-700 bg-emerald-50/60 font-semibold"
+                : "border-transparent text-[#626c7b] hover:text-[#20264a] hover:border-[#dce1eb]"
             }`}
           >
-            <CheckCircle2 className="w-4 h-4" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
             <span>Respuestas & Prospectos</span>
             <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-800 font-bold">
               {conteoRespuestas.positivos}
@@ -271,11 +265,11 @@ export default function DashboardGerencial() {
             onClick={() => setActiveTab("empresas")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "empresas"
-                ? "border-[#262478] text-[#262478] bg-blue-50/50 font-semibold"
-                : "border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300"
+                ? "border-[#0755ae] text-[#0755ae] bg-blue-50/60 font-semibold"
+                : "border-transparent text-[#626c7b] hover:text-[#20264a] hover:border-[#dce1eb]"
             }`}
           >
-            <Building2 className="w-4 h-4" />
+            <Building2 className="w-4 h-4 text-[#0755ae]" />
             <span>Bases Depuradas</span>
           </button>
 
@@ -283,11 +277,11 @@ export default function DashboardGerencial() {
             onClick={() => setActiveTab("flujo")}
             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all ${
               activeTab === "flujo"
-                ? "border-blue-600 text-blue-700 bg-blue-50/50 font-semibold"
-                : "border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300"
+                ? "border-[#0755ae] text-[#0755ae] bg-blue-50/60 font-semibold"
+                : "border-transparent text-[#626c7b] hover:text-[#20264a] hover:border-[#dce1eb]"
             }`}
           >
-            <Layers className="w-4 h-4" />
+            <Layers className="w-4 h-4 text-[#0755ae]" />
             <span>Flujo de Datos & Arquitectura</span>
           </button>
         </div>
@@ -302,52 +296,52 @@ export default function DashboardGerencial() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {/* Card 1: Total Recopilados */}
               <div className="glass-card p-6 relative overflow-hidden group">
-                <div className="absolute top-0 left-0 h-1 w-full bg-blue-600"></div>
-                <div className="flex items-center justify-between text-slate-500 mb-3">
+                <div className="absolute top-0 left-0 h-1 w-full bg-[#0755ae]"></div>
+                <div className="flex items-center justify-between text-[#626c7b] mb-3">
                   <span className="text-xs font-semibold uppercase tracking-wider">Inventario Bruto Total</span>
-                  <div className="p-2 rounded-lg bg-blue-50 text-blue-700">
+                  <div className="p-2 rounded-lg bg-[#f4f6fa] text-[#0755ae] border border-[#dce1eb]">
                     <Database className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-3xl font-extrabold text-slate-900 font-mono tracking-tight">
+                <div className="text-3xl font-extrabold text-[#20264a] font-mono tracking-tight">
                   {kpis.total_recopilados_brutos.toLocaleString("es-EC")}
                 </div>
-                <div className="mt-3 text-xs text-slate-500 flex items-center justify-between">
+                <div className="mt-3 text-xs text-[#626c7b] flex items-center justify-between">
                   <span>69 archivos recopilados</span>
-                  <span className="text-blue-700 font-semibold">{kpis.total_base_activa.toLocaleString("es-EC")} activos 2026</span>
+                  <span className="text-[#0755ae] font-semibold">{kpis.total_base_activa.toLocaleString("es-EC")} activos 2026</span>
                 </div>
               </div>
 
               {/* Card 2: Negocios Depurados 100% Funcionales */}
-              <div className="glass-card p-6 relative overflow-hidden group border-l-4 border-l-[#262478]">
-                <div className="flex items-center justify-between text-slate-500 mb-3">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#262478]">Empresas 100% Funcionales</span>
-                  <div className="p-2 rounded-lg bg-blue-50 text-[#262478]">
+              <div className="glass-card p-6 relative overflow-hidden group border-l-4 border-l-[#0755ae]">
+                <div className="flex items-center justify-between text-[#626c7b] mb-3">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#0755ae]">Empresas 100% Funcionales</span>
+                  <div className="p-2 rounded-lg bg-blue-50 text-[#0755ae] border border-blue-100">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-3xl font-extrabold text-[#262478] font-mono tracking-tight flex items-baseline gap-2">
+                <div className="text-3xl font-extrabold text-[#30286d] font-mono tracking-tight flex items-baseline gap-2">
                   <span>{kpis.total_negocios_unicos.toLocaleString("es-EC")}</span>
                 </div>
-                <div className="mt-3 text-xs text-slate-500 flex items-center justify-between">
-                  <span className="text-[#262478] font-semibold">{kpis.supercias_activas_con_ruc.toLocaleString("es-EC")} Supercias RUC</span>
+                <div className="mt-3 text-xs text-[#626c7b] flex items-center justify-between">
+                  <span className="text-[#0755ae] font-semibold">{kpis.supercias_activas_con_ruc.toLocaleString("es-EC")} Supercias RUC</span>
                   <span>{kpis.negocios_corporativos.toLocaleString("es-EC")} corporativos</span>
                 </div>
               </div>
 
               {/* Card 3: Correos Enviados y Entrega */}
               <div className="glass-card p-6 relative overflow-hidden group">
-                <div className="absolute top-0 left-0 h-1 w-full bg-slate-300"></div>
-                <div className="flex items-center justify-between text-slate-500 mb-3">
+                <div className="absolute top-0 left-0 h-1 w-full bg-[#dce1eb]"></div>
+                <div className="flex items-center justify-between text-[#626c7b] mb-3">
                   <span className="text-xs font-semibold uppercase tracking-wider">Correos Enviados</span>
-                  <div className="p-2 rounded-lg bg-slate-100 text-slate-700">
+                  <div className="p-2 rounded-lg bg-[#f4f6fa] text-[#626c7b] border border-[#dce1eb]">
                     <Send className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-3xl font-extrabold text-slate-900 font-mono tracking-tight">
+                <div className="text-3xl font-extrabold text-[#20264a] font-mono tracking-tight">
                   {kpis.total_enviados_campanas.toLocaleString("es-EC")}
                 </div>
-                <div className="mt-3 text-xs text-slate-500 flex items-center justify-between">
+                <div className="mt-3 text-xs text-[#626c7b] flex items-center justify-between">
                   <span className="text-emerald-600 font-semibold flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" /> {kpis.tasa_entrega}% entrega
                   </span>
@@ -357,19 +351,19 @@ export default function DashboardGerencial() {
 
               {/* Card 4: Respuestas Positivas y Oportunidades */}
               <div className="glass-card p-6 relative overflow-hidden group border-l-4 border-l-emerald-600">
-                <div className="flex items-center justify-between text-slate-500 mb-3">
+                <div className="flex items-center justify-between text-[#626c7b] mb-3">
                   <span className="text-xs font-semibold uppercase tracking-wider text-emerald-700">Empresas Interesadas (Positivos)</span>
-                  <div className="p-2 rounded-lg bg-emerald-50 text-emerald-700">
+                  <div className="p-2 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100">
                     <TrendingUp className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-3xl font-extrabold text-slate-900 font-mono tracking-tight flex items-baseline gap-2">
+                <div className="text-3xl font-extrabold text-[#20264a] font-mono tracking-tight flex items-baseline gap-2">
                   <span>{conteoRespuestas.positivos}</span>
                   <span className="text-xs text-emerald-600 font-sans font-normal">
                     ({((conteoRespuestas.positivos / (kpis.total_enviados_campanas || 1)) * 100).toFixed(1)}% respuesta)
                   </span>
                 </div>
-                <div className="mt-3 text-xs text-slate-500 flex items-center justify-between">
+                <div className="mt-3 text-xs text-[#626c7b] flex items-center justify-between">
                   <span className="font-semibold text-emerald-600">{conteoRespuestas.cotizaciones} cotizaciones pedidas</span>
                   <span className="text-emerald-700">{conteoRespuestas.cerrados} contratadas</span>
                 </div>
@@ -380,15 +374,15 @@ export default function DashboardGerencial() {
             <div className="glass-card p-6">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-[#262478]" />
+                  <h3 className="text-base font-bold text-[#20264a] flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-[#0755ae]" />
                     Embudo de Depuración y Rendimiento Comercial
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-[#626c7b] mt-1">
                     Visualiza el flujo de filtrado desde la recolección cruda hasta las respuestas de contratación actuarial.
                   </p>
                 </div>
-                <span className="text-xs px-3 py-1 rounded-lg bg-blue-50 text-[#262478] border border-blue-200/80 font-semibold font-mono">
+                <span className="text-xs px-3 py-1 rounded-lg bg-blue-50 text-[#0755ae] border border-blue-200/80 font-semibold font-mono">
                   Eficiencia de Purga: 82.8%
                 </span>
               </div>
@@ -397,44 +391,44 @@ export default function DashboardGerencial() {
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-slate-700">1. Recolección Cruda de Correos (Histórico + Pendrives)</span>
-                    <span className="font-mono text-slate-500">247,997 (100%)</span>
+                    <span className="text-[#20264a]">1. Recolección Cruda de Correos (Histórico + Pendrives)</span>
+                    <span className="font-mono text-[#626c7b]">247,997 (100%)</span>
                   </div>
-                  <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-slate-400 rounded-full" style={{ width: "100%" }}></div>
+                  <div className="h-3.5 w-full bg-[#f4f6fa] rounded-full overflow-hidden border border-[#dce1eb]/50">
+                    <div className="h-full bg-[#cbd5e1] rounded-full" style={{ width: "100%" }}></div>
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-slate-700">2. Normalización, Sintaxis Limpia y Unicidad</span>
-                    <span className="font-mono text-slate-500">136,602 (55.1%)</span>
+                    <span className="text-[#20264a]">2. Normalización, Sintaxis Limpia y Unicidad</span>
+                    <span className="font-mono text-[#626c7b]">136,602 (55.1%)</span>
                   </div>
-                  <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-3.5 w-full bg-[#f4f6fa] rounded-full overflow-hidden border border-[#dce1eb]/50">
                     <div className="h-full bg-sky-500 rounded-full" style={{ width: "55.1%" }}></div>
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-[#262478] font-bold">3. Empresas Activas en Supercias y Dominios Corporativos (100% Funcionales)</span>
-                    <span className="font-mono text-[#262478] font-bold">42,648 (17.2%)</span>
+                    <span className="text-[#30286d] font-bold">3. Empresas Activas en Supercias y Dominios Corporativos (100% Funcionales)</span>
+                    <span className="font-mono text-[#30286d] font-bold">42,648 (17.2%)</span>
                   </div>
-                  <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-[#262478] rounded-full" style={{ width: "17.2%" }}></div>
+                  <div className="h-3.5 w-full bg-[#f4f6fa] rounded-full overflow-hidden border border-[#dce1eb]/50">
+                    <div className="h-full bg-[#0755ae] rounded-full" style={{ width: "17.2%" }}></div>
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between text-xs font-medium mb-1.5">
-                    <span className="text-slate-700">4. Contactadas en Campañas de Email B2B (NIC 19 / Jubilación)</span>
-                    <span className="font-mono text-slate-500">
+                    <span className="text-[#20264a]">4. Contactadas en Campañas de Email B2B (NIC 19 / Jubilación)</span>
+                    <span className="font-mono text-[#626c7b]">
                       {kpis.total_enviados_campanas.toLocaleString("es-EC")} ({kpis.total_negocios_unicos > 0 ? ((kpis.total_enviados_campanas / kpis.total_negocios_unicos) * 100).toFixed(1) : "0.0"}% de base funcional)
                     </span>
                   </div>
-                  <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-3.5 w-full bg-[#f4f6fa] rounded-full overflow-hidden border border-[#dce1eb]/50">
                     <div
-                      className="h-full bg-indigo-500 rounded-full transition-all duration-500"
+                      className="h-full bg-[#30286d] rounded-full transition-all duration-500"
                       style={{
                         width: `${Math.min(100, Math.max(kpis.total_enviados_campanas > 0 ? 2 : 0, (kpis.total_enviados_campanas / (kpis.total_negocios_unicos || 1)) * 100))}%`,
                       }}
@@ -447,7 +441,7 @@ export default function DashboardGerencial() {
                     <span className="text-emerald-700 font-semibold">5. Respuestas Comerciales Positivas y Solicitudes de Cotización</span>
                     <span className="font-mono text-emerald-700 font-bold">{conteoRespuestas.positivos} empresas interesadas</span>
                   </div>
-                  <div className="h-3.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                  <div className="h-3.5 w-full bg-[#f4f6fa] rounded-full overflow-hidden border border-[#dce1eb]/50">
                     <div
                       className="h-full bg-emerald-500 rounded-full transition-all duration-500"
                       style={{
@@ -464,11 +458,11 @@ export default function DashboardGerencial() {
               {/* Provincias */}
               <div className="glass-card p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-rose-500" />
+                  <h3 className="text-sm font-bold text-[#20264a] flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-[#d93642]" />
                     Empresas Supercias por Provincia (Ecuador)
                   </h3>
-                  <span className="text-xs text-slate-500 font-mono">11,779 con RUC</span>
+                  <span className="text-xs text-[#626c7b] font-mono">11,779 con RUC</span>
                 </div>
 
                 <div className="space-y-3 mt-4">
@@ -478,12 +472,12 @@ export default function DashboardGerencial() {
                     return (
                       <div key={prov}>
                         <div className="flex justify-between text-xs font-medium mb-1">
-                          <span className="text-slate-700">{prov}</span>
-                          <span className="font-mono text-slate-500">{cant.toLocaleString("es-EC")}</span>
+                          <span className="text-[#20264a]">{prov}</span>
+                          <span className="font-mono text-[#626c7b]">{cant.toLocaleString("es-EC")}</span>
                         </div>
-                        <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-[#f4f6fa] rounded-full overflow-hidden border border-[#dce1eb]/40">
                           <div
-                            className="h-full bg-[#262478] rounded-full"
+                            className="h-full bg-[#0755ae] rounded-full"
                             style={{ width: `${pct}%` }}
                           ></div>
                         </div>
@@ -496,20 +490,20 @@ export default function DashboardGerencial() {
               {/* Dominios Corporativos Top */}
               <div className="glass-card p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-[#262478]" />
+                  <h3 className="text-sm font-bold text-[#20264a] flex items-center gap-2">
+                    <Building2 className="w-4 h-4 text-[#0755ae]" />
                     Top Dominios y Proveedores de Empresas
                   </h3>
-                  <span className="text-xs text-slate-500">Redes corporativas EC</span>
+                  <span className="text-xs text-[#626c7b]">Redes corporativas EC</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mt-2">
                   {Object.entries(data.top_dominios).slice(0, 10).map(([dom, cant]) => (
-                    <div key={dom} className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex justify-between items-center">
-                      <span className="text-xs font-mono text-slate-700 truncate max-w-[130px]" title={dom}>
+                    <div key={dom} className="p-3 rounded-xl bg-[#f4f6fa] border border-[#dce1eb] flex justify-between items-center hover:border-[#a7bde3] transition-colors">
+                      <span className="text-xs font-mono text-[#20264a] truncate max-w-[130px]" title={dom}>
                         {dom}
                       </span>
-                      <span className="text-xs font-bold text-[#262478] font-mono">
+                      <span className="text-xs font-bold text-[#0755ae] font-mono">
                         {cant.toLocaleString("es-EC")}
                       </span>
                     </div>
@@ -528,16 +522,16 @@ export default function DashboardGerencial() {
             {/* ── HISTORIAL DE CAMPAÑAS ──────────────────────────────── */}
             <div className="glass-card p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-[#20264a] flex items-center gap-2">
                   <Send className="w-4 h-4 text-emerald-600" />
                   Campañas Recientes de Envío a Empresas
                 </h3>
-                <span className="text-xs text-slate-500">Registrado por MxCorreo</span>
+                <span className="text-xs text-[#626c7b]">Registrado por MxCorreo</span>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 text-slate-600 border-b border-slate-200 font-semibold">
+                  <thead className="bg-[#f4f6fa] text-[#626c7b] border-b border-[#dce1eb] font-semibold">
                     <tr>
                       <th className="py-2.5 px-3">Campaña / Asunto</th>
                       <th className="py-2.5 px-3">Fecha</th>
@@ -584,11 +578,11 @@ export default function DashboardGerencial() {
             {/* Header del Monitoreo de Respuestas */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-card p-6">
               <div>
-                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <h2 className="text-lg font-bold text-[#20264a] flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                   Monitoreo de Respuestas y Oportunidades
                 </h2>
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-[#626c7b] mt-1">
                   Supervisión directa de las empresas que responden interesadas en los estudios actuariales y consultoría NIC 19.
                 </p>
               </div>
@@ -596,9 +590,9 @@ export default function DashboardGerencial() {
               <div>
                 <button
                   onClick={exportarLeadsCSV}
-                  className="px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 transition-all flex items-center gap-2 shadow-xs"
+                  className="px-4 py-2.5 rounded-xl bg-[#f4f6fa] hover:bg-white border border-[#dce1eb] text-xs font-semibold text-[#20264a] hover:border-[#a7bde3] transition-all flex items-center gap-2 shadow-xs"
                 >
-                  <Download className="w-4 h-4 text-[#262478]" />
+                  <Download className="w-4 h-4 text-[#0755ae]" />
                   <span>Exportar Reporte CSV</span>
                 </button>
               </div>
@@ -607,33 +601,33 @@ export default function DashboardGerencial() {
             {/* Metricas rápidas de respuestas */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="glass-card p-4 text-center">
-                <span className="text-xs text-slate-500">Total Contactadas</span>
-                <div className="text-2xl font-extrabold text-slate-900 font-mono mt-1">{kpis.total_enviados_campanas.toLocaleString("es-EC")}</div>
+                <span className="text-xs text-[#626c7b]">Total Contactadas</span>
+                <div className="text-2xl font-extrabold text-[#20264a] font-mono mt-1">{kpis.total_enviados_campanas.toLocaleString("es-EC")}</div>
               </div>
               <div className="glass-card p-4 text-center border-l-4 border-l-emerald-500">
                 <span className="text-xs text-emerald-700 font-semibold">Respuestas Positivas</span>
                 <div className="text-2xl font-extrabold text-emerald-600 font-mono mt-1">{conteoRespuestas.positivos}</div>
               </div>
-              <div className="glass-card p-4 text-center border-l-4 border-l-[#262478]">
-                <span className="text-xs text-[#262478] font-semibold">Cotizaciones Solicitadas</span>
-                <div className="text-2xl font-extrabold text-[#262478] font-mono mt-1">{conteoRespuestas.cotizaciones}</div>
+              <div className="glass-card p-4 text-center border-l-4 border-l-[#0755ae]">
+                <span className="text-xs text-[#0755ae] font-semibold">Cotizaciones Solicitadas</span>
+                <div className="text-2xl font-extrabold text-[#0755ae] font-mono mt-1">{conteoRespuestas.cotizaciones}</div>
               </div>
-              <div className="glass-card p-4 text-center border-l-4 border-l-teal-500">
-                <span className="text-xs text-teal-700 font-semibold">Contratos Cerrados</span>
-                <div className="text-2xl font-extrabold text-teal-600 font-mono mt-1">{conteoRespuestas.cerrados}</div>
+              <div className="glass-card p-4 text-center border-l-4 border-l-[#30286d]">
+                <span className="text-xs text-[#30286d] font-semibold">Contratos Cerrados</span>
+                <div className="text-2xl font-extrabold text-[#30286d] font-mono mt-1">{conteoRespuestas.cerrados}</div>
               </div>
             </div>
 
             {/* Filtros y Buscador */}
             <div className="glass-card p-4 flex flex-col sm:flex-row gap-4 justify-between items-center">
               <div className="relative w-full sm:w-80">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-[#626c7b] absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Buscar empresa, correo o RUC…"
                   value={busquedaLead}
                   onChange={(e) => setBusquedaLead(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#262478] focus:bg-white"
+                  className="w-full pl-9 pr-4 py-2 bg-[#f4f6fa] border border-[#dce1eb] rounded-xl text-xs text-[#20264a] placeholder-[#626c7b] focus:outline-none focus:border-[#0755ae] focus:bg-white"
                 />
               </div>
 
@@ -644,8 +638,8 @@ export default function DashboardGerencial() {
                     onClick={() => setFiltroEstado(st)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                       filtroEstado === st
-                        ? "bg-[#262478] text-white shadow-xs"
-                        : "bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200"
+                        ? "bg-[#0755ae] text-white shadow-xs"
+                        : "bg-[#f4f6fa] text-[#626c7b] hover:text-[#20264a] hover:bg-[#e8edf5]"
                     }`}
                   >
                     {st}
@@ -658,7 +652,7 @@ export default function DashboardGerencial() {
             <div className="glass-card overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 text-slate-600 border-b border-slate-200 font-semibold">
+                  <thead className="bg-[#f4f6fa] text-[#626c7b] border-b border-[#dce1eb] font-semibold">
                     <tr>
                       <th className="py-3 px-4">Empresa / RUC</th>
                       <th className="py-3 px-4">Correo Electrónico</th>
@@ -667,24 +661,24 @@ export default function DashboardGerencial() {
                       <th className="py-3 px-4">Notas / Resumen</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-slate-700">
+                  <tbody className="divide-y divide-[#dce1eb]/50 text-[#20264a]">
                     {leadsFiltrados.map((l) => (
-                      <tr key={l.id} className="hover:bg-slate-50/70 transition-colors">
+                      <tr key={l.id} className="hover:bg-[#f4f6fa]/80 transition-colors">
                         <td className="py-3 px-4">
-                          <div className="font-bold text-slate-900">{l.empresa}</div>
-                          <div className="text-[11px] font-mono text-slate-500">
+                          <div className="font-bold text-[#20264a]">{l.empresa}</div>
+                          <div className="text-[11px] font-mono text-[#626c7b]">
                             {l.ruc ? `RUC: ${l.ruc}` : "Sin RUC"} • {l.provincia || "EC"}
                           </div>
                         </td>
-                        <td className="py-3 px-4 font-mono text-[#262478] font-medium">{l.correo}</td>
-                        <td className="py-3 px-4 text-slate-700">{l.servicio_interes}</td>
+                        <td className="py-3 px-4 font-mono text-[#0755ae] font-medium">{l.correo}</td>
+                        <td className="py-3 px-4 text-[#20264a]">{l.servicio_interes}</td>
                         <td className="py-3 px-4">
                           <span
                             className={`inline-flex px-2.5 py-1 rounded-full text-[11px] font-semibold ${
                               l.estado === "Cerrado / Cliente"
                                 ? "bg-teal-50 text-teal-800 border border-teal-200"
                                 : l.estado === "Cotización Solicitada"
-                                ? "bg-blue-50 text-blue-800 border border-blue-200"
+                                ? "bg-blue-50 text-[#0755ae] border border-blue-200"
                                 : l.estado === "En Negociación"
                                 ? "bg-amber-50 text-amber-800 border border-amber-200"
                                 : l.estado === "No Interesado"
@@ -695,14 +689,14 @@ export default function DashboardGerencial() {
                             {l.estado}
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-slate-500 max-w-xs truncate" title={l.notas}>
+                        <td className="py-3 px-4 text-[#626c7b] max-w-xs truncate" title={l.notas}>
                           {l.notas || "—"}
                         </td>
                       </tr>
                     ))}
                     {leadsFiltrados.length === 0 && (
                       <tr>
-                        <td colSpan={5} className="py-8 text-center text-slate-400">
+                        <td colSpan={5} className="py-8 text-center text-[#626c7b]">
                           No hay empresas registradas con el filtro seleccionado.
                         </td>
                       </tr>
@@ -718,51 +712,51 @@ export default function DashboardGerencial() {
         {activeTab === "empresas" && (
           <div className="space-y-6 animate-fadeIn">
             <div className="glass-card p-6">
-              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-[#262478]" />
+              <h2 className="text-lg font-bold text-[#20264a] flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-[#0755ae]" />
                 Desglose Estructurado de las Bases Depuradas
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-[#626c7b] mt-1">
                 Estructura exacta de archivos depurados en <code>Mx/resultados/depuracion_supercias_2026/</code>.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                <div className="p-5 rounded-xl bg-white border-l-4 border-l-emerald-600 border border-slate-200 shadow-xs">
+                <div className="p-5 rounded-xl bg-white border-l-4 border-l-emerald-600 border border-[#dce1eb] shadow-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-900 text-sm">1. Supercias Activas con RUC</span>
+                    <span className="font-bold text-[#20264a] text-sm">1. Supercias Activas con RUC</span>
                     <span className="font-mono text-emerald-700 font-bold text-sm">11,779</span>
                   </div>
-                  <p className="text-xs text-slate-600 mt-2">
+                  <p className="text-xs text-[#626c7b] mt-2">
                     Empresas con razón social, RUC y estado legal activo validado ante la Superintendencia de Compañías. Base objetivo para auditorías y estudios de jubilación patronal NIC 19.
                   </p>
                 </div>
 
-                <div className="p-5 rounded-xl bg-white border-l-4 border-l-[#262478] border border-slate-200 shadow-xs">
+                <div className="p-5 rounded-xl bg-white border-l-4 border-l-[#0755ae] border border-[#dce1eb] shadow-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-900 text-sm">2. Negocios Corporativos Activos</span>
-                    <span className="font-mono text-[#262478] font-bold text-sm">30,869</span>
+                    <span className="font-bold text-[#20264a] text-sm">2. Negocios Corporativos Activos</span>
+                    <span className="font-mono text-[#0755ae] font-bold text-sm">30,869</span>
                   </div>
-                  <p className="text-xs text-slate-600 mt-2">
+                  <p className="text-xs text-[#626c7b] mt-2">
                     Correos alojados en dominios empresariales propios y redes de telecomunicaciones (Satnet, Andinanet, Telconet, etc.) con servidores MX operativos.
                   </p>
                 </div>
 
-                <div className="p-5 rounded-xl bg-white border-l-4 border-l-rose-500 border border-slate-200 shadow-xs">
+                <div className="p-5 rounded-xl bg-white border-l-4 border-l-[#d93642] border border-[#dce1eb] shadow-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-900 text-sm">3. Descartados (Disolución / Inactivas)</span>
-                    <span className="font-mono text-rose-600 font-bold text-sm">3,496</span>
+                    <span className="font-bold text-[#20264a] text-sm">3. Descartados (Disolución / Inactivas)</span>
+                    <span className="font-mono text-[#d93642] font-bold text-sm">3,496</span>
                   </div>
-                  <p className="text-xs text-slate-600 mt-2">
+                  <p className="text-xs text-[#626c7b] mt-2">
                     Sociedades en liquidación, cancelación o disolución según catastro oficial. Se apartaron en carpeta de descarte para proteger la reputación SMTP del remitente.
                   </p>
                 </div>
 
-                <div className="p-5 rounded-xl bg-white border-l-4 border-l-blue-500 border border-slate-200 shadow-xs">
+                <div className="p-5 rounded-xl bg-white border-l-4 border-l-[#30286d] border border-[#dce1eb] shadow-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-900 text-sm">4. Instituciones Educativas y Colegios</span>
-                    <span className="font-mono text-blue-700 font-bold text-sm">4,809</span>
+                    <span className="font-bold text-[#20264a] text-sm">4. Instituciones Educativas y Colegios</span>
+                    <span className="font-mono text-[#30286d] font-bold text-sm">4,809</span>
                   </div>
-                  <p className="text-xs text-slate-600 mt-2">
+                  <p className="text-xs text-[#626c7b] mt-2">
                     Unidades educativas fiscales y particulares clasificadas por separado para propuestas especiales de docencia o exención actuarial.
                   </p>
                 </div>
@@ -775,22 +769,22 @@ export default function DashboardGerencial() {
         {activeTab === "flujo" && (
           <div className="space-y-6 animate-fadeIn">
             <div className="glass-card p-6">
-              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                <Layers className="w-5 h-5 text-[#262478]" />
+              <h2 className="text-lg font-bold text-[#20264a] flex items-center gap-2">
+                <Layers className="w-5 h-5 text-[#0755ae]" />
                 Arquitectura de Transmisión y Flujo de Datos
               </h2>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-[#626c7b] mt-1">
                 Cómo viajan los datos desde tus herramientas de depuración locales hacia la nube en Vercel y Supabase para supervisión en tiempo real.
               </p>
 
               {/* Diagrama Visual */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8 relative">
-                <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/60">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 text-[#262478] flex items-center justify-center font-bold text-xs mb-3">
+                <div className="p-5 rounded-xl border border-[#dce1eb] bg-[#f4f6fa]/60">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 text-[#0755ae] flex items-center justify-center font-bold text-xs mb-3 border border-blue-200">
                     1
                   </div>
-                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Depuración Local</h4>
-                  <p className="text-xs text-slate-600 mt-1.5">
+                  <h4 className="text-xs font-bold text-[#20264a] uppercase tracking-wider">Depuración Local</h4>
+                  <p className="text-xs text-[#626c7b] mt-1.5">
                     <code>depurar_correos_supercias.py</code> cruza 136k correos con las bases de la Superintendencia de Compañías.
                   </p>
                   <div className="mt-3 text-[11px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded">
@@ -798,25 +792,25 @@ export default function DashboardGerencial() {
                   </div>
                 </div>
 
-                <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/60">
-                  <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs mb-3">
+                <div className="p-5 rounded-xl border border-[#dce1eb] bg-[#f4f6fa]/60">
+                  <div className="w-8 h-8 rounded-full bg-[#f4f6fa] text-[#30286d] flex items-center justify-center font-bold text-xs mb-3 border border-[#dce1eb]">
                     2
                   </div>
-                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">MxCorreo Desktop</h4>
-                  <p className="text-xs text-slate-600 mt-1.5">
+                  <h4 className="text-xs font-bold text-[#20264a] uppercase tracking-wider">MxCorreo Desktop</h4>
+                  <p className="text-xs text-[#626c7b] mt-1.5">
                     Lanza campañas B2B con pausas anti-spam y genera bitácora de correos enviados, fallidos y respuestas.
                   </p>
-                  <div className="mt-3 text-[11px] font-mono text-[#262478] bg-blue-50 border border-blue-200 px-2 py-1 rounded">
+                  <div className="mt-3 text-[11px] font-mono text-[#0755ae] bg-blue-50 border border-blue-200 px-2 py-1 rounded">
                     sync_telemetria.py
                   </div>
                 </div>
 
-                <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/60">
-                  <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-xs mb-3">
+                <div className="p-5 rounded-xl border border-[#dce1eb] bg-[#f4f6fa]/60">
+                  <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-xs mb-3 border border-teal-200">
                     3
                   </div>
-                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Endpoint Vercel & Supabase</h4>
-                  <p className="text-xs text-slate-600 mt-1.5">
+                  <h4 className="text-xs font-bold text-[#20264a] uppercase tracking-wider">Endpoint Vercel & Supabase</h4>
+                  <p className="text-xs text-[#626c7b] mt-1.5">
                     Ruta Serverless <code>/api/sync</code> autenticada que persiste datos y emite eventos WebSocket en tiempo real.
                   </p>
                   <div className="mt-3 text-[11px] font-mono text-teal-800 bg-teal-50 border border-teal-200 px-2 py-1 rounded">
@@ -824,12 +818,12 @@ export default function DashboardGerencial() {
                   </div>
                 </div>
 
-                <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/60">
-                  <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs mb-3">
+                <div className="p-5 rounded-xl border border-[#dce1eb] bg-[#f4f6fa]/60">
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs mb-3 border border-emerald-200">
                     4
                   </div>
-                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Panel Gerencial</h4>
-                  <p className="text-xs text-slate-600 mt-1.5">
+                  <h4 className="text-xs font-bold text-[#20264a] uppercase tracking-wider">Panel Gerencial</h4>
+                  <p className="text-xs text-[#626c7b] mt-1.5">
                     El jefe abre el enlace de Vercel y consulta los indicadores clave de negocio sin tocar código ni terminales.
                   </p>
                   <div className="mt-3 text-[11px] font-mono text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded">
